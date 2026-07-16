@@ -135,6 +135,32 @@ read `6×7 = 42` back out of the accessibility tree. **It works**, with real qui
   Driving it via the MCP tools from an agent that re-snapshots every turn (as
   the tool descriptions instruct) sidesteps most of what we hit scripting it raw.
 
+## How it compares to Claude Code's default toolkit (probed 2026-07-16)
+
+Same machine, same Calculator task, three possible stacks:
+
+| | Claude Code default | Anthropic computer-use tool (API/Desktop) | Cua Driver |
+|---|---|---|---|
+| Primary surface | shell/CLI, files, Apple events, browser (CDP) | full-screen screenshots + pixel (x,y) clicks | AX element tree + pid-targeted actions |
+| Native GUI apps | ✗ in practice (see probes) | ✓ any pixels | ✓ any app with an AX tree |
+| Focus/cursor | n/a | **steals the real cursor + focus** | background, focus-preserving |
+| Cost per step | ~0 | 1 screenshot (≈1–2k image tokens) per action | 0 images on the AX path |
+| Precision | n/a | model guesses coordinates | exact (clicks `id=Six`) |
+| Blind spots | GUI-only apps | small targets, hallucinated coords | canvas/WebGL/bad-AX apps (its pixel rung covers these) |
+
+Probe results for the default toolkit on this Mac: `osascript` System Events UI
+scripting → **blocked** (`not allowed assistive access`, -1719); `screencapture`
+→ **blocked** (no Screen Recording for the terminal's TCC identity); `cliclick`
+→ not installed; Apple-events scripting works but Calculator's dictionary can't
+press buttons. So out of the box, Claude Code on this machine has **no working
+native-GUI path at all** — the Driver isn't a faster alternative, it's the only
+one. It also solves the TCC problem structurally: it ships its own signed app
+bundle (`com.trycua.driver`), so permissions are granted once to *it* rather
+than to whatever terminal happens to host the agent.
+
+Rule of thumb: CLI/API first (nothing beats `echo $((6*7))`), CDP for browsers,
+Cua Driver for native GUI, vision loop only for non-AX surfaces.
+
 ## Sources
 
 - [github.com/trycua/cua](https://github.com/trycua/cua) — repo + README
