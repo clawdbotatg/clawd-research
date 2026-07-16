@@ -101,6 +101,40 @@ everything local is MIT open source. `pip install cua` to start.
 - The stack is Python + Rust + Swift, MIT, and healthy (19.8k★, 1.3k forks,
   weekly releases), so building on it is low-risk.
 
+## Hands-on notes (Cua Driver 0.8.3 on macOS 26.2, 2026-07-16)
+
+We installed the Driver on this machine and ran the canonical demo end-to-end:
+launch Calculator backgrounded → click All Clear, 6, ×, 7, = via AX elements →
+read `6×7 = 42` back out of the accessibility tree. **It works**, with real quirks:
+
+- **Setup**: installer → `open -n -g -a CuaDriver --args serve` →
+  `cua-driver permissions grant` (Accessibility via dialog; **Screen Recording
+  needs a manual System Settings toggle** and stayed ungranted for us — the AX
+  path works fine without it, only screenshots/pixel clicks need it). MCP:
+  `claude mcp add-json --scope user cua-computer-use
+  '{"args":["mcp"],"command":"~/.local/bin/cua-driver"}'`.
+- **The AX path is the good path**: `get_window_state` returns an indexed
+  element tree with stable AX ids (`id=Six`, `id=Equals`); `click` by
+  `element_index` needs no cursor, no focus, no screen recording.
+- **Trap 1 — stale element indices**: the index cache is replaced by every new
+  snapshot. Clicking with indices from an older snapshot hit arbitrary elements —
+  one stray click landed on "Quit Calculator" and killed the app. Snapshot once,
+  then do all clicks against that one snapshot (or re-resolve per click).
+- **Trap 2 — phantom windows**: `launch_app` returned a 30px phantom
+  `window_id`; the real window had to be found via `list_windows`
+  (`is_on_screen: true`, sane bounds).
+- **Trap 3 — empty AX tree until first activation**: a freshly backgrounded
+  Calculator exposed only the menu bar to AX; one `bring_to_front` populated the
+  full tree (windows may need re-activation after losing foreground).
+- **Trap 4 — daemon flakiness**: the daemon dropped a connection mid-sequence
+  and the CLI silently fell back to a cacheless in-process run
+  (`daemon proxy … failed; running 'click' in-process`) — watch stderr for that
+  warning and retry through the daemon.
+- **Verdict**: the primitives are strong (background launch really doesn't steal
+  focus — `self_activation_suppressed: true`) but 0.8.x needs retry-mindedness.
+  Driving it via the MCP tools from an agent that re-snapshots every turn (as
+  the tool descriptions instruct) sidesteps most of what we hit scripting it raw.
+
 ## Sources
 
 - [github.com/trycua/cua](https://github.com/trycua/cua) — repo + README
