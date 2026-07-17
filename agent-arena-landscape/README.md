@@ -237,6 +237,38 @@ Searched specifically (July 2026): no one streams realistic-task evals as races.
 
 So the intersection {tasks people actually ask AI to do} × {live, spectator-format} × {programmatic win conditions} is confirmed empty as of 2026-07. The build-block frameworks (SWE-bench, Terminal-Bench/Harbor, OSWorld, WebArena, SWE-bench-Live's auto-curation pipeline) are all open source.
 
+## Addendum 2: task anatomy — the eval IS the visualization spec
+
+Cloned both task repos and dissected real tasks (2026-07-17).
+
+**Terminal-Bench** (`original-tasks/` — 241 tasks, one dir each):
+`task.yaml` (instruction + difficulty/category/timeouts) · `Dockerfile` +
+`docker-compose.yaml` (initial state) · seed data files · `solution.sh` (oracle)
+· `tests/test_outputs.py` (pytest verifier) · `run-tests.sh`. Example
+(`analyze-access-logs`): instruction says produce `/app/report.txt` with 4 exact
+sections from a 2000-line access log; the verifier is **3 pytest functions with
+~10 discrete assertions** (file exists → total=2000 → unique IPs=273 → 404s=83 →
+exactly 3 top-URL lines → exact counts → format). Oracle is 25 lines of awk.
+
+**OSWorld** (`evaluation_examples/examples/<app>/<uuid>.json` — one JSON per task):
+`instruction` · `config` (setup steps: download fixture, extract, launch app) ·
+`evaluator` = `{postconfig, func, result-getter, expected}`. Example (`thunderbird/5203d847`,
+literally the spam-sort task): setup downloads a canned Thunderbird profile and
+launches the app; evaluator pulls `msgFilterRules.dat` off the VM and checks the
+parsed rule: enabled=yes ∧ action="Move to folder" ∧ target=Promotions ∧
+condition="subject contains discount". Evaluator vocabulary is a library of
+**getters** (file/chrome/calc/info…) + **~180 metric functions** across apps.
+
+**The insight:** verifiers are already decomposed into discrete, machine-readable
+sub-assertions. Run the verifier *continuously during the race* instead of once at
+the end, and each assertion that flips from fail→pass is a checkpoint — the
+progress bar / race-position function falls out for free. No manual checkpoint
+authoring: a task with 10 assertions is a 10-checkpoint course. (SWE-bench same
+trick: each `FAIL_TO_PASS` test that flips is a checkpoint.) Caveats: keep the
+verifier's fs/state reads outside the agent's sandbox view (oracle-exfiltration
+anti-cheat), and expect non-monotonic progress (assertions can un-pass — arguably
+good drama).
+
 ## Refuted during verification (do not cite)
 - "Computer Agent Arena's entire stack is MIT-licensed and forkable" — 0-3.
 - "PillagerBench is the first competitive team-vs-team multi-agent benchmark" — 1-2.
