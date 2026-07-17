@@ -210,6 +210,33 @@ Concrete build notes for the racing platform:
 - Broadcast-scale streaming latency: nothing verified addresses restreaming VM
   pools to thousands of viewers with race-grade sync.
 
+## Addendum (same day): where can you actually *watch* agents compete, and does anyone run evals live?
+
+Follow-up questions after the main report: (1) links that land you on live/VOD
+footage of agents competing, (2) whether anyone runs the realistic-task eval
+frameworks as a live watchable competition.
+
+### Watchable today (verified by fetching)
+- **TCEC** — [tcec-chess.com](https://tcec-chess.com) + [twitch.tv/tcec_chess_tv](https://www.twitch.tv/tcec_chess_tv) — 24/7 chess-engine championship; live board, eval graphs, engine thoughts. The UX benchmark for "watch AIs compete forever."
+- **Chess.com Computer Chess Championship** — [chess.com/computer-chess-championship](https://www.chess.com/computer-chess-championship).
+- **SaltyBet** — [saltybet.com](https://www.saltybet.com) — 24/7 AI-controlled MUGEN fighters + live fake-money betting; running 10+ years. The betting layer is the retention engine.
+- **Chess Agents** — [chessagents.ai/live](https://chessagents.ai/live) — community-submitted autonomous chess agents, live spectator arena.
+- **Claude Plays Pokémon** / **Gemini Plays Pokémon** — [twitch.tv/claudeplayspokemon](https://www.twitch.tv/claudeplayspokemon), [twitch.tv/gemini_plays_pokemon](https://www.twitch.tv/gemini_plays_pokemon) — still-active single-agent feeds.
+- **Kaggle Game Arena Feb 2026 VODs** — [official playlist](https://www.youtube.com/playlist?list=PLqFaTIg4myu_tpB0JXRJ5Hb-ApyXDxOlD); Hikaru-commentated broadcasts: [Day 1](https://www.youtube.com/watch?v=6rb2rMahWrE) · [Day 2](https://www.youtube.com/watch?v=4TJwlPVjXcQ) · [Day 3](https://www.youtube.com/watch?v=vzMj2KOyiek) · [Werewolf highlights](https://www.youtube.com/watch?v=vTx4VqpLM_I). The calibration tape for "agent esports done well."
+- **AI Diplomacy (Every)** — [every.to/diplomacy](https://every.to/diplomacy) + [github.com/EveryInc/AI_Diplomacy](https://github.com/EveryInc/AI_Diplomacy) (open source). ~50K live Twitch viewers at launch; VODs expired (Twitch 30-day deletion), channel [twitch.tv/ai_diplomacy](https://www.twitch.tv/ai_diplomacy) only live during runs.
+- **MoltGamingLab** ([moltgaminglab.com](https://moltgaminglab.com)) claims "esports arena for AI agents" (chess/snake/pong/tetris) but fetched as vaporware: zero agents, zero matches, all placeholders.
+
+**Pattern:** everything watchable is a *game* — legible state, obvious winner. All chess/poker/fighting, none of it is what people actually use AI for.
+
+### Does anyone run eval-framework tasks as a LIVE competition? No.
+Searched specifically (July 2026): no one streams realistic-task evals as races.
+- **SWE-bench-Live** ([swe-bench-live.github.io](https://swe-bench-live.github.io/), [arXiv:2505.23419](https://arxiv.org/pdf/2505.23419)) — "live" means *auto-updating contamination-free dataset* (fresh GitHub issues monthly), NOT live competition. Still batch-run, results posted to a static leaderboard. Open source.
+- **WebDev Arena** ([arena.ai/blog/webdev-arena](https://arena.ai/blog/webdev-arena/)) — nearest to "build an app head-to-head": your prompt → two anonymous models each generate a web app → you interact with both and vote (80K+ votes, Bradley-Terry ranking). But it's *participatory* (you're the judge), one-shot generation (not agentic work you watch unfold), and human-voted (not programmatically verified). Related: HuggingFace's **BigCodeArena** ([blog](https://huggingface.co/blog/bigcode/arena)) adds actual code execution to the vote.
+- **Leaderboard aggregators** ([steel.dev](https://leaderboard.steel.dev/), CodeSOTA, agentbeats.dev) — dashboards over batch results, nothing live.
+- **Computer Agent Arena** (main report) remains the only live-watchable realistic-task platform, and it's human-voted + currently down.
+
+So the intersection {tasks people actually ask AI to do} × {live, spectator-format} × {programmatic win conditions} is confirmed empty as of 2026-07. The build-block frameworks (SWE-bench, Terminal-Bench/Harbor, OSWorld, WebArena, SWE-bench-Live's auto-curation pipeline) are all open source.
+
 ## Refuted during verification (do not cite)
 - "Computer Agent Arena's entire stack is MIT-licensed and forkable" — 0-3.
 - "PillagerBench is the first competitive team-vs-team multi-agent benchmark" — 1-2.
