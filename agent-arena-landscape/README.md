@@ -20,6 +20,23 @@ assembled the pieces.
 
 ---
 
+## The concept being chased (why this research exists)
+
+A live, watchable "agent esports" platform — entertainment like esports or
+poker, but the competitors are AI agents and the games are **the tasks people
+actually ask AI to do** (almost nobody prompts an AI for a chess move):
+
+- who sorts the spam out of an inbox fastest
+- who builds a working app fastest
+- adversarial/staged games, e.g. we build a keycode-entry website and agents
+  race to brute-force the 4-digit code via browser automation
+- possibly N agents at once (5+), rendered in a shared "world" they move
+  through for visual feedback, rather than N raw screens
+
+Chess/poker/fighting arenas exist and prove spectation works; realistic-task
+evals exist and prove verification works; the combination is unclaimed (see
+Part C + Addendum 1).
+
 ## Part A — Evaluation frameworks: how the big ones actually work
 
 ### SWE-bench — the canonical sandboxed-scoring template
@@ -268,6 +285,49 @@ trick: each `FAIL_TO_PASS` test that flips is a checkpoint.) Caveats: keep the
 verifier's fs/state reads outside the agent's sandbox view (oracle-exfiltration
 anti-cheat), and expect non-monotonic progress (assertions can un-pass — arguably
 good drama).
+
+## Addendum 3: design-session notes — the world as legibility layer
+
+From working through the "5 agents moving through a world" idea (2026-07-17):
+
+- **Running N agents concurrently is solved infrastructure**, not design work:
+  OSWorld runs parallel headless VMs on one host (`run_multienv.py`); SWE-bench's
+  layered images make N sandboxes cheap to spin up. Cost is N× VM + N× inference
+  per match — real money but not architecture.
+- **The world's job is legibility.** One raw agent terminal is barely watchable;
+  five at once is noise. Every successful AI spectacle has a legibility layer —
+  chess has the eval bar, poker broadcasts have win-probability graphics,
+  SaltyBet has health bars. Raw task-work has nothing; a spatial race view where
+  avatars visibly advance IS the eval bar for task work.
+- **World = rendering of progress, NOT part of the task.** Substrate stays real
+  (actual sandboxes doing actual work); the world is driven by telemetry (tool
+  calls, file edits, verifier checkpoints). Making agents navigate a virtual
+  office to reach the inbox would score them on navigating our weird world
+  instead of the task — kills the "real tasks" differentiator. Embodied worlds
+  (AI-Town-style, Minecraft) are special-event game modes, not the ladder.
+- **Two-tier viewing:** main view = race overview (avatars on a course, instantly
+  readable, marble-race / Mario-Kart-minimap energy); click an avatar to zoom
+  into that agent's real screen/terminal. Same split as TCEC's board +
+  engine-thoughts panels — casuals watch the map, nerds watch the feed.
+- **Checkpoints come free from the verifiers** (Addendum 2): run each task's
+  verifier on a loop from the referee side; every assertion flipping fail→pass
+  advances that agent's avatar. Forces task decomposition into subgoals — which
+  batch benchmarks never needed, and which is exactly what creates lead changes
+  and drama. Progress can regress (assertions un-pass); that's drama too.
+- **Head start we already own:** clawd-harness already supervises N concurrent
+  Claude sessions and emits structured transcript events + hooks (PreToolUse/
+  PostToolUse/Stop/UserPromptSubmit) — that event stream is precisely the
+  telemetry feed a spectator layer consumes. Distance from harness → "N agents +
+  checkpoint verifiers + world view" is short.
+- **Retention mechanics seen elsewhere:** live betting (SaltyBet's decade of
+  uptime rests on it), celebrity commentary + scheduled broadcasts (Kaggle),
+  real-money stakes (Alpha Arena/SpoonOS), 24/7 always-on ladder (TCEC).
+- **Agreed next step:** minimal prototype — 2–3 agents in Docker racing one
+  Terminal-Bench task (`analyze-access-logs`, ~10 assertions = 10 checkpoints),
+  verifier loop printing a live checkpoint scoreboard. Proves the
+  verifier-as-progress-bar mechanic before any world rendering. Then a 2D race
+  view driven off the event stream; the keycode-site task as the first
+  custom-built spectacle task.
 
 ## Refuted during verification (do not cite)
 - "Computer Agent Arena's entire stack is MIT-licensed and forkable" — 0-3.
