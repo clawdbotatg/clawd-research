@@ -1,0 +1,590 @@
+{
+ "name": "haiku-4.5",
+ "target": "cmd:claude -p --model haiku",
+ "timestamp": "2026-07-23 20:40:48",
+ "overall": 98.3,
+ "ci95": [
+  95.0,
+  100.0
+ ],
+ "categories": {
+  "code": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "context": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "extract": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "instructions": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "precision": {
+   "passed": 9,
+   "total": 10,
+   "pct": 90.0
+  },
+  "reasoning": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  }
+ },
+ "elapsed_s": 57.8,
+ "tokens": {
+  "in": 0,
+  "out": 0
+ },
+ "runs": 1,
+ "tasks": [
+  {
+   "id": "code-01",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef compress(s):\n    if not s:\n        return ''\n    \n    result = []\n    i = 0\n    while i < len(s):\n        char = s[i]\n        count = 1\n        while i + count < len(s) and s[i + count] == char:\n            count += 1\n        result.append(char + str(count))\n        i += count\n    \n    return ''.join(result)\n```",
+   "latency_s": 4.3,
+   "usage": {}
+  },
+  {
+   "id": "code-02",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef second_largest(nums):\n    distinct = set(nums)\n    if len(distinct) < 2:\n        return None\n    sorted_distinct = sorted(distinct, reverse=True)\n    return sorted_distinct[1]\n```",
+   "latency_s": 5.1,
+   "usage": {}
+  },
+  {
+   "id": "code-03",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    sorted_intervals = sorted(intervals)\n    merged = [sorted_intervals[0]]\n    \n    for current in sorted_intervals[1:]:\n        last = merged[-1]\n        if current[0] <= last[1]:\n            merged[-1] = [last[0], max(last[1], current[1])]\n        else:\n            merged.append(current)\n    \n    return merged\n```",
+   "latency_s": 5.0,
+   "usage": {}
+  },
+  {
+   "id": "code-04",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef roman(n):\n    values = [\n        (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),\n        (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),\n        (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'),\n        (1, 'I')\n    ]\n    result = ''\n    for value, symbol in values:\n        count = n // value\n        if count:\n            result += symbol * count\n            n -= value * count\n    return result\n```",
+   "latency_s": 5.8,
+   "usage": {}
+  },
+  {
+   "id": "code-05",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef balanced(s):\n    stack = []\n    matching = {'(': ')', '[': ']', '{': '}'}\n    \n    for char in s:\n        if char in matching:\n            stack.append(char)\n        elif char in matching.values():\n            if not stack or matching[stack.pop()] != char:\n                return False\n    \n    return len(stack) == 0\n```",
+   "latency_s": 5.9,
+   "usage": {}
+  },
+  {
+   "id": "code-06",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef moving_avg(nums, k):\n    if k > len(nums):\n        return []\n    \n    result = []\n    for i in range(len(nums) - k + 1):\n        window = nums[i:i + k]\n        avg = sum(window) / k\n        result.append(avg)\n    \n    return result\n```",
+   "latency_s": 4.2,
+   "usage": {}
+  },
+  {
+   "id": "code-07",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\nimport re\nfrom collections import Counter\n\ndef top_word(text):\n    words = [word.lower() for word in re.findall(r'[a-zA-Z]+', text)]\n    word_counts = Counter(words)\n    max_freq = max(word_counts.values())\n    return min(word for word, count in word_counts.items() if count == max_freq)\n```",
+   "latency_s": 6.9,
+   "usage": {}
+  },
+  {
+   "id": "code-08",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef flatten(nested):\n    result = []\n    for item in nested:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result\n```",
+   "latency_s": 3.9,
+   "usage": {}
+  },
+  {
+   "id": "code-09",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef caesar(s, k):\n    result = []\n    k = k % 26  # Normalize k to 0-25 range\n    \n    for char in s:\n        if char.isupper():\n            shifted = (ord(char) - ord('A') + k) % 26\n            result.append(chr(shifted + ord('A')))\n        elif char.islower():\n            shifted = (ord(char) - ord('a') + k) % 26\n            result.append(chr(shifted + ord('a')))\n        else:\n            result.append(char)\n    \n    return ''.join(result)\n```",
+   "latency_s": 5.8,
+   "usage": {}
+  },
+  {
+   "id": "code-10",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef digit_root(n):\n    while n >= 10:\n        n = sum(int(digit) for digit in str(n))\n    return n\n```",
+   "latency_s": 4.5,
+   "usage": {}
+  },
+  {
+   "id": "context-01",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Priya Natarajan'",
+   "response": "Based on the memo header, the memo was written by Priya Natarajan, VP of Operations at Meridian Robotics, Inc.\n\nAnswer: Priya Natarajan",
+   "latency_s": 2.7,
+   "usage": {}
+  },
+  {
+   "id": "context-02",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Fresno'",
+   "response": "Looking at the order volumes stated in the memo:\n\n- Fresno processed 41,200 orders\n- Tulsa processed 38,900 orders\n- Elkhart processed 12,750 orders\n\nAnswer: Fresno",
+   "latency_s": 2.7,
+   "usage": {}
+  },
+  {
+   "id": "context-03",
+   "category": "context",
+   "pass": true,
+   "detail": "got 92850.0",
+   "response": "Looking at the \"Site performance\" section of the memo:\n\n- Fresno processed 41,200 orders\n- Tulsa processed 38,900 orders\n- Elkhart processed 12,750 orders\n\nCombined: 41,200 + 38,900 + 12,750 = 92,850 orders\n\nAnswer: 92,850",
+   "latency_s": 3.1,
+   "usage": {}
+  },
+  {
+   "id": "context-04",
+   "category": "context",
+   "pass": true,
+   "detail": "got 6.0",
+   "response": "According to the memo, the conveyor drive fault at Tulsa on February 9 halted picking for **6 hours**.\n\nAnswer: 6 hours",
+   "latency_s": 2.9,
+   "usage": {}
+  },
+  {
+   "id": "context-05",
+   "category": "context",
+   "pass": true,
+   "detail": "",
+   "response": "Looking at the \"Larkspur rollout\" section of the memo:\n\n\"Our new warehouse management system, Larkspur, completed its rollout at Fresno on March 3.\"\n\nAnswer: Fresno completed the Larkspur rollout in March (March 3, 2026).",
+   "latency_s": 3.4,
+   "usage": {}
+  },
+  {
+   "id": "context-06",
+   "category": "context",
+   "pass": true,
+   "detail": "got 90000.0",
+   "response": "According to the memo, the conveyor drive fault at Tulsa on February 9 halted picking for 6 hours. The memo explicitly states: \"Between overtime, expedited freight to keep SLAs, and the repair itself, we estimate the incident cost about $90,000.\"\n\nAnswer: $90,000",
+   "latency_s": 3.1,
+   "usage": {}
+  },
+  {
+   "id": "context-07",
+   "category": "context",
+   "pass": true,
+   "detail": "got 5.0",
+   "response": "According to the memo's Safety section:\n\n\"Recordable incidents fell from 9 in Q4 to 5 this quarter.\"\n\nSince this memo is dated April 14, 2026, and discusses Q1 2026 results, \"this quarter\" refers to Q1 2026.\n\nAnswer: 5",
+   "latency_s": 3.7,
+   "usage": {}
+  },
+  {
+   "id": "context-08",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Ashgrid'",
+   "response": "According to the memo, in the \"Supply chain\" section, Ashgrid replaced Voltcore as the battery-pack supplier. The switch was completed in February 2026, resulting in an 8% savings per unit at equivalent cell specifications.\n\nAnswer: Ashgrid",
+   "latency_s": 2.9,
+   "usage": {}
+  },
+  {
+   "id": "context-09",
+   "category": "context",
+   "pass": true,
+   "detail": "got 'unknown'",
+   "response": "I've read through the memo carefully. While it provides substantial information about the Elkhart warehouse\u2014including that it came online in January 2026, processed 12,750 orders in Q1, and is tracking ahead of ramp-up plans\u2014the memo does not state the square footage of the Elkhart warehouse.\n\nAnswer: unknown",
+   "latency_s": 4.6,
+   "usage": {}
+  },
+  {
+   "id": "context-10",
+   "category": "context",
+   "pass": true,
+   "detail": "got 26150.0",
+   "response": "According to the memo, in Q1 2026:\n- Tulsa processed 38,900 orders\n- Elkhart processed 12,750 orders\n\nThe difference is: 38,900 - 12,750 = 26,150\n\nAnswer: 26,150",
+   "latency_s": 2.9,
+   "usage": {}
+  },
+  {
+   "id": "extract-01",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"name\": \"Marisol Vega\",\n  \"date\": \"2026-03-07\",\n  \"amount_usd\": 2340.50\n}\n```",
+   "latency_s": 2.6,
+   "usage": {}
+  },
+  {
+   "id": "extract-02",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"flight_number\": \"UA1187\",\n  \"depart\": \"DEN\",\n  \"arrive\": \"AUS\",\n  \"delayed\": true\n}\n```",
+   "latency_s": 3.0,
+   "usage": {}
+  },
+  {
+   "id": "extract-03",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n[\"accounts@pay.example.com\", \"jo.roth@example.org\", \"old-press@example.org\", \"press-team@example.org\"]\n```",
+   "latency_s": 3.6,
+   "usage": {}
+  },
+  {
+   "id": "extract-04",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"date\": \"2026-06-04\",\n  \"time_24h\": \"09:15\",\n  \"timezone\": \"Central\",\n  \"room\": \"Room 12B\"\n}\n```",
+   "latency_s": 3.3,
+   "usage": {}
+  },
+  {
+   "id": "extract-05",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n[\n  {\"item\": \"paper\", \"qty\": 3, \"unit_price\": 4.25},\n  {\"item\": \"stapler\", \"qty\": 1, \"unit_price\": 12.00},\n  {\"item\": \"pens\", \"qty\": 12, \"unit_price\": 0.85}\n]\n```",
+   "latency_s": 11.2,
+   "usage": {}
+  },
+  {
+   "id": "extract-06",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"errors\": 2,\n  \"warnings\": 2,\n  \"first_error_time\": \"08:02:17\"\n}\n```",
+   "latency_s": 3.5,
+   "usage": {}
+  },
+  {
+   "id": "extract-07",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"last_name\": \"Okafor\",\n  \"specialty\": \"ophthalmologist\",\n  \"city\": \"Toledo\",\n  \"state\": \"Ohio\",\n  \"phone\": \"(419) 555-0142\"\n}\n```",
+   "latency_s": 3.2,
+   "usage": {}
+  },
+  {
+   "id": "extract-08",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"winner\": \"The Wrens\",\n  \"loser\": \"The Herons\",\n  \"winner_goals\": 4,\n  \"loser_goals\": 2,\n  \"overtime\": true,\n  \"top_scorer\": \"Ito\"\n}\n```",
+   "latency_s": 3.9,
+   "usage": {}
+  },
+  {
+   "id": "extract-09",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"flour\": {\n    \"qty\": 2,\n    \"unit\": \"cups\"\n  },\n  \"salt\": {\n    \"qty\": 1,\n    \"unit\": \"tsp\"\n  },\n  \"eggs\": {\n    \"qty\": 3,\n    \"unit\": \"count\"\n  },\n  \"milk\": {\n    \"qty\": 250,\n    \"unit\": \"ml\"\n  }\n}\n```",
+   "latency_s": 3.4,
+   "usage": {}
+  },
+  {
+   "id": "extract-10",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"latest\": \"2.3.1\",\n  \"broken\": \"2.3.0\",\n  \"minimum_upgrade\": \"2.0.4\"\n}\n```",
+   "latency_s": 3.4,
+   "usage": {}
+  },
+  {
+   "id": "instructions-01",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "The lighthouse beam swept across the dark ocean, guiding ships safely past the rocky shore. Ancient mariners relied on the rotating beam of light to navigate treacherous coastlines and avoid shipwrecks. Modern lighthouses use powerful electric beams that can be seen for miles, ensuring maritime safety in all weather conditions.",
+   "latency_s": 3.6,
+   "usage": {}
+  },
+  {
+   "id": "instructions-02",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "bear\ncat\ndog\nelephant\nfox",
+   "latency_s": 2.7,
+   "usage": {}
+  },
+  {
+   "id": "instructions-03",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Soft rain falls from clouds bringing fresh water to the thirsty earth.",
+   "latency_s": 7.7,
+   "usage": {}
+  },
+  {
+   "id": "instructions-04",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "```json\n{\n  \"city\": \"Denver\",\n  \"population\": 715000,\n  \"landlocked\": true\n}\n```",
+   "latency_s": 3.9,
+   "usage": {}
+  },
+  {
+   "id": "instructions-05",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Data rushing fast\nCooling fans go round and round\nBright lights glow on racks",
+   "latency_s": 15.4,
+   "usage": {}
+  },
+  {
+   "id": "instructions-06",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "BEES COLLECT NECTAR AND POLLEN.",
+   "latency_s": 5.2,
+   "usage": {}
+  },
+  {
+   "id": "instructions-07",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Historically, coffee has been one of the world's most traded commodities and cultural anchors, originating in Ethiopia before spreading to the Arab world and eventually Europe in the 17th century. The beverage became a social catalyst, spawning coffeehouses where merchants, scholars, and revolutionaries gathered to exchange ideas and conduct business. By the colonial era, coffee plantations dominated tropical economies from South America to Southeast Asia, shaping global trade routes and labor practices.\n\nToday, coffee remains deeply embedded in daily routines across virtually every culture, with over 2 billion cups consumed worldwide each day. The industry has fractured into specialty segments, from single-origin third-wave movements to large-scale commercial blends, each catering to different tastes and values. Climate change now threatens traditional growing regions, while conversations around fair trade, sustainability, and certification schemes have made consumers more conscious of coffee's environmental and social impact.",
+   "latency_s": 4.7,
+   "usage": {}
+  },
+  {
+   "id": "instructions-08",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "the quick brown fox jumps high\nhigh jumps fox brown quick the",
+   "latency_s": 2.4,
+   "usage": {}
+  },
+  {
+   "id": "instructions-09",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche",
+   "latency_s": 2.4,
+   "usage": {}
+  },
+  {
+   "id": "instructions-10",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Shining brightly in the night sky above\nTwinkling light that guides us through the dark\nA beacon of hope and dreams for all\nReaching far beyond what we can see",
+   "latency_s": 4.3,
+   "usage": {}
+  },
+  {
+   "id": "precision-01",
+   "category": "precision",
+   "pass": true,
+   "detail": "",
+   "response": "apple, banana, mango, quartz, Zebra",
+   "latency_s": 2.9,
+   "usage": {}
+  },
+  {
+   "id": "precision-02",
+   "category": "precision",
+   "pass": true,
+   "detail": "",
+   "response": "4, 9, 1, 7, 3",
+   "latency_s": 2.8,
+   "usage": {}
+  },
+  {
+   "id": "precision-03",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 'stressed'",
+   "response": "stressed",
+   "latency_s": 3.0,
+   "usage": {}
+  },
+  {
+   "id": "precision-04",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 12.0",
+   "response": "I'll count the letter 's' (case-insensitive) in the sentence: 'Susan asked seven sisters six systematic questions.'\n\nBreaking it down by word:\n- **Susan**: S, s = 2\n- **asked**: s = 1\n- **seven**: s = 1\n- **sisters**: s, s, s = 3\n- **six**: s = 1\n- **systematic**: s, s = 2\n- **questions**: s, s = 2\n\nTotal: 2 + 1 + 1 + 3 + 1 + 2 + 2 = 12\n\nAnswer: 12",
+   "latency_s": 5.5,
+   "usage": {}
+  },
+  {
+   "id": "precision-05",
+   "category": "precision",
+   "pass": true,
+   "detail": "got '18:15'",
+   "response": "18:15",
+   "latency_s": 3.0,
+   "usage": {}
+  },
+  {
+   "id": "precision-06",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 'owls fly warm nights'",
+   "response": "owls fly warm nights",
+   "latency_s": 2.6,
+   "usage": {}
+  },
+  {
+   "id": "precision-07",
+   "category": "precision",
+   "pass": false,
+   "detail": "failed: 'blankBIRED'",
+   "response": "blankBIRED",
+   "latency_s": 4.2,
+   "usage": {}
+  },
+  {
+   "id": "precision-08",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 40.0",
+   "response": "The digits of 78493216 are: 7, 8, 4, 9, 3, 2, 1, 6\n\nSum: 7 + 8 + 4 + 9 + 3 + 2 + 1 + 6 = 40\n\nAnswer: 40",
+   "latency_s": 3.8,
+   "usage": {}
+  },
+  {
+   "id": "precision-09",
+   "category": "precision",
+   "pass": true,
+   "detail": "got '2027-01-04'",
+   "response": "2027-01-04",
+   "latency_s": 3.3,
+   "usage": {}
+  },
+  {
+   "id": "precision-10",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 36.0",
+   "response": "Looking at the string 'A7k9Q2m':\n\n**Sum of digits:**\n- 7 + 9 + 2 = 18\n\n**Number of uppercase letters:**\n- A (uppercase)\n- Q (uppercase)\n- Count = 2\n\n**Multiply the sum by the count:**\n18 \u00d7 2 = 36\n\nAnswer: 36",
+   "latency_s": 3.6,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-01",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 9.0",
+   "response": "Looking at this problem step by step:\n\n**Finding how many snacks Dana can buy:**\n- Dana has $5.00 = 500 cents\n- Each snack costs 65 cents\n- Number of snacks = \u230a500 \u00f7 65\u230b = \u230a7.69...\u230b = 7 snacks\n\n**Calculating the change:**\n- Cost of 7 snacks = 7 \u00d7 65 = 455 cents\n- Change = 500 - 455 = 45 cents\n\n**Converting change to nickels:**\n- 1 nickel = 5 cents\n- Number of nickels = 45 \u00f7 5 = 9 nickels\n\nAnswer: 9",
+   "latency_s": 4.3,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-02",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 23.0",
+   "response": "Looking at this problem, I need to find how many ferry departures occur between 6:00 AM and 9:00 PM, with departures every 40 minutes.\n\n**Time span:** From 6:00 AM to 9:00 PM = 15 hours = 900 minutes\n\n**Departure times:** Starting at 6:00 AM, departures occur at:\n- 6:00 AM (0 minutes after start)\n- 6:40 AM (40 minutes after start)\n- 7:20 AM (80 minutes after start)\n- ... and so on at 40-minute intervals\n\n**Finding the last valid crossing:**\nIf crossings occur at 6:00 AM + 40n minutes (where n = 0, 1, 2, ...), I need:\n- 40n \u2264 900\n- n \u2264 22.5\n\nSo the maximum value of n is 22.\n\n**Verification:**\n- n = 22: 6:00 AM + (22 \u00d7 40) min = 6:00 AM + 880 min = 8:40 PM \u2713 (before 9:00 PM)\n- n = 23: 6:00 AM + (23 \u00d7 40) min = 6:00 AM + 920 min = 9:20 PM \u2717 (after 9:00 PM)\n\nSince n ranges from 0 to 22 inclusive, there are **23 crossings**.\n\nAnswer: 23",
+   "latency_s": 8.5,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-03",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 5.0",
+   "response": "Looking at this step by step:\n\n**Current stacks:**\n- Stack 1: 5 crates (room for 2 more)\n- Stack 2: 2 crates (room for 5 more)\n- Stack 3: 7 crates (full, room for 0 more)\n\n**Topping off existing stacks:**\n- Stack 1 needs 2 crates to reach 7\n- Stack 2 needs 5 crates to reach 7\n- Total needed: 2 + 5 = 7 crates\n\n**After topping off:**\n- Crates used: 7\n- Crates remaining: 18 - 7 = 11 crates\n- Existing stacks now: 3 (all full)\n\n**Creating new stacks from remaining 11 crates:**\n- Each new stack holds max 7 crates\n- 11 \u00f7 7 = 1 full stack with 4 crates left over\n- New stack 4: 7 crates (full)\n- New stack 5: 4 crates (partial)\n\n**Total stacks:** 3 (original) + 2 (new) = **5 stacks**\n\nAnswer: 5",
+   "latency_s": 6.0,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-04",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 1125.0",
+   "response": "Looking at this problem step-by-step:\n\n**Step 1: Find the flour amount needed for 42 muffins**\n\nThe recipe ratio is: 320 g of flour per 12 muffins\n\nFor 42 muffins:\n- Flour needed = (42/12) \u00d7 320 = 3.5 \u00d7 320 = 1120 g\n\n**Step 2: Round up to the nearest 25 g increment**\n\nHer scale measures in 25 g increments and she rounds up.\n\n1120 g \u00f7 25 = 44.8\n\nSince 44.8 is not a whole number, round up to 45.\n\n45 \u00d7 25 = 1125 g\n\nAnswer: 1125",
+   "latency_s": 4.7,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-05",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 105.0",
+   "response": "I need to find how many original members there were, then calculate games for the larger group.\n\n**Finding the original number of members:**\n\nIn a round-robin tournament with n members, each member plays every other member once. The number of games is:\n\n$$\\binom{n}{2} = \\frac{n(n-1)}{2} = 66$$\n\nSolving:\n$$n(n-1) = 132$$\n$$n^2 - n - 132 = 0$$\n\nUsing the quadratic formula:\n$$n = \\frac{1 \\pm \\sqrt{1 + 528}}{2} = \\frac{1 \\pm \\sqrt{529}}{2} = \\frac{1 \\pm 23}{2}$$\n\nSo $n = 12$ (taking the positive solution).\n\nVerification: $\\frac{12 \\times 11}{2} = \\frac{132}{2} = 66$ \u2713\n\n**Finding games with new members:**\n\nAfter 3 new members join: $12 + 3 = 15$ members\n\nNumber of games in the new round-robin:\n$$\\binom{15}{2} = \\frac{15 \\times 14}{2} = \\frac{210}{2} = 105$$\n\nAnswer: 105",
+   "latency_s": 4.9,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-06",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 100.0",
+   "response": "I need to break this problem into two phases.\n\n**Phase 1: Both pump A and drain B running (0 to 60 minutes)**\n\n- Pump A fills at: 4 L/min\n- Drain B empties at: 1.5 L/min\n- Net fill rate: 4 - 1.5 = 2.5 L/min\n\nAfter 60 minutes:\n- Volume in tank = 60 min \u00d7 2.5 L/min = 150 liters\n\n**Phase 2: Only drain B running (after pump A stops)**\n\n- Starting volume: 150 liters\n- Drain rate: 1.5 L/min\n- Time to empty = 150 \u00f7 1.5 = 100 minutes\n\nAnswer: 100",
+   "latency_s": 4.4,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-07",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 12.0",
+   "response": "Looking at this problem, I need to find when the cumulative pages read equals 480.\n\n**Setting up the arithmetic sequence:**\n- Day 1: 15 pages\n- Day 2: 20 pages\n- Day 3: 25 pages\n- Day n: 15 + (n-1)\u00d75 = 10 + 5n pages\n\n**Sum formula for arithmetic sequence:**\nThe total pages read through day n is:\n$$S_n = \\frac{n}{2}(2a_1 + (n-1)d) = \\frac{n}{2}(2(15) + (n-1)(5))$$\n\n$$S_n = \\frac{n}{2}(30 + 5n - 5) = \\frac{n}{2}(25 + 5n) = \\frac{5n^2 + 25n}{2}$$\n\n**Solving for n when $S_n = 480$:**\n$$\\frac{5n^2 + 25n}{2} = 480$$\n\n$$5n^2 + 25n = 960$$\n\n$$n^2 + 5n - 192 = 0$$\n\nUsing the quadratic formula:\n$$n = \\frac{-5 \\pm \\sqrt{25 + 768}}{2} = \\frac{-5 \\pm \\sqrt{793}}{2} = \\frac{-5 \\pm 28.16}{2}$$\n\nTaking the positive solution: $n \u2248 11.58$\n\n**Checking days 11 and 12:**\n- $S_{11} = \\frac{5(121) + 25(11)}{2} = \\frac{605 + 275}{2} = 440$ pages\n- $S_{12} = \\frac{5(144) + 25(12)}{2} = \\frac{720 + 300}{2} = 510$ pages\n\nSince she has read 440 pages by the end of day 11 and needs 480 pages total, she finishes during day 12 (she needs 40 more pages, and reads 70 pages on day 12).\n\nAnswer: 12",
+   "latency_s": 8.7,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-08",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 15.0",
+   "response": "Looking at this step by step:\n\n**Calculate parking duration:**\n- From 8:45 AM to 5:10 PM\n- 8:45 AM to 9:00 AM = 15 minutes\n- 9:00 AM to 5:00 PM = 8 hours\n- 5:00 PM to 5:10 PM = 10 minutes\n- **Total: 8 hours and 25 minutes**\n\n**Calculate parking cost (before cap):**\n- First hour: $3\n- Remaining 7 hours and 25 minutes:\n  - 7 complete hours: 7 \u00d7 $2 = $14\n  - 25 minutes (counts as part of an hour): $2\n  - Subtotal for remaining: $16\n- **Total before cap: $3 + $16 = $19**\n\n**Apply daily cap:**\n- The daily cap is $15\n- Since $19 > $15, Marco pays the cap amount\n\nAnswer: 15",
+   "latency_s": 9.1,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-09",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 48.0",
+   "response": "Looking at this step-by-step:\n\n**Step 1: Find how much Jae pays**\n- Jae pays 40% of $130\n- $130 \u00d7 0.40 = $52\n\n**Step 2: Find how much Kim and Lee split**\n- Remaining amount: $130 - $52 = $78\n\n**Step 3: Set up an equation for Kim and Lee**\n- Let Lee pay = $x\n- Then Kim pays = $x + $18\n- Together: x + (x + 18) = 78\n\n**Step 4: Solve for x**\n- 2x + 18 = 78\n- 2x = 60\n- x = 30\n\n**Step 5: Find Kim's payment**\n- Kim pays = $30 + $18 = $48\n\n**Verification:** $52 + $48 + $30 = $130 \u2713\n\nAnswer: 48",
+   "latency_s": 4.7,
+   "usage": {}
+  },
+  {
+   "id": "reasoning-10",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 16.0",
+   "response": "Looking at this problem, I need to find all times in HH:MM format where the 4-digit display (HHMM, ignoring the colon) reads the same forwards and backwards.\n\nFor a 4-digit number ABCD to be a palindrome:\n- 1st digit = 4th digit (A = D)\n- 2nd digit = 3rd digit (B = C)\n\nIf HH = AB and MM = CD, then I need:\n- A (tens digit of hours) = D (units digit of minutes)\n- B (units digit of hours) = C (tens digit of minutes)\n\nSo for each valid hour HH = AB, I need to check if the reversed time MM = BA is a valid minute value (00-59).\n\nLet me check each hour:\n\n**HH 00-09** (A = 0):\n- 00 \u2192 MM = 00 \u2713 (00:00)\n- 01 \u2192 MM = 10 \u2713 (01:10)\n- 02 \u2192 MM = 20 \u2713 (02:20)\n- 03 \u2192 MM = 30 \u2713 (03:30)\n- 04 \u2192 MM = 40 \u2713 (04:40)\n- 05 \u2192 MM = 50 \u2713 (05:50)\n- 06 \u2192 MM = 60 \u2717 (invalid)\n- 07 \u2192 MM = 70 \u2717 (invalid)\n- 08 \u2192 MM = 80 \u2717 (invalid)\n- 09 \u2192 MM = 90 \u2717 (invalid)\n\n**HH 10-19** (A = 1):\n- 10 \u2192 MM = 01 \u2713 (10:01)\n- 11 \u2192 MM = 11 \u2713 (11:11)\n- 12 \u2192 MM = 21 \u2713 (12:21)\n- 13 \u2192 MM = 31 \u2713 (13:31)\n- 14 \u2192 MM = 41 \u2713 (14:41)\n- 15 \u2192 MM = 51 \u2713 (15:51)\n- 16 \u2192 MM = 61 \u2717 (invalid)\n- 17 \u2192 MM = 71 \u2717 (invalid)\n- 18 \u2192 MM = 81 \u2717 (invalid)\n- 19 \u2192 MM = 91 \u2717 (invalid)\n\n**HH 20-23** (A = 2):\n- 20 \u2192 MM = 02 \u2713 (20:02)\n- 21 \u2192 MM = 12 \u2713 (21:12)\n- 22 \u2192 MM = 22 \u2713 (22:22)\n- 23 \u2192 MM = 32 \u2713 (23:32)\n\nThe valid palindromic times are:\n00:00, 01:10, 02:20, 03:30, 04:40, 05:50, 10:01, 11:11, 12:21, 13:31, 14:41, 15:51, 20:02, 21:12, 22:22, 23:32\n\nAnswer: 16",
+   "latency_s": 17.1,
+   "usage": {}
+  }
+ ]
+}

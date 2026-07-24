@@ -1,0 +1,1910 @@
+{
+ "name": "qwen3-coder",
+ "target": "openai:https://llm.bankr.bot/v1/chat/completions:qwen3-coder",
+ "timestamp": "2026-07-23 20:40:26",
+ "overall": 91.7,
+ "ci95": [
+  85.0,
+  98.3
+ ],
+ "categories": {
+  "code": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "context": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "extract": {
+   "passed": 9,
+   "total": 10,
+   "pct": 90.0
+  },
+  "instructions": {
+   "passed": 9,
+   "total": 10,
+   "pct": 90.0
+  },
+  "precision": {
+   "passed": 7,
+   "total": 10,
+   "pct": 70.0
+  },
+  "reasoning": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  }
+ },
+ "elapsed_s": 37.7,
+ "tokens": {
+  "in": 12304,
+  "out": 9099
+ },
+ "runs": 1,
+ "tasks": [
+  {
+   "id": "code-01",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef compress(s):\n    if not s:\n        return ''\n    \n    result = []\n    count = 1\n    current_char = s[0]\n    \n    for i in range(1, len(s)):\n        if s[i] == current_char:\n            count += 1\n        else:\n            result.append(current_char + str(count))\n            current_char = s[i]\n            count = 1\n    \n    result.append(current_char + str(count))\n    return ''.join(result)\n```",
+   "latency_s": 1.3,
+   "usage": {
+    "prompt_tokens": 68,
+    "completion_tokens": 103,
+    "total_tokens": 171,
+    "cost": 8.988e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 8.988e-05,
+     "upstream_inference_prompt_cost": 7.48e-06,
+     "upstream_inference_completions_cost": 8.24e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-02",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef second_largest(nums):\n    if not nums:\n        return None\n    \n    # Get distinct values\n    distinct = set(nums)\n    \n    # Check if we have at least 2 distinct values\n    if len(distinct) < 2:\n        return None\n    \n    # Remove the maximum value\n    distinct.remove(max(distinct))\n    \n    # Return the maximum of the remaining values\n    return max(distinct)\n```",
+   "latency_s": 1.3,
+   "usage": {
+    "prompt_tokens": 60,
+    "completion_tokens": 91,
+    "total_tokens": 151,
+    "cost": 7.94e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 7.94e-05,
+     "upstream_inference_prompt_cost": 6.6e-06,
+     "upstream_inference_completions_cost": 7.28e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-03",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # Sort intervals by start time\n    intervals.sort(key=lambda x: x[0])\n    \n    merged = [intervals[0]]\n    \n    for current in intervals[1:]:\n        last = merged[-1]\n        # If current interval overlaps or touches the last merged interval\n        if current[0] <= last[1]:\n            # Merge by updating the end time if needed\n            merged[-1] = [last[0], max(last[1], current[1])]\n        else:\n            # No overlap, add current interval\n            merged.append(current)\n    \n    return merged\n```",
+   "latency_s": 2.2,
+   "usage": {
+    "prompt_tokens": 86,
+    "completion_tokens": 142,
+    "total_tokens": 228,
+    "cost": 0.00012306,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00012306,
+     "upstream_inference_prompt_cost": 9.46e-06,
+     "upstream_inference_completions_cost": 0.0001136
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-04",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef roman(n):\n    if not (1 <= n <= 3999):\n        raise ValueError(\"Number must be between 1 and 3999\")\n    \n    # Define the mapping of values to Roman numerals\n    val_to_roman = [\n        (1000, \"M\"),\n        (900, \"CM\"),\n        (500, \"D\"),\n        (400, \"CD\"),\n        (100, \"C\"),\n        (90, \"XC\"),\n        (50, \"L\"),\n        (40, \"XL\"),\n        (10, \"X\"),\n        (9, \"IX\"),\n        (5, \"V\"),\n        (4, \"IV\"),\n        (1, \"I\")\n    ]\n    \n    result = \"\"\n    for value, numeral in val_to_roman:\n        # Determine how many times the numeral fits into n\n        count = n // value\n        if count:\n            result += numeral * count\n            n -= value * count\n    \n    return result\n```",
+   "latency_s": 2.8,
+   "usage": {
+    "prompt_tokens": 53,
+    "completion_tokens": 225,
+    "total_tokens": 278,
+    "cost": 0.00018583,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00018583,
+     "upstream_inference_prompt_cost": 5.83e-06,
+     "upstream_inference_completions_cost": 0.00018
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-05",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef balanced(s):\n    stack = []\n    pairs = {')': '(', ']': '[', '}': '{'}\n    \n    for char in s:\n        if char in '([{':\n            stack.append(char)\n        elif char in ')]}':\n            if not stack or stack[-1] != pairs[char]:\n                return False\n            stack.pop()\n    \n    return len(stack) == 0\n```",
+   "latency_s": 1.1,
+   "usage": {
+    "prompt_tokens": 57,
+    "completion_tokens": 87,
+    "total_tokens": 144,
+    "cost": 7.587e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 7.587e-05,
+     "upstream_inference_prompt_cost": 6.27e-06,
+     "upstream_inference_completions_cost": 6.96e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-06",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef moving_avg(nums, k):\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum / k)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum / k)\n    return result\n```",
+   "latency_s": 1.4,
+   "usage": {
+    "prompt_tokens": 65,
+    "completion_tokens": 78,
+    "total_tokens": 143,
+    "cost": 6.699e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 6.699e-05,
+     "upstream_inference_prompt_cost": 4.59e-06,
+     "upstream_inference_completions_cost": 6.24e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-07",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\nimport re\nfrom collections import Counter\n\ndef top_word(text):\n    # Extract words as maximal runs of letters, convert to lowercase\n    words = re.findall(r'[a-zA-Z]+', text)\n    words = [word.lower() for word in words]\n    \n    if not words:\n        return \"\"\n    \n    # Count frequencies\n    counter = Counter(words)\n    \n    # Find maximum frequency\n    max_freq = max(counter.values())\n    \n    # Get all words with maximum frequency\n    max_words = [word for word, freq in counter.items() if freq == max_freq]\n    \n    # Return alphabetically first word among ties\n    return min(max_words)\n```",
+   "latency_s": 1.3,
+   "usage": {
+    "prompt_tokens": 71,
+    "completion_tokens": 141,
+    "total_tokens": 212,
+    "cost": 0.00012061,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00012061,
+     "upstream_inference_prompt_cost": 7.81e-06,
+     "upstream_inference_completions_cost": 0.0001128
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-08",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef flatten(nested):\n    result = []\n    for item in nested:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result\n```",
+   "latency_s": 1.6,
+   "usage": {
+    "prompt_tokens": 53,
+    "completion_tokens": 46,
+    "total_tokens": 99,
+    "cost": 4.263e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 4.263e-05,
+     "upstream_inference_prompt_cost": 5.83e-06,
+     "upstream_inference_completions_cost": 3.68e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-09",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef caesar(s, k):\n    result = []\n    k = k % 26  # Normalize k to be within 0-25 range\n    \n    for char in s:\n        if char.isalpha():\n            # Determine the base ASCII value ('A' for uppercase, 'a' for lowercase)\n            base = ord('A') if char.isupper() else ord('a')\n            # Shift the character and wrap around using modulo 26\n            shifted = (ord(char) - base + k) % 26\n            result.append(chr(base + shifted))\n        else:\n            # Non-alphabetic characters remain unchanged\n            result.append(char)\n    \n    return ''.join(result)\n```",
+   "latency_s": 1.7,
+   "usage": {
+    "prompt_tokens": 70,
+    "completion_tokens": 150,
+    "total_tokens": 220,
+    "cost": 0.00012514,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00012514,
+     "upstream_inference_prompt_cost": 5.14e-06,
+     "upstream_inference_completions_cost": 0.00012
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "code-10",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef digit_root(n):\n    while n >= 10:\n        n = sum(int(digit) for digit in str(n))\n    return n\n```",
+   "latency_s": 0.8,
+   "usage": {
+    "prompt_tokens": 56,
+    "completion_tokens": 36,
+    "total_tokens": 92,
+    "cost": 3.496e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 3.496e-05,
+     "upstream_inference_prompt_cost": 6.16e-06,
+     "upstream_inference_completions_cost": 2.88e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-01",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Priya Natarajan'",
+   "response": "Answer: Priya Natarajan",
+   "latency_s": 0.6,
+   "usage": {
+    "prompt_tokens": 893,
+    "completion_tokens": 8,
+    "total_tokens": 901,
+    "cost": 0.00010463,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00010463,
+     "upstream_inference_prompt_cost": 9.823e-05,
+     "upstream_inference_completions_cost": 6.4e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-02",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Fresno'",
+   "response": "Fresno processed 41,200 orders, Tulsa processed 38,900, and Elkhart processed 12,750. Therefore, Fresno processed the most orders.\n\nAnswer: Fresno",
+   "latency_s": 2.9,
+   "usage": {
+    "prompt_tokens": 899,
+    "completion_tokens": 48,
+    "total_tokens": 947,
+    "cost": 0.00010145,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 896,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00010145,
+     "upstream_inference_prompt_cost": 6.305e-05,
+     "upstream_inference_completions_cost": 3.84e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-03",
+   "category": "context",
+   "pass": true,
+   "detail": "got 92850.0",
+   "response": "From the memo:\n\n- Fresno processed 41,200 orders  \n- Tulsa processed 38,900 orders  \n- Elkhart processed 12,750 orders  \n\nTotal = 41,200 + 38,900 + 12,750 = 92,850 orders  \n\nAnswer: 92,850",
+   "latency_s": 1.2,
+   "usage": {
+    "prompt_tokens": 902,
+    "completion_tokens": 87,
+    "total_tokens": 989,
+    "cost": 0.00013298,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 896,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00013298,
+     "upstream_inference_prompt_cost": 6.338e-05,
+     "upstream_inference_completions_cost": 6.96e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-04",
+   "category": "context",
+   "pass": true,
+   "detail": "got 6.0",
+   "response": "The memo states: \"the one significant operational incident of the quarter happened on February 9, when a conveyor drive fault at Tulsa halted picking for 6 hours.\"\n\nAnswer: 6",
+   "latency_s": 2.8,
+   "usage": {
+    "prompt_tokens": 900,
+    "completion_tokens": 38,
+    "total_tokens": 938,
+    "cost": 9.612e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 832,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 9.612e-05,
+     "upstream_inference_prompt_cost": 6.572e-05,
+     "upstream_inference_completions_cost": 3.04e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-05",
+   "category": "context",
+   "pass": true,
+   "detail": "",
+   "response": "Fresno completed the Larkspur rollout in March.\n\nAnswer: Fresno, March",
+   "latency_s": 0.5,
+   "usage": {
+    "prompt_tokens": 903,
+    "completion_tokens": 19,
+    "total_tokens": 922,
+    "cost": 7.869e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 896,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 7.869e-05,
+     "upstream_inference_prompt_cost": 6.349e-05,
+     "upstream_inference_completions_cost": 1.52e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-06",
+   "category": "context",
+   "pass": true,
+   "detail": "got 90000.0",
+   "response": "The memo states: \u201cBetween overtime, expedited freight to keep SLAs, and the repair itself, we estimate the incident cost about $90,000.\u201d\n\nAnswer: 90000",
+   "latency_s": 1.0,
+   "usage": {
+    "prompt_tokens": 903,
+    "completion_tokens": 44,
+    "total_tokens": 947,
+    "cost": 0.00010125,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 832,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00010125,
+     "upstream_inference_prompt_cost": 6.605e-05,
+     "upstream_inference_completions_cost": 3.52e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-07",
+   "category": "context",
+   "pass": true,
+   "detail": "got 5.0",
+   "response": "The memo states: \"Safety. Recordable incidents fell from 9 in Q4 to 5 this quarter.\" Since the memo is about Q1 2026, \"this quarter\" refers to Q1 2026.\n\nAnswer: 5",
+   "latency_s": 0.8,
+   "usage": {
+    "prompt_tokens": 904,
+    "completion_tokens": 55,
+    "total_tokens": 959,
+    "cost": 0.00011016,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 832,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00011016,
+     "upstream_inference_prompt_cost": 6.616e-05,
+     "upstream_inference_completions_cost": 4.4e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-08",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Ashgrid'",
+   "response": "Answer: Ashgrid",
+   "latency_s": 0.7,
+   "usage": {
+    "prompt_tokens": 899,
+    "completion_tokens": 5,
+    "total_tokens": 904,
+    "cost": 6.961e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 832,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 6.961e-05,
+     "upstream_inference_prompt_cost": 6.561e-05,
+     "upstream_inference_completions_cost": 4e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-09",
+   "category": "context",
+   "pass": true,
+   "detail": "got 'unknown'",
+   "response": "The memo does not mention the square footage of the Elkhart warehouse. It only states that Elkhart came online in January 2026 and processed 12,750 orders in Q1, but no size information is provided.\n\nAnswer: unknown",
+   "latency_s": 0.9,
+   "usage": {
+    "prompt_tokens": 900,
+    "completion_tokens": 56,
+    "total_tokens": 956,
+    "cost": 0.00011052,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 832,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00011052,
+     "upstream_inference_prompt_cost": 6.572e-05,
+     "upstream_inference_completions_cost": 4.48e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "context-10",
+   "category": "context",
+   "pass": true,
+   "detail": "got 26150.0",
+   "response": "From the memo:  \n- Tulsa processed **38,900** orders.  \n- Elkhart processed **12,750** orders.  \n\nDifference:  \n38,900 \u2212 12,750 = 26,150  \n\nAnswer: 26,150",
+   "latency_s": 0.8,
+   "usage": {
+    "prompt_tokens": 903,
+    "completion_tokens": 71,
+    "total_tokens": 974,
+    "cost": 0.00012029,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 896,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00012029,
+     "upstream_inference_prompt_cost": 6.349e-05,
+     "upstream_inference_completions_cost": 5.68e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-01",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"name\": \"Marisol Vega\",\n  \"date\": \"2026-03-07\",\n  \"amount_usd\": 2340.5\n}",
+   "latency_s": 0.8,
+   "usage": {
+    "prompt_tokens": 96,
+    "completion_tokens": 42,
+    "total_tokens": 138,
+    "cost": 4.416e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 4.416e-05,
+     "upstream_inference_prompt_cost": 1.056e-05,
+     "upstream_inference_completions_cost": 3.36e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-02",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"flight_number\": \"UA1187\",\n  \"depart\": \"DEN\",\n  \"arrive\": \"AUS\",\n  \"delayed\": true\n}",
+   "latency_s": 0.6,
+   "usage": {
+    "prompt_tokens": 91,
+    "completion_tokens": 38,
+    "total_tokens": 129,
+    "cost": 3.785e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 3.785e-05,
+     "upstream_inference_prompt_cost": 7.45e-06,
+     "upstream_inference_completions_cost": 3.04e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-03",
+   "category": "extract",
+   "pass": false,
+   "detail": "got [\"accounts@pay.example.com\", \"jo.roth@example.org\", \"press-team@example.org\"]",
+   "response": "[\"accounts@pay.example.com\", \"jo.roth@example.org\", \"press-team@example.org\"]",
+   "latency_s": 0.6,
+   "usage": {
+    "prompt_tokens": 74,
+    "completion_tokens": 21,
+    "total_tokens": 95,
+    "cost": 2.494e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 2.494e-05,
+     "upstream_inference_prompt_cost": 8.14e-06,
+     "upstream_inference_completions_cost": 1.68e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-04",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"date\": \"2026-06-04\",\n  \"time_24h\": \"09:15\",\n  \"timezone\": \"Central\",\n  \"room\": \"Room 12B\"\n}",
+   "latency_s": 0.8,
+   "usage": {
+    "prompt_tokens": 101,
+    "completion_tokens": 52,
+    "total_tokens": 153,
+    "cost": 5.271e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 5.271e-05,
+     "upstream_inference_prompt_cost": 1.111e-05,
+     "upstream_inference_completions_cost": 4.16e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-05",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "[\n  {\n    \"item\": \"reams of paper\",\n    \"qty\": 3,\n    \"unit_price\": 4.25\n  },\n  {\n    \"item\": \"stapler\",\n    \"qty\": 1,\n    \"unit_price\": 12.0\n  },\n  {\n    \"item\": \"pens\",\n    \"qty\": 12,\n    \"unit_price\": 0.85\n  }\n]",
+   "latency_s": 1.2,
+   "usage": {
+    "prompt_tokens": 104,
+    "completion_tokens": 97,
+    "total_tokens": 201,
+    "cost": 8.648e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 8.648e-05,
+     "upstream_inference_prompt_cost": 8.88e-06,
+     "upstream_inference_completions_cost": 7.76e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-06",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"errors\": 2,\n  \"warnings\": 2,\n  \"first_error_time\": \"08:02:17\"\n}",
+   "latency_s": 0.6,
+   "usage": {
+    "prompt_tokens": 142,
+    "completion_tokens": 33,
+    "total_tokens": 175,
+    "cost": 4.202e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 4.202e-05,
+     "upstream_inference_prompt_cost": 1.562e-05,
+     "upstream_inference_completions_cost": 2.64e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-07",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"last_name\": \"Okafor\",\n  \"specialty\": \"ophthalmologist\",\n  \"city\": \"Toledo\",\n  \"state\": \"Ohio\",\n  \"phone\": \"(419) 555-0142\"\n}",
+   "latency_s": 0.7,
+   "usage": {
+    "prompt_tokens": 106,
+    "completion_tokens": 57,
+    "total_tokens": 163,
+    "cost": 5.47e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 5.47e-05,
+     "upstream_inference_prompt_cost": 9.1e-06,
+     "upstream_inference_completions_cost": 4.56e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-08",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"winner\": \"Wrens\",\n  \"loser\": \"Herons\",\n  \"winner_goals\": 4,\n  \"loser_goals\": 2,\n  \"overtime\": true,\n  \"top_scorer\": \"Ito\"\n}",
+   "latency_s": 0.8,
+   "usage": {
+    "prompt_tokens": 104,
+    "completion_tokens": 53,
+    "total_tokens": 157,
+    "cost": 5.128e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 5.128e-05,
+     "upstream_inference_prompt_cost": 8.88e-06,
+     "upstream_inference_completions_cost": 4.24e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-09",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"flour\": {\"qty\": 2, \"unit\": \"cups\"},\n  \"salt\": {\"qty\": 1, \"unit\": \"tsp\"},\n  \"eggs\": {\"qty\": 3, \"unit\": \"count\"},\n  \"milk\": {\"qty\": 250, \"unit\": \"ml\"}\n}",
+   "latency_s": 1.0,
+   "usage": {
+    "prompt_tokens": 86,
+    "completion_tokens": 74,
+    "total_tokens": 160,
+    "cost": 6.61e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 6.61e-05,
+     "upstream_inference_prompt_cost": 6.9e-06,
+     "upstream_inference_completions_cost": 5.92e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "extract-10",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\n  \"latest\": \"2.3.1\",\n  \"broken\": \"2.3.0\",\n  \"minimum_upgrade\": \"2.0.4\"\n}",
+   "latency_s": 0.5,
+   "usage": {
+    "prompt_tokens": 86,
+    "completion_tokens": 37,
+    "total_tokens": 123,
+    "cost": 3.65e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 3.65e-05,
+     "upstream_inference_prompt_cost": 6.9e-06,
+     "upstream_inference_completions_cost": 2.96e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-01",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "The lighthouse\u2019s powerful beam cut through the fog, guiding ships safely toward the harbor.  \nAt dawn, the beam faded as the sun rose, its light no longer needed against the brightening sky.  \nA sudden storm disrupted the beam\u2019s path, causing it to flicker erratically before stabilizing once more.",
+   "latency_s": 0.8,
+   "usage": {
+    "prompt_tokens": 35,
+    "completion_tokens": 65,
+    "total_tokens": 100,
+    "cost": 5.585e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 5.585e-05,
+     "upstream_inference_prompt_cost": 3.85e-06,
+     "upstream_inference_completions_cost": 5.2e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-02",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "ant  \nbear  \ncat  \ndog  \nelk",
+   "latency_s": 0.7,
+   "usage": {
+    "prompt_tokens": 39,
+    "completion_tokens": 11,
+    "total_tokens": 50,
+    "cost": 1.309e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.309e-05,
+     "upstream_inference_prompt_cost": 4.29e-06,
+     "upstream_inference_completions_cost": 8.8e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-03",
+   "category": "instructions",
+   "pass": false,
+   "detail": "failed: 'Raindrops fall steadily, glistening on leaves, pooling in puddles, whispering secrets to the earth b'",
+   "response": "Raindrops fall steadily, glistening on leaves, pooling in puddles, whispering secrets to the earth below.",
+   "latency_s": 0.5,
+   "usage": {
+    "prompt_tokens": 27,
+    "completion_tokens": 24,
+    "total_tokens": 51,
+    "cost": 2.217e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 2.217e-05,
+     "upstream_inference_prompt_cost": 2.97e-06,
+     "upstream_inference_completions_cost": 1.92e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-04",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "{\"city\": \"Denver\", \"population\": 715522, \"landlocked\": true}",
+   "latency_s": 0.7,
+   "usage": {
+    "prompt_tokens": 46,
+    "completion_tokens": 24,
+    "total_tokens": 70,
+    "cost": 2.426e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 2.426e-05,
+     "upstream_inference_prompt_cost": 5.06e-06,
+     "upstream_inference_completions_cost": 1.92e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-05",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Cold racks hum low  \nData flows in dark rooms  \nLights blink, stay on.",
+   "latency_s": 0.7,
+   "usage": {
+    "prompt_tokens": 45,
+    "completion_tokens": 18,
+    "total_tokens": 63,
+    "cost": 1.935e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.935e-05,
+     "upstream_inference_prompt_cost": 4.95e-06,
+     "upstream_inference_completions_cost": 1.44e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-06",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "NECTAR AND POLLEN",
+   "latency_s": 0.5,
+   "usage": {
+    "prompt_tokens": 43,
+    "completion_tokens": 7,
+    "total_tokens": 50,
+    "cost": 1.033e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.033e-05,
+     "upstream_inference_prompt_cost": 4.73e-06,
+     "upstream_inference_completions_cost": 5.6e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-07",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Historically, coffee originated in the highlands of Ethiopia, where legend tells of a goat herder named Kaldi noticing his animals\u2019 energetic behavior after eating red berries from a certain plant. By the 15th century, coffee had spread to the Arabian Peninsula, where it was cultivated and traded in ports like Mocha, becoming a staple in social and religious life. Coffeehouses, known as qahveh khaneh, emerged in cities such as Mecca and Constantinople, serving as hubs for intellectual exchange and political discourse.\n\nToday, coffee is one of the most widely consumed beverages globally, with over 2.25 billion cups enjoyed daily. Modern production spans over 70 countries, with Brazil, Vietnam, and Colombia leading in output, and sustainability, fair trade, and specialty roasting have become central concerns for consumers and producers alike. Advances in brewing technology\u2014from espresso machines to pour-over methods\u2014have expanded appreciation for nuanced flavors and origins, transforming coffee into both a daily ritual and a cultural phenomenon.",
+   "latency_s": 1.8,
+   "usage": {
+    "prompt_tokens": 61,
+    "completion_tokens": 207,
+    "total_tokens": 268,
+    "cost": 0.00017231,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00017231,
+     "upstream_inference_prompt_cost": 6.71e-06,
+     "upstream_inference_completions_cost": 0.0001656
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-08",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "the quick brown fox jumps high  \nhigh jumps fox brown quick the",
+   "latency_s": 0.5,
+   "usage": {
+    "prompt_tokens": 44,
+    "completion_tokens": 14,
+    "total_tokens": 58,
+    "cost": 1.604e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.604e-05,
+     "upstream_inference_prompt_cost": 4.84e-06,
+     "upstream_inference_completions_cost": 1.12e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-09",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche",
+   "latency_s": 1.1,
+   "usage": {
+    "prompt_tokens": 36,
+    "completion_tokens": 22,
+    "total_tokens": 58,
+    "cost": 2.156e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 2.156e-05,
+     "upstream_inference_prompt_cost": 3.96e-06,
+     "upstream_inference_completions_cost": 1.76e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "instructions-10",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Serenity settles softly on the hillside  \nTender moonlight spills like liquid silver  \nA thousand stars ignite the velvet night  \nRising, rising\u2014bright and ever-burning",
+   "latency_s": 0.7,
+   "usage": {
+    "prompt_tokens": 50,
+    "completion_tokens": 38,
+    "total_tokens": 88,
+    "cost": 3.59e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 3.59e-05,
+     "upstream_inference_prompt_cost": 5.5e-06,
+     "upstream_inference_completions_cost": 3.04e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-01",
+   "category": "precision",
+   "pass": true,
+   "detail": "",
+   "response": "apple, banana, mango, quartz, Zebra",
+   "latency_s": 0.6,
+   "usage": {
+    "prompt_tokens": 50,
+    "completion_tokens": 11,
+    "total_tokens": 61,
+    "cost": 1.43e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.43e-05,
+     "upstream_inference_prompt_cost": 5.5e-06,
+     "upstream_inference_completions_cost": 8.8e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-02",
+   "category": "precision",
+   "pass": true,
+   "detail": "",
+   "response": "4, 9, 1, 7, 3",
+   "latency_s": 0.5,
+   "usage": {
+    "prompt_tokens": 66,
+    "completion_tokens": 14,
+    "total_tokens": 80,
+    "cost": 1.846e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.846e-05,
+     "upstream_inference_prompt_cost": 7.26e-06,
+     "upstream_inference_completions_cost": 1.12e-05
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-03",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 'stressed'",
+   "response": "stressed",
+   "latency_s": 0.4,
+   "usage": {
+    "prompt_tokens": 21,
+    "completion_tokens": 3,
+    "total_tokens": 24,
+    "cost": 4.71e-06,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 4.71e-06,
+     "upstream_inference_prompt_cost": 2.31e-06,
+     "upstream_inference_completions_cost": 2.4e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-04",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 12.0",
+   "response": "Let's count the number of times the letter **'s'** (case-insensitive) appears in the sentence:\n\n**\"Susan asked seven sisters six systematic questions.\"**\n\nWe'll go word by word and count both uppercase and lowercase 's'.\n\n1. **Susan**  \n   - S, u, s, a, n \u2192 's' appears **2** times (S and s)\n\n2. **asked**  \n   - a, s, k, e, d \u2192 's' appears **1** time\n\n3. **seven**  \n   - s, e, v, e, n \u2192 's' appears **1** time\n\n4. **sisters**  \n   - s, i, s, t, e, r, s \u2192 's' appears **3** times\n\n5. **six**  \n   - s, i, x \u2192 's' appears **1** time\n\n6. **systematic**  \n   - s, y, s, t, e, m, a, t, i, c \u2192 's' appears **2** times\n\n7. **questions.**  \n   - q, u, e, s, t, i, o, n, s, . \u2192 's' appears **2** times (s and s)\n\nNow sum them up:  \n2 (Susan) + 1 (asked) + 1 (seven) + 3 (sisters) + 1 (six) + 2 (systematic) + 2 (questions) = **12**\n\nAnswer: 12",
+   "latency_s": 3.2,
+   "usage": {
+    "prompt_tokens": 51,
+    "completion_tokens": 331,
+    "total_tokens": 382,
+    "cost": 0.00027041,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00027041,
+     "upstream_inference_prompt_cost": 5.61e-06,
+     "upstream_inference_completions_cost": 0.0002648
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-05",
+   "category": "precision",
+   "pass": true,
+   "detail": "got '18:15'",
+   "response": "18:15",
+   "latency_s": 0.5,
+   "usage": {
+    "prompt_tokens": 43,
+    "completion_tokens": 6,
+    "total_tokens": 49,
+    "cost": 9.53e-06,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 9.53e-06,
+     "upstream_inference_prompt_cost": 4.73e-06,
+     "upstream_inference_completions_cost": 4.8e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-06",
+   "category": "precision",
+   "pass": false,
+   "detail": "got 'owls never during silver nights'",
+   "response": "owls never during silver nights",
+   "latency_s": 0.4,
+   "usage": {
+    "prompt_tokens": 55,
+    "completion_tokens": 7,
+    "total_tokens": 62,
+    "cost": 1.165e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.165e-05,
+     "upstream_inference_prompt_cost": 6.05e-06,
+     "upstream_inference_completions_cost": 5.6e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-07",
+   "category": "precision",
+   "pass": false,
+   "detail": "failed: \"b n i r b o a r d \u2192 after first replacement: 'blackboard' \u2192 'bnackboard'  \\nWait, let's do it step by\"",
+   "response": "b n i r b o a r d \u2192 after first replacement: 'blackboard' \u2192 'bnackboard'  \nWait, let's do it step by step carefully.\n\nOriginal: **blackboard**\n\n1. Replace **'ck'** with **'nk'**:  \n   'blackboard' \u2192 'bnackboard'  \n   (b-l-**ck**-board \u2192 b-l-**nk**-board)\n\n2. Replace **'oa'** with **'ir'**:  \n   In 'bnackboard', look for 'oa':  \n   b-n-a-c-k-b-o-a-r-d \u2192 'boar' contains 'oa'? Yes: positions of 'o' and 'a' are consecutive: ...b-**oa**-rd  \n   So: 'bnackboard' \u2192 'bnackbird'  \n   (b-n-a-c-k-b-**oa**-r-d \u2192 b-n-a-c-k-b-**ir**-r-d? Wait \u2014 'board' is b-o-a-r-d, so 'oa' is the 2nd and 3rd letters of 'board', i.e., 'boar' \u2192 'b' + 'oa' + 'rd' \u2192 replace 'oa' with 'ir' \u2192 'bir' + 'rd' = 'birrd'? No: 'board' = b-o-a-r-d \u2192 replace 'oa' (characters 2\u20133) with 'ir' \u2192 b-**ir**-r-d = 'birrd'. So full string: 'bnack' + 'birrd' = 'bnackbirrd'? Wait, no \u2014 original after step 1 is 'bnackboard' (b-n-a-c-k-b-o-a-r-d). So 'board' is b-o-a-r-d, so 'oa' is the 'o' and 'a' in positions 7\u20138 (0-indexed: b=0, n=1, a=2, c=3, k=4, b=5, o=6, a=7, r=8, d=9). So 'oa' is at indices 6\u20137. Replace 'oa' with 'ir' \u2192 insert 'ir' in place of 'oa', so:  \n   indices 0\u20135: 'bnackb'  \n   then 'ir'  \n   then remaining from index 8 onward: 'rd'  \n   \u2192 'bnackb' + 'ir' + 'rd' = **bnackbird**\n\nWait: 'board' \u2192 replace 'oa' \u2192 'board' has letters b, o, a, r, d. So 'oa' \u2192 'ir' gives b + ir + r + d = **birrd**. Yes. So 'bnack' + 'birrd' = **bnackbirrd**? No \u2014 'bnackboard' is 10 letters: b n a c k b o a r d. After replacing 'oa' (positions 6\u20137: o,a) with 'ir', we get: b n a c k b i r r d \u2192 that's **bnackbirrd**.\n\nBut wait \u2014 is there an 'oa' in 'bnackboard'? Let's spell: b-l-a-c-k-b-o-a-r-d? No! Original is **blackboard**, which is b-l-a-c-k-b-o-a-r-d. So after step 1: replace 'ck' with 'nk' \u2192 b-l-**nk**-b-o-a-r-d = **bnkboard**? Wait \u2014 'blackboard' = b-l-a-c-k-b-o-a-r-d. So 'ck' is c-k at positions 3\u20134. Replace with 'nk' \u2192 b-l-a-**nk**-b-o-a-r-d = **blnkboard**.\n\nAh! I made a mistake earlier \u2014 'blackboard' is **b-l-a-c-k-b-o-a-r",
+   "latency_s": 8.5,
+   "usage": {
+    "prompt_tokens": 53,
+    "completion_tokens": 1200,
+    "total_tokens": 1253,
+    "cost": 0.00096583,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00096583,
+     "upstream_inference_prompt_cost": 5.83e-06,
+     "upstream_inference_completions_cost": 0.00096
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-08",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 40.0",
+   "response": "To compute the sum of the digits of **78493216**, break it down digit by digit:\n\n- 7  \n- 8  \n- 4  \n- 9  \n- 3  \n- 2  \n- 1  \n- 6  \n\nNow add them:\n\n7 + 8 = 15  \n15 + 4 = 19  \n19 + 9 = 28  \n28 + 3 = 31  \n31 + 2 = 33  \n33 + 1 = 34  \n34 + 6 = 40  \n\nAnswer: 40",
+   "latency_s": 1.4,
+   "usage": {
+    "prompt_tokens": 40,
+    "completion_tokens": 136,
+    "total_tokens": 176,
+    "cost": 0.0001132,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.0001132,
+     "upstream_inference_prompt_cost": 4.4e-06,
+     "upstream_inference_completions_cost": 0.0001088
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-09",
+   "category": "precision",
+   "pass": false,
+   "detail": "got '2026-12-25'",
+   "response": "2026-12-25",
+   "latency_s": 0.4,
+   "usage": {
+    "prompt_tokens": 40,
+    "completion_tokens": 11,
+    "total_tokens": 51,
+    "cost": 1.32e-05,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.32e-05,
+     "upstream_inference_prompt_cost": 4.4e-06,
+     "upstream_inference_completions_cost": 8.8e-06
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "precision-10",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 36.0",
+   "response": "We are given the string: `'A7k9Q2m'`.\n\n### Step 1: Sum all of its digits\nDigits in the string:  \n- `'7'` \u2192 7  \n- `'9'` \u2192 9  \n- `'2'` \u2192 2  \n\nSum = 7 + 9 + 2 = **18**\n\n### Step 2: Count the number of uppercase letters\nUppercase letters:  \n- `'A'`  \n- `'Q'`  \n\nCount = **2**\n\n### Step 3: Multiply the sum by the count  \n18 \u00d7 2 = **36**\n\nAnswer: 36",
+   "latency_s": 1.4,
+   "usage": {
+    "prompt_tokens": 55,
+    "completion_tokens": 139,
+    "total_tokens": 194,
+    "cost": 0.00011725,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00011725,
+     "upstream_inference_prompt_cost": 6.05e-06,
+     "upstream_inference_completions_cost": 0.0001112
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-01",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 9.0",
+   "response": "The vending machine charges **65 cents** per snack.  \nDana pays with a **$5 bill**, which is **500 cents**.\n\nWe want to find how many snacks she can buy:  \n$$\n\\left\\lfloor \\frac{500}{65} \\right\\rfloor\n$$\n\nCompute:\n- $65 \\times 7 = 455$\n- $65 \\times 8 = 520$ \u2192 too big (exceeds 500)\n\nSo she can buy **7 snacks**, costing $455$ cents.\n\nChange = $500 - 455 = 45$ cents.\n\nShe receives her change **entirely in nickels**.  \nEach nickel is **5 cents**, so number of nickels:\n$$\n\\frac{45}{5} = 9\n$$\n\nAnswer: 9",
+   "latency_s": 2.8,
+   "usage": {
+    "prompt_tokens": 66,
+    "completion_tokens": 193,
+    "total_tokens": 259,
+    "cost": 0.00016166,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00016166,
+     "upstream_inference_prompt_cost": 7.26e-06,
+     "upstream_inference_completions_cost": 0.0001544
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-02",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 23.0",
+   "response": "We are told:\n\n- Ferries depart every **40 minutes**.\n- First departure is at **6:00 AM**.\n- Last departure is **no later than 9:00 PM**.\n\nWe need to find how many crossings (departures) occur in one day.\n\n---\n\n### Step 1: Convert times to minutes since midnight.\n\n- 6:00 AM = 6 \u00d7 60 = **360 minutes**\n- 9:00 PM = 21 \u00d7 60 = **1260 minutes**\n\nWe want all departure times of the form:\n\n$$\nt = 360 + 40k \\quad \\text{for integer } k \\ge 0\n$$\n\nsuch that $ t \\le 1260 $.\n\nSolve for $ k $:\n\n$$\n360 + 40k \\le 1260 \\\\\n40k \\le 900 \\\\\nk \\le \\frac{900}{40} = 22.5\n$$\n\nSo maximum integer $ k = 22 $.\n\nSince $ k $ starts at 0 (first departure at 6:00 AM), the values of $ k $ are:\n\n$$\nk = 0, 1, 2, \\dots, 22\n$$\n\nThat\u2019s $ 22 - 0 + 1 = 23 $ departures.\n\nLet\u2019s verify the last departure time:\n\n- $ k = 22 $: $ 360 + 40 \\times 22 = 360 + 880 = 1240 $ minutes = 20:40 = **8:40 PM**\n\nThat\u2019s \u2264 9:00 PM, so valid.\n\nNext one would be $ k = 23 $: $ 360 + 920 = 1280 $ minutes = 21:20 = **9:20 PM**, which is **after** 9:00 PM, so not allowed.\n\nThus, total crossings = **23**.\n\nAnswer: 23",
+   "latency_s": 3.3,
+   "usage": {
+    "prompt_tokens": 73,
+    "completion_tokens": 459,
+    "total_tokens": 532,
+    "cost": 0.00037523,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00037523,
+     "upstream_inference_prompt_cost": 8.03e-06,
+     "upstream_inference_completions_cost": 0.0003672
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-03",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 5.0",
+   "response": "We are told:\n\n- Each stack can hold **at most 7 crates**.\n- Tom already has **3 stacks** with:\n  - Stack 1: 5 crates \u2192 can hold **2 more**\n  - Stack 2: 2 crates \u2192 can hold **5 more**\n  - Stack 3: 7 crates \u2192 full, holds **0 more**\n\nSo current **remaining capacity** in existing stacks =  \n2 (from stack 1) + 5 (from stack 2) + 0 = **7 crates** can be added to existing stacks.\n\nNow, **18 more crates arrive**.\n\nHe **tops off existing stacks first**, so he adds as many as possible to fill the remaining capacity:\n\n- Add 2 crates to stack 1 \u2192 now full (7 crates)\n- Add 5 crates to stack 2 \u2192 now full (7 crates)\n- Stack 3 is already full.\n\nTotal added to existing stacks: 2 + 5 = **7 crates**\n\nCrates remaining after topping off:  \n18 \u2212 7 = **11 crates**\n\nNow he starts **new stacks**, each holding up to 7 crates.\n\nHow many new stacks needed for 11 crates?\n\n- First new stack: 7 crates  \n- Remaining: 11 \u2212 7 = 4 crates  \n- Second new stack: 4 crates (not full, but needed)\n\nSo **2 new stacks** are needed.\n\nTotal stacks now = original 3 + 2 new = **5 stacks**\n\nAnswer: 5",
+   "latency_s": 3.5,
+   "usage": {
+    "prompt_tokens": 84,
+    "completion_tokens": 319,
+    "total_tokens": 403,
+    "cost": 0.00026188,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00026188,
+     "upstream_inference_prompt_cost": 6.68e-06,
+     "upstream_inference_completions_cost": 0.0002552
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-04",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 1125.0",
+   "response": "We are given:\n\n- A recipe for **12 muffins** needs **320 g** of flour.\n- Priya wants to bake **42 muffins**.\n- Her scale only measures in **whole 25 g increments**, and she **rounds up** to the next increment.\n\n---\n\n### Step 1: Find flour needed per muffin\n\n$$\n\\frac{320\\ \\text{g}}{12\\ \\text{muffins}} = \\frac{80}{3} \\approx 26.\\overline{6}\\ \\text{g per muffin}\n$$\n\n### Step 2: Find total flour needed for 42 muffins\n\n$$\n\\frac{80}{3} \\times 42 = 80 \\times 14 = 1120\\ \\text{g}\n$$\n\nWait \u2014 let's verify:\n\n$$\n\\frac{80}{3} \\times 42 = 80 \\times \\frac{42}{3} = 80 \\times 14 = 1120\\ \\text{g}\n$$\n\nSo the **exact** amount needed is **1120 g**.\n\nBut wait \u2014 is that correct? Let's double-check using proportion:\n\nIf 12 muffins \u2192 320 g  \nThen 42 muffins \u2192 $ \\frac{42}{12} \\times 320 = 3.5 \\times 320 = 1120 $ g.\n\nYes, **exactly 1120 g**.\n\nNow, her scale only measures in **whole 25 g increments**, and she **rounds up** to the next increment.\n\nSo we need to round **1120 g up to the next multiple of 25**.\n\nLet\u2019s find the smallest multiple of 25 that is **\u2265 1120**.\n\nDivide 1120 by 25:\n\n$$\n1120 \\div 25 = 44.8\n$$\n\nSo the next whole number is **45**, and:\n\n$$\n45 \\times 25 = 1125\n$$\n\nSo she measures **1125 g**.\n\nAnswer: 1125",
+   "latency_s": 3.7,
+   "usage": {
+    "prompt_tokens": 83,
+    "completion_tokens": 493,
+    "total_tokens": 576,
+    "cost": 0.00040353,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00040353,
+     "upstream_inference_prompt_cost": 9.13e-06,
+     "upstream_inference_completions_cost": 0.0003944
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-05",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 105.0",
+   "response": "We are told that in the original round-robin tournament, every member plays exactly one game against every other member, and a total of **66 games** are played.\n\nIn a round-robin tournament with $ n $ players where each pair plays exactly once, the number of games is:\n\n$$\n\\binom{n}{2} = \\frac{n(n-1)}{2}\n$$\n\nSo we set:\n\n$$\n\\frac{n(n-1)}{2} = 66\n$$\n\nMultiply both sides by 2:\n\n$$\nn(n-1) = 132\n$$\n\nWe solve the quadratic:\n\n$$\nn^2 - n - 132 = 0\n$$\n\nTry factoring: find two numbers that multiply to $-132$ and add to $-1$.  \n$12 \\times 11 = 132$, and $12 - 11 = 1$, so:\n\n$$\n(n - 12)(n + 11) = 0\n$$\n\nSo $ n = 12 $ (since number of members can't be negative).\n\nThus, originally there were **12 members**.\n\nThen 3 new members join, so new total members:  \n$ 12 + 3 = 15 $\n\nNumber of games in the new round-robin:\n\n$$\n\\binom{15}{2} = \\frac{15 \\cdot 14}{2} = \\frac{210}{2} = 105\n$$\n\nAnswer: 105",
+   "latency_s": 4.2,
+   "usage": {
+    "prompt_tokens": 79,
+    "completion_tokens": 335,
+    "total_tokens": 414,
+    "cost": 0.00027413,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 64,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00027413,
+     "upstream_inference_prompt_cost": 6.13e-06,
+     "upstream_inference_completions_cost": 0.000268
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-06",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 100.0",
+   "response": "We are given:\n\n- Tank capacity: 240 liters  \n- Pump A fills at 4 L/min  \n- Drain B empties at 1.5 L/min  \n- Both start together from empty.  \n- After 60 minutes, pump A stops, but drain B continues.\n\nWe need to find: **How many minutes after pump A stops is the tank empty again?**\n\n---\n\n### Step 1: Net fill rate while both are running\n\nWhile both pump A and drain B are running:\n\nNet rate = 4 \u2212 1.5 = **2.5 L/min**\n\nTime both run = 60 minutes\n\nSo volume in tank after 60 minutes:\n\n= 2.5 L/min \u00d7 60 min = **150 liters**\n\n---\n\n### Step 2: After pump A stops\n\nOnly drain B is running: rate = 1.5 L/min (emptying)\n\nTank has 150 liters at this point.\n\nTime to empty 150 L at 1.5 L/min:\n\n= 150 \u00f7 1.5 = **100 minutes**\n\nAnswer: 100\n\nAnswer: 100",
+   "latency_s": 3.3,
+   "usage": {
+    "prompt_tokens": 95,
+    "completion_tokens": 249,
+    "total_tokens": 344,
+    "cost": 0.00020965,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00020965,
+     "upstream_inference_prompt_cost": 1.045e-05,
+     "upstream_inference_completions_cost": 0.0001992
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-07",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 12.0",
+   "response": "We are told:\n\n- Total pages = 480  \n- Day 1: 15 pages  \n- Each subsequent day: 5 more pages than the previous day  \n\u2192 This forms an **arithmetic sequence** for pages read per day.\n\nLet:\n- $ a = 15 $ (first term)  \n- $ d = 5 $ (common difference)  \n- $ n $ = number of days  \n- Total pages read in $ n $ days = sum of first $ n $ terms of arithmetic sequence:\n\n$$\nS_n = \\frac{n}{2} [2a + (n-1)d]\n$$\n\nSet $ S_n = 480 $:\n\n$$\n\\frac{n}{2} [2(15) + (n-1)5] = 480\n$$\n\nSimplify:\n\n$$\n\\frac{n}{2} [30 + 5(n - 1)] = 480\n$$\n$$\n\\frac{n}{2} [30 + 5n - 5] = 480\n$$\n$$\n\\frac{n}{2} [5n + 25] = 480\n$$\n$$\nn(5n + 25) = 960\n$$\n$$\n5n^2 + 25n - 960 = 0\n$$\n\nDivide by 5:\n\n$$\nn^2 + 5n - 192 = 0\n$$\n\nSolve quadratic:\n\n$$\nn = \\frac{-5 \\pm \\sqrt{5^2 + 4 \\cdot 192}}{2} = \\frac{-5 \\pm \\sqrt{25 + 768}}{2} = \\frac{-5 \\pm \\sqrt{793}}{2}\n$$\n\nWait \u2014 793 is not a perfect square. Let's double-check arithmetic.\n\nWait:  \n$ 4 \\cdot 192 = 768 $, yes.  \n$ 25 + 768 = 793 $. Hmm, 793 = 13 \u00d7 61? Not a perfect square.\n\nBut number of days must be integer. So maybe we made a mistake.\n\nLet\u2019s recompute the equation carefully.\n\nWe had:\n\n$$\nS_n = \\frac{n}{2} [2a + (n-1)d] = \\frac{n}{2} [2 \\cdot 15 + (n-1) \\cdot 5] = \\frac{n}{2} [30 + 5n - 5] = \\frac{n}{2} (5n + 25)\n$$\n\nYes, that\u2019s correct: $30 - 5 = 25$, so $5n + 25$.\n\nSo:\n\n$$\n\\frac{n}{2}(5n + 25) = 480 \\Rightarrow n(5n + 25) = 960\n\\Rightarrow 5n^2 + 25n - 960 = 0\n\\Rightarrow n^2 + 5n - 192 = 0\n$$\n\nNow check discriminant:  \n$ \\Delta = 25 + 768 = 793 $. Not a perfect square.\n\nBut maybe the book is finished **during** a day \u2014 i.e., she may not read the full amount on the last day. So we need to find the smallest integer $ n $ such that $ S_n \\ge 480 $.\n\nLet\u2019s compute cumulative sums for increasing $ n $.\n\nWe can compute $ S_n = \\frac{n}{2}(2a + (n-1)d) $, or just compute cumulative sum step by step.\n\nLet\u2019s compute:\n\n- Day 1: 15 \u2192 total = 15  \n- Day 2: 20 \u2192 total = 35  \n- Day 3: 25 \u2192 total = 60  \n- Day 4: 30 \u2192 total = 90  \n- Day 5: 35 \u2192 total = 125  \n- Day 6: 40 \u2192 total = 165  \n",
+   "latency_s": 10.3,
+   "usage": {
+    "prompt_tokens": 68,
+    "completion_tokens": 1095,
+    "total_tokens": 1163,
+    "cost": 0.00088348,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00088348,
+     "upstream_inference_prompt_cost": 7.48e-06,
+     "upstream_inference_completions_cost": 0.000876
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-08",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 15.0",
+   "response": "We are given:\n\n- First hour: $3  \n- Each additional hour **or part thereof**: $2  \n- Daily cap: $15  \n- Parking time: **8:45 AM to 5:10 PM** same day.\n\n---\n\n### Step 1: Calculate total parking time\n\nFrom 8:45 AM to 5:10 PM.\n\n- From 8:45 AM to 5:45 PM would be 9 hours.\n- But he leaves at 5:10 PM, which is 35 minutes earlier.\n\nSo total time = 9 hours \u2212 35 minutes = **8 hours 25 minutes**.\n\nBut since the garage charges **per hour or part thereof**, any fraction of an hour counts as a full hour.\n\nSo 8 hours 25 minutes \u2192 **9 hours total** (rounded up to next whole hour).\n\nBut note: the first hour is charged at $3, and the **remaining hours** (i.e., 8 more hours) are charged at $2 each.\n\nWait \u2014 let\u2019s double-check:\n\n- Total time = 8 hours 25 minutes  \n- Since \u201cpart thereof\u201d means any fraction counts as a full hour, we round up to **9 hours**.\n\nSo:\n\n- Hour 1: $3  \n- Hours 2\u20139: 8 additional hours \u00d7 $2 = $16  \n- Total before cap: $3 + $16 = $19  \n- Daily cap: $15 \u2192 So he pays **$15**\n\nBut wait \u2014 is the daily cap applied per day regardless of time? Yes: \u201ca daily cap of $15\u201d.\n\nSo even if he parked longer, max is $15.\n\nThus, answer is **$15**.\n\nAnswer: 15",
+   "latency_s": 4.2,
+   "usage": {
+    "prompt_tokens": 80,
+    "completion_tokens": 378,
+    "total_tokens": 458,
+    "cost": 0.0003112,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.0003112,
+     "upstream_inference_prompt_cost": 8.8e-06,
+     "upstream_inference_completions_cost": 0.0003024
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-09",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 48.0",
+   "response": "We are given:\n\n- Total bill = $130  \n- Jae pays 40% of the bill  \n- Kim pays $18 more than Lee  \n- Let Lee\u2019s payment be $ L $  \n- Then Kim\u2019s payment is $ L + 18 $\n\nFirst, compute how much Jae pays:\n\n$$\n\\text{Jae's payment} = 0.40 \\times 130 = 52\n$$\n\nSo the remaining amount for Kim and Lee is:\n\n$$\n130 - 52 = 78\n$$\n\nNow, Kim + Lee = 78  \nBut Kim = Lee + 18, so:\n\n$$\nL + (L + 18) = 78 \\\\\n2L + 18 = 78 \\\\\n2L = 60 \\\\\nL = 30\n$$\n\nThen Kim pays:\n\n$$\nL + 18 = 30 + 18 = 48\n$$\n\nAnswer: 48",
+   "latency_s": 2.1,
+   "usage": {
+    "prompt_tokens": 62,
+    "completion_tokens": 215,
+    "total_tokens": 277,
+    "cost": 0.00017882,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00017882,
+     "upstream_inference_prompt_cost": 6.82e-06,
+     "upstream_inference_completions_cost": 0.000172
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "id": "reasoning-10",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 16.0",
+   "response": "We are to count how many times in a 24-hour day the digital clock display (in HH:MM format, with leading zeros) reads the same forwards and backwards \u2014 i.e., is a **palindrome**.\n\nThe display format is **HH:MM**, where:\n- HH ranges from `00` to `23`\n- MM ranges from `00` to `59`\n\nWe want times where the 4-digit string `HHMM` is a palindrome.\n\nLet\u2019s denote the time as `AB:CD`, where:\n- A and B are digits of the hour (A is tens digit of hour, B is units digit)\n- C and D are digits of the minute (C is tens digit of minute, D is units digit)\n\nThe full 4-digit string is `A B C D`, and for it to be a palindrome:\n- A = D\n- B = C\n\nSo the time must be of the form:  \n**A B B A**, i.e., `AB:BA`\n\nBut we must ensure:\n- `AB` is a valid hour: `00` to `23`\n- `BA` is a valid minute: `00` to `59`\n\nSo we need to count how many two-digit numbers `AB` (i.e., from 00 to 23) such that the reversed number `BA` is a valid minute (00 to 59).\n\nLet\u2019s go through all possible hours from 00 to 23 and check if the reversed minute is valid.\n\nWe\u2019ll list all `AB` (hour) and compute `BA` (minute), check if `BA \u2264 59`.\n\n| Hour (AB) | BA (minute candidate) | Valid? |\n|-----------|------------------------|--------|\n| 00 \u2192 00   | 00                     | \u2705     |\n| 01 \u2192 10   | 10                     | \u2705     |\n| 02 \u2192 20   | 20                     | \u2705     |\n| 03 \u2192 30   | 30                     | \u2705     |\n| 04 \u2192 40   | 40                     | \u2705     |\n| 05 \u2192 50   | 50                     | \u2705     |\n| 06 \u2192 60   | 60                     | \u274c (\u226560) |\n| 07 \u2192 70   | 70                     | \u274c     |\n| 08 \u2192 80   | 80                     | \u274c     |\n| 09 \u2192 90   | 90                     | \u274c     |\n| 10 \u2192 01   | 01                     | \u2705     |\n| 11 \u2192 11   | 11                     | \u2705     |\n| 12 \u2192 21   | 21                     | \u2705     |\n| 13 \u2192 31   | 31                     | \u2705     |\n| 14 \u2192 41   | 41                     | \u2705     |\n| 15 \u2192 51   | 51                     | \u2705     |\n| 16 \u2192 61   | 61                     | \u274c     |\n| 17",
+   "latency_s": 7.6,
+   "usage": {
+    "prompt_tokens": 79,
+    "completion_tokens": 1041,
+    "total_tokens": 1120,
+    "cost": 0.00084149,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.00084149,
+     "upstream_inference_prompt_cost": 8.69e-06,
+     "upstream_inference_completions_cost": 0.0008328
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  }
+ ]
+}
