@@ -1,0 +1,65 @@
+INTERNAL MEMO — MERIDIAN ROBOTICS, INC.
+From: Priya Natarajan, VP of Operations
+To: All department leads
+Date: April 14, 2026
+Subject: Q1 2026 operations review
+
+Team,
+
+Q1 closed stronger than forecast. Revenue came in at $8.4 million, up 12% from
+Q4, driven mostly by the fulfillment-robotics line. Our friends in sales will
+share the full pipeline picture at the offsite, but the short version is that
+the Kestrel Automation merger rumors did not slow our enterprise deals the way
+some analysts predicted. Marketing's "Warehouse of Tomorrow" campaign, which
+was supposed to launch in February, slipped to late Q2 — more on that from
+Dara's team separately, but it did not appear to hurt the quarter.
+
+Site performance. We now operate three fulfillment warehouses: Fresno (opened
+2021), Tulsa (opened 2023), and Elkhart, which came online in January 2026.
+Order volumes for the quarter: Fresno processed 41,200 orders, Tulsa processed
+38,900, and Elkhart, still ramping, processed 12,750. Elkhart's ramp is
+tracking about three weeks ahead of the plan we presented in the December
+board deck, which is a credit to the launch team that relocated from Tulsa.
+
+The one significant operational incident of the quarter happened on February
+9, when a conveyor drive fault at Tulsa halted picking for 6 hours. Between
+overtime, expedited freight to keep SLAs, and the repair itself, we estimate
+the incident cost about $90,000. Root cause was a worn coupling that the
+vibration sensors flagged but the alert routing misfiled; the fix for the
+alert pipeline shipped in March.
+
+Larkspur rollout. Our new warehouse management system, Larkspur, completed
+its rollout at Fresno on March 3. Cutover weekend went smoothly — pick rates
+were back to baseline within four days, versus the ten we had budgeted. Tulsa
+is scheduled for July, and the Elkhart date is still to be determined, since
+we want at least two quarters of stable baseline data there before we change
+its tooling. A reminder that Larkspur training modules are live on the
+learning portal; completion is mandatory for shift leads before their site
+cuts over.
+
+People. Headcount ended the quarter at 312, with 47 hires in Q1, concentrated
+in Elkhart fulfillment and the controls-engineering group. Quarterly attrition
+was 4.1%, roughly flat with last year. The cafeteria vendor change at Fresno
+(from Grainhouse to Fieldstone Catering) generated more all-hands questions
+than any other topic this quarter, which I choose to read as a sign that
+nothing serious is broken.
+
+Safety. Recordable incidents fell from 9 in Q4 to 5 this quarter. Three of
+the five were hand injuries during tote handling, and the new tote-edge guards
+going in at all sites in May are aimed squarely at that pattern. Zero
+lost-time incidents for the second consecutive quarter.
+
+Supply chain. We completed the switch of our battery-pack supplier from
+Voltcore to Ashgrid in February, saving 8% per unit at equivalent cell specs.
+Ashgrid's second-source agreement also gives us an option on the higher-density
+packs for the AGV refresh next year. Chassis steel and harness components
+remain on allocation, but our buffer stock policy kept builds unblocked all
+quarter.
+
+Priorities for Q2: land the Tulsa Larkspur cutover in July without SLA
+impact, finish Elkhart's ramp to full two-shift operation, and get the
+tote-edge guard retrofit done at all three sites in May.
+
+Questions to me or your site director.
+
+— Priya
