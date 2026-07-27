@@ -52,6 +52,28 @@ Anthropic model call is.
 - No usage/billing telemetry in responses; prepaid balance, 402 when empty.
 - Model: `levanto-sage-v0.6` on every response.
 
+## Head-to-head latency vs LLMs (`demo_latency.py`, 2026-07-27)
+
+Same yes/no routing decision, 6 tasks × 2 rounds, warmup excluded. Haiku and
+qwen called via the Bankr proxy (`llm.bankr.bot`) — a direct Anthropic API
+call would shave some proxy overhead but not close the gap.
+
+| Backend | median | p10 | p90 | clean parse |
+|---|---|---|---|---|
+| **Levanto Sage** | **285ms** | 167ms | 364ms | 12/12 |
+| qwen3-coder (bankr) | 464ms | 392ms | 608ms | 12/12 |
+| Haiku 4.5 (bankr) | 802ms | 581ms | 911ms | 0/12 |
+
+**Sage is ~2.8× faster than Haiku** on the same decision, and beats even
+qwen3-coder. The Haiku "0/12 clean parse" deserves honesty in both
+directions: 11/12 were *recoverable* (Haiku wrapped the JSON in markdown
+fences and appended prose despite an "ONLY JSON" instruction — a lenient
+parser or structured outputs would fix it), and 1/12 was a genuine
+non-answer ("I don't see a changelog entry"). But that's exactly the
+robustness tax Sage eliminates: its wire format is the contract, so there is
+no parser to harden. qwen also showed a 3975ms outlier (proxy hiccup) —
+Sage's worst sample across both demos was 455ms.
+
 ## Bottom line for us
 
 Cost-wise Sage loses to small LLMs for pure classification. It earns its
