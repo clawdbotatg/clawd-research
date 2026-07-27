@@ -77,9 +77,9 @@ So the "cheap tasks" framing needs a caveat: **Sage is not cheaper per token tha
 - **Rigid scale rubric** (exactly 0–4) and independent choice probabilities (don't sum to 1) are minor API quirks to code around.
 - **Privacy**: content is sent to their API; nothing reviewed about retention. Don't send secrets/keys in `content`.
 
-## 6. Recommended next step
+## 6. Live demo (done — see RESULTS.md)
 
-If we want to trial it: get a key, load minimal credits, and run a ~50-case benchmark on one concrete decision (model-tier routing over real harness prompts, or "does this session need attention"), measuring accuracy *and* calibration against the same task on Haiku 4.5 with JSON output. That converts the pitch into a number before we wire it into anything.
+We got a key and ran a 12-task model-routing benchmark (`demo_router.py`, key via env only). Headlines: **$0.545/1k decisions** (between Haiku's $0.33 and Sonnet's $1.00; qwen3-coder is 75× cheaper), median **326ms wall latency**, 7/12 routing accuracy, and a calibration finding: **`choice` confidence saturates at ~1.00 even on wrong answers, while `yesno` gives a genuinely informative probability spread (0.04–0.94)**. If we use Sage, phrase decisions as `yesno` questions and threshold on probability. Full details: `RESULTS.md`.
 
 ## Appendix: minimal call
 
