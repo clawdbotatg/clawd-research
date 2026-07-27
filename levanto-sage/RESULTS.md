@@ -74,6 +74,28 @@ robustness tax Sage eliminates: its wire format is the contract, so there is
 no parser to harden. qwen also showed a 3975ms outlier (proxy hiccup) —
 Sage's worst sample across both demos was 455ms.
 
+## Capability probes: trivia & chess (2026-07-27)
+
+Sage never generates text — it only scores an answer space you provide. So
+"can it answer questions / play chess" = "can it pick correctly from
+options". Probes (choice kind):
+
+- Trivia: "capital of France" → Paris 1.00; "year Eiffel Tower opened" →
+  1889 at 1.00. It has LLM-style world knowledge.
+- Scholar's mate (move list given, no mate-symbol hint): Qxf7 at 0.97 —
+  knows famous patterns.
+- Mate-in-one from a **raw FEN** (6k1/5ppp/8/8/8/8/8/R5K1 w): picked the
+  correct Ra8+ but at only **0.19**, with all options low — it can barely
+  read a board *and its confidence says so*. This is the calibrated
+  "I don't know" working as advertised (contrast with the saturated 1.00s
+  on routing misses earlier — familiar-domain overconfidence, unfamiliar-
+  domain honesty).
+
+Chess playability: `choice` takes up to 120 options, more than enough for
+any legal-move list, so a Sage-vs-X match is buildable (engine enumerates
+moves, Sage picks). It would play like a pattern-matcher with no search —
+fine for a fun arena gimmick, hopeless vs any real engine.
+
 ## Bottom line for us
 
 Cost-wise Sage loses to small LLMs for pure classification. It earns its
