@@ -6,9 +6,14 @@ full clones of `privacy-ethereum/anon-rpc`, `privacy-ethereum/kps`, and `privacy
 the [proposal article](https://reads.ethereum.foundation/feed/anon-rpc/) on the EF "Reads" team site,
 and live mainnet state read via Alchemy.*
 
-> **Follow-up:** [INTEGRATION.md](INTEGRATION.md) maps this onto our own products
-> (slop-computer family, punk-wallet, the fleet) and [prototype/](prototype/) is a working
-> spike — viem reads through the sandboxed mainnet worker, headless-verified.
+> **Follow-ups:**
+> - [INTEGRATION.md](INTEGRATION.md) maps this onto our own products (slop-computer family,
+>   punk-wallet, the fleet); [prototype/](prototype/) is a working spike — viem reads through
+>   the sandboxed mainnet worker + tor-js reads through a real Tor exit, both headless-verified.
+> - [BG-PRIVATE-RPC.md](BG-PRIVATE-RPC.md) is the original design exploration: run Tor on every
+>   bgclient (onion services → BuidlGuidl becomes the front *and* back door of private reads),
+>   PIR as the content-privacy chapter two, and a surveyed design for **paying anonymously**
+>   (shielded ETH → unlinkable per-request credential → node redeems). Verdict: the niche is open.
 
 ## TL;DR
 
