@@ -272,6 +272,53 @@ privately accessing web APIs such as AI models" — almost our exact phrasing).
   over an OHTTP relay — x402 as the *funding front-end*, blind tokens as the per-request layer.
   Exactly our option 3, with x402 as the deposit leg.
 
+### Paying the operators — settlement & the fair-exchange problem
+
+"How do we pay node operators" is two questions: **metering** (how a node accumulates
+provable work) and **settlement** (how that becomes ETH in its wallet). The key realization:
+**with ecash, the token *is* the money, so there is no reward pool to split.** Pocket/Lava
+need elaborate relay-mining + probabilistic-proof machinery because their unit is a *signed
+relay* that must be counted and then awarded a slice of a shared emission. Ecash skips all of
+it — **each node is paid exactly for the tokens it personally collected.** No attribution, no
+"did this node do 3% of the work" estimation.
+
+Money flow, v1 single-mint:
+
+1. User shields ETH → deposits into the **mint contract** → receives N blind-signed tokens.
+   The deposited ETH is now the **float**.
+2. User spends one token per request, over Tor, at whatever node answers.
+3. The node collects tokens and periodically **melts** them: submits the batch of spent
+   secrets to the mint, which checks for double-spend and **pays the node ETH from the float,
+   one token's worth each.** The mint sees "node X redeemed 5,000 tokens" — never *whose*
+   tokens (blinding). Payment is exact and per-node; anonymity holds.
+
+**Who is the mint / who holds the float?** For a BG network there's a clean answer: **the mint
+can just *be* BuidlGuidl.** Nodes already trust the rpc.buidlguidl.com coordinator to route
+them traffic, so having it also settle payments is *not a new trusted party* — the custody
+risk (a mint can rug or silently inflate the float) is one the fleet already implicitly
+extends. Harden along a ladder: **v1 BG runs the mint** (custodial, ~500 lines, copy
+Routstr/Cashu) → **v2 federate** across trusted BG members (Fedimint t-of-n) → **v3 threshold
+quorum** where the operators themselves issue and settle (Nym's model: deposit to a multisig,
+nodes present spent serials, quorum releases pro-rata).
+
+Two knobs regardless of rung: **metering** — flat (1 token = 1 request) is simplest, but a
+big `getLogs` costs a node 1000× a `getBalance`, so realistically **1 token = 1 compute-unit**
+and expensive methods cost several (Cashu's power-of-2 denominations make this natural); and
+**pricing** — a token is worth `deposit / N`, so the user pre-buys compute units at a posted
+rate.
+
+**The genuinely hard part is not the payment — it's the *exchange*.** Nothing above stops a
+malicious node from banking your token and returning garbage. Over an anonymous, one-shot
+channel there's no reputation to build and no naive "pay only on a correct answer" (the node
+would serve and never get paid). Fair exchange is unsolvable in general — but **reads have an
+escape hatch: the answer is verifiable.** Bundle a **Helios-style light-client check** in the
+wallet worker (verify returned state against a trusted block hash); a lying node is *detected*
+even though it banked one token. Combine with (a) tiny denominations — a cheat costs one
+compute-unit, not your balance — and (b) drop-and-rotate to another node on any bad answer.
+You can't prevent the theft of one token; you make it economically pointless and instantly
+self-correcting. "Verifiability makes cheating unprofitable rather than impossible" is the
+honest frame — and a very BuidlGuidl-shaped thing to build.
+
 ### Funding the anonymous side (shielded ETH) — verified rails
 
 For payment ⊥ identity to mean anything, the **deposit itself** must not link to the payer's
@@ -293,6 +340,38 @@ mainnet identity. Live options, 2026:
 The pattern for all three credential families: **shield ETH → fund the mint/pool/deposit from
 the shielded side → the buyer's clearnet identity never touches the access credential.** The
 credential is what the node redeems; the shielded rail is what keeps "who paid" unknowable.
+
+#### x402 / EIP-3009 as the deposit front-end (great for funding, wrong for per-request)
+
+An appealing instinct: skip the mint and just send **EIP-3009 `transferWithAuthorization`**
+signatures (the x402 mechanism) through the onion connection "now and then" as a running tab.
+The mechanics fit — 3009 is an off-chain, **gasless** (the node/facilitator submits) USDC
+authorization; signing periodically to top up is the right shape (never per-request — each is
+a full on-chain USDC transfer). x402 is now a **Linux Foundation** standard with real
+facilitator/SDK infra, so as a *funding rail* it's more turnkey than building an ETH-backed
+Cashu mint.
+
+**The catch that decides it:** a 3009 signature reveals `from` — your funding address — both
+to the node (needed to verify) and to the whole chain (settlement is a public `payer → node`
+USDC transfer). Send one through the onion and you've **linked this Tor session to your onchain
+wallet** — IP hidden, identity exposed at the payment layer. ECDSA recovery yields the exact
+address; you can't blind it. So **native 3009 cannot be a private *per-request* rail.**
+
+Two ways to keep it and stay anonymous — both turn x402 into the *deposit* leg, not the
+per-request layer:
+
+1. **x402 to buy tokens, not to pay nodes** — one 3009 signature purchases a *batch of blind
+   tokens*, spent unlinkably one-per-request over the onion. The signature links your address
+   to "bought N tokens," never to which reads you made. This is Brave's
+   `private-x402-gateway` (x402 → Privacy Pass tokens over OHTTP) — the same shielded-deposit →
+   blind-token sandwich, with **x402 replacing Railgun as the deposit leg**.
+2. **Sign from a shielded-funded burner** — a fresh address funded through Railgun, used for
+   nothing else, so the 3009 reveals only a throwaway with no history. Costs a shielded
+   withdrawal per burner + timing-correlation risk.
+
+Verdict: **x402/3009 is probably the best deposit front-end** (standard, gasless, real infra),
+but it must front a blind-credential layer — it can't be the anonymous spend itself. "Shielded
+burner → x402 → mint" is a simpler funding path than building the mint's own deposit rail.
 
 ### Recommended path
 
