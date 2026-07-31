@@ -222,7 +222,9 @@ renouncing pins users to a bundle that a breaking spec rev will strand.
 **Now (independent of anon-rpc maturity):**
 1. `prototype/` spike in this repo — harness + viem transport against the mainnet
    passthrough specifier, reading real slop.computer state (episodes registry + a balance).
-   Proves the plumbing end to end. *(Built — see `prototype/README.md`.)*
+   Proves the plumbing end to end. *(Built — see `prototype/README.md`.)* The companion
+   `prototype/tor-spike.mjs` proves the anonymity half: tor-js in Node, Ethereum reads
+   exiting through a real Tor node (18 s bootstrap, ~650 ms/read, keyless RPC). *(Built.)*
 2. slop-computer-live: route `usePersonalWallet` reads through the relay; split server-only
    `ALCHEMY_API_KEY` from the `NEXT_PUBLIC_` one.
 3. denar.ai: move signed-in-address ENS reads server-side.

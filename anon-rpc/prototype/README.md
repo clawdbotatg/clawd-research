@@ -32,6 +32,28 @@ PASS
 The last read is the fun one: the specifier's own `workerHash()` queried *through* the
 worker it pinned, matching the hash we verified out-of-band in the research.
 
+## tor-js spike (`tor-spike.mjs`)
+
+The other half of the stack: real Tor circuits from plain JS (`tor-js` = Arti→WASM), no
+gateway needed in Node (direct TCP). Does an Ethereum read whose origin is a Tor exit —
+deliberately against a **keyless** RPC (the anon lane; see INTEGRATION.md's API-key trap).
+
+```bash
+node tor-spike.mjs
+```
+
+Verified 2026-07-30:
+
+```
+tor bootstrap: 18.0s
+clearnet IP: 38.175.…    via tor: {"IsTor":true,"IP":"193.189.100.196"}
+eth via tor: chainId=1 block=25650349 beacon=88933013 ETH (3 reads in 1977 ms)
+PASS
+```
+
+~650 ms per read through Tor — fine for balance polling, noticeable for chatty UIs. In a
+browser the same `TorClient` API needs a KPS `gateway: "ip:port:certhash"`.
+
 ## Files
 
 - `src/main.js` — boot + viem transport + reads (~100 lines; the whole integration).
