@@ -33,6 +33,7 @@ threshold on.** Buy it for decisions on a hot path, not for bulk work.
 | **`INJECTION.md`** | The leftclaw/onedollaraudit sanitization gate. Re-calibrated against the real `sanitize.ts`. ~17× cheaper than the current Sonnet 4.6 call. |
 | **`VIDEO-CHAT.md`** | The clawd-video-chat filler loop. Sage can see the user's question safely where Haiku structurally cannot. |
 | **`API-NOTES.md`** | Every undocumented quirk and gotcha we hit. **Read before writing any Sage code.** |
+| **`MEETING-2026-07-30.md`** | Call with Marco + Chris (Levanto). **Answers the architecture question** (cut Qwen >300B + classifier head, no decode), GTM context, collaboration terms, action items. |
 | **`OPEN-QUESTIONS.md`** | What we deliberately did *not* do, and how to close each gap. **Read before picking this back up.** |
 
 ## Runnable benchmarks
