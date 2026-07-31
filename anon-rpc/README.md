@@ -6,6 +6,10 @@ full clones of `privacy-ethereum/anon-rpc`, `privacy-ethereum/kps`, and `privacy
 the [proposal article](https://reads.ethereum.foundation/feed/anon-rpc/) on the EF "Reads" team site,
 and live mainnet state read via Alchemy.*
 
+> **Follow-up:** [INTEGRATION.md](INTEGRATION.md) maps this onto our own products
+> (slop-computer family, punk-wallet, the fleet) and [prototype/](prototype/) is a working
+> spike — viem reads through the sandboxed mainnet worker, headless-verified.
+
 ## TL;DR
 
 **anon-rpc is not an anonymity network. It's a standard for *pluggable, verifiable* anonymity
