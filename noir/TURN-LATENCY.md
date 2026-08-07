@@ -49,6 +49,29 @@ Three architectures, three latencies:
    - **Roadmap: 3–4s blocks targeted by end of 2026**, staged, via parallel
      proof gen + network optimizations.
 
+## Worked answer: a turn-based game on Aztec, today
+
+If every turn is an on-chain Aztec tx, one turn costs:
+
+```
+prove move client-side        ~1–3s
+wait for Aztec block inclusion ~30–70s avg (36–72s blocks; just-missed → 100s+)
+opponent sees it, repeats      same again
+─────────────────────────────
+≈ 1–2 minutes per turn
+```
+
+**Why Aztec blocks are 72s:** every block needs a recursive ZK rollup proof
+built over all its txs before it's checkpointed to L1 — the slot is long
+because the *prover* is slow, not consensus. That's why the 2026 fix is
+specifically parallel proof generation.
+
+- **End of 2026 (3–4s block target): ~5–10s per turn.** Correspondence-fine,
+  not real-time.
+- **Fast turns on Aztec today:** exchange move proofs P2P (~1–3s/turn), post
+  to Aztec only at checkpoints/game end for settlement + disputes. Chess-clock
+  feel off-chain; chain as referee (the BattleZips pattern).
+
 ## Bottom line
 
 - If "block time" means Aztec: **~36–72s now, 3–4s promised by end of 2026.**
