@@ -1,6 +1,18 @@
 # eth-eval — build plan (2026-08-12)
 
-Working name: **eth-eval** (naming candidates: `evm-iq`, `gwei-bench`, `ethbench`).
+Working name: **eth-eval** (naming candidates: `evm-iq`, `gwei-bench`, `ethbench`,
+**esoterica** — Austin likes this one; see domain status below).
+
+## Domain: esoteri.ca (checked 2026-08-12)
+
+Registered 2020, **expired 2026-06-24, now in `redemptionPeriod`/`pendingDelete`**
+(serverHold, no DNS — site dark). Unless the owner redeems, it drops into CIRA's
+weekly Wednesday **TBR (To-Be-Released)** pool within ~2–6 weeks — grab it via a
+.ca backorder at a CIRA-certified registrar (GoDaddy CA, Sibername, …).
+**Catch: CIRA's Canadian Presence Requirement** — registrant must be a Canadian
+citizen/resident, Canadian corporation, or hold a registered *Canadian* trademark;
+no trustee loophole. Needs a Canadian friend/entity or a CA trademark before a
+backorder is worth paying for. Fallbacks: `esoterica.eth`, `esoterica.dev`.
 Thesis: measure the **esoteric working knowledge** of Ethereum that no benchmark
 covers — gas mechanics, transaction anatomy, EIP mechanics, tooling (foundry/viem/
 wagmi/cast), and deterministic derivations — and publish it Supabase-style with a
