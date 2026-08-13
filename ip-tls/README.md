@@ -1,7 +1,8 @@
 # Let's Encrypt TLS certs for bare IP addresses
 
-**Status: tested live on zkllmapi (2026-08-12). `https://174.129.67.164` serves a
-publicly-trusted cert — `curl` verifies with no `-k`.**
+**Status: tested live on zkllmapi (2026-08-12), verified working (`curl` with no
+`-k`), then torn down the same day — the deployment table below is historical.
+The how-to remains valid.**
 
 ## The feature
 
