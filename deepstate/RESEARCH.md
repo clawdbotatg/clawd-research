@@ -183,6 +183,23 @@ Reward Pool ID (bytes32): `0x42819cadfbb25aab80543236e280fba4e61aa61e0b5b777541d
   in 18 hours."
 - "We just crossed $10M in 24 hour volume for the first time."
 
+### How the community frames it (unofficial tweet, launch week)
+
+An unofficial thread summarized the design well and landed on the sharpest open
+question:
+
+> "Normally protocols pay you for parking liquidity. Deepstate pays you for
+> competing. The whole design is a bet that competition makes better prices
+> than subsidies do. … Does this actually tighten spreads, or does it just turn
+> into two bots undercutting each other by a tick all day? The design pays for
+> aggression, not depth. That's the experiment."
+
+That "pays for aggression, not depth" phrasing is the crispest one-liner for the
+core economic bet — pairs directly with podcast question #4 (why not reward the
+top N levels), and DeLong will have data by Friday: has the NVDA/USDG spread
+actually tightened vs Uniswap on the same chain, and is there any size behind
+top-of-book?
+
 Good podcast color: he celebrates honestly at small numbers, and the "let us do
 defi summer again" line is a great jumping-off point about the regulatory window
 (new US administration posture, tokenized equities, permissionless DeFi on a
