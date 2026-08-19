@@ -159,6 +159,34 @@ keep earning/depositing — governance drifts toward whoever actually runs the m
 - Regulatory: the whole stock-token category is non-US, and a permissionless DEX
   on top makes the geofence even leakier.
 
+## Live deployment (addresses from DeLong's launch announcement)
+
+"Contracts are live. I am hitting this shitty UI with a hammer real fast." — DeLong.
+Deployed contracts (Robinhood Chain):
+
+| Contract | Address |
+|---|---|
+| DEEP | `0x1DA24f6Bb623b9d1aFEae3F3146659A2662D6d27` |
+| STATE Vault | `0xbfb7b3Ff3D498a559b946B836d26F0E168f273D5` |
+| Governor | `0x3DC3b787EBDC78bf916f4e30195C61c764C111Ff` |
+| Router | `0x6cf19308C22FC82ea620Fa0B3E94948d20f27B96` |
+| Rewarder | `0xE85ADBC03a6b52a2c9894c1BB525eC883ea156D7` |
+| USDG | `0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168` |
+| NVDA | `0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC` |
+
+Reward Pool ID (bytes32): `0x42819cadfbb25aab80543236e280fba4e61aa61e0b5b777541de54ae69da35e4`
+
+## Independent audit kicked off (2026-08-19)
+
+Austin commissioned a One Dollar Audit of the main contract:
+- Engagement: https://www.onedollaraudit.com/audit/693 (worker chat: leftclaw.services/jobs/693)
+- Subject: `Deepstate-Protocol/deepstate-contracts` → `src/DeepstateV1.sol` (GitHub master)
+- Commissioned 2026-08-19 16:23, stage `accepted`; reports typically land within the hour.
+- Interesting meta: the audit engagement itself is **onchain on Base** — the page
+  reads job state via Multicall3 → registry `0xb2fb486a9569ad2c97d9c73936b46ef7fdaa413a`
+  (`getJob(uint256)`-style selector `0xbf22c457`).
+- Findings to be appended here when the report lands.
+
 ## Podcast question ideas
 
 1. SushiSwap → Astaria → Kraken → Colossus → Deepstate: what did the Sushi DAO
