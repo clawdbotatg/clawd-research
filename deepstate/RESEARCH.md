@@ -238,6 +238,28 @@ Austin commissioned a One Dollar Audit of the main contract:
 10. Is the endgame that the *token* becomes the primary market and price discovery
     happens onchain before Nasdaq opens?
 
+## Two under-discussed technical facts (from a circulating analysis thread)
+
+1. **Why Robinhood Chain specifically: FCFS sequencing.** The chain sequences
+   first-come-first-served — you can't jump the queue at the same price by
+   paying more gas. For a price-TIME-priority order book that's load-bearing:
+   the time-priority queue stays a real queue. (On a priority-gas-auction chain,
+   MEV bots would buy their way to the front of every tick.)
+2. **Integrator fees (added to the code Aug 13): `fillWithIntegratorFee` /
+   `fillRouteWithIntegratorFee`.** Any terminal, Telegram bot, or trading app
+   can route a trade and set its own wallet as fee recipient — capped at
+   100 bps of trade output (protocol can also take up to 100 bps). The thread's
+   read: Deepstate is "being built for a fight over order flow" — third-party
+   frontends share the same book and monetize the flow they bring. Example
+   math: a bot routing $10M matched output at 20 bps grosses $20k.
+   **The irony writes itself: Robinhood made its name on opaque payment for
+   order flow; Deepstate makes order-flow monetization onchain, transparent,
+   and permissionless — on Robinhood's own chain.** (Bonus podcast question.)
+
+(Note: that thread predates/straddles launch — it says "no confirmed token,
+beware fake $DEEP." DEEP is now live at the address above; the caution stands
+for lookalike tickers on other chains.)
+
 ## Extra color from a circulating tweet (Aug 15, unofficial — verify before quoting)
 
 - Framing in trader circles: watch it for **farming/airdrop potential** — top-of-book
