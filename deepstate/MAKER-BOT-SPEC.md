@@ -112,6 +112,43 @@ lottery tickets on the protocol working.
    quote through the reference); kill switch on depeg/halt; gas budget cap
    (repricing every few seconds, forever).
 
+## "Never hold NVDA": the atomic claim-and-dump variant
+
+Verified in `DeepstateV1.sol`: maker settlement is **pull-based**. A taker fill
+does NOT push NVDA to the maker's wallet — proceeds accumulate inside the book
+contract, and `cancel(token0, token1, epoch, order)` is the single call that
+both cancels remaining quantity and **claims filled proceeds** (returns
+`baseAmount`/`quoteAmount`, transfers out only then).
+
+So a tiny helper contract gives us a bid-only bot whose wallet never carries an
+NVDA balance across any transaction boundary:
+
+1. `claimAndDump()`: call `cancel(...)` (receive NVDA inside the tx) → in the
+   same tx, market-sell that exact NVDA amount back into the book against the
+   best bid → sweep USDG home. NVDA exists only transiently mid-transaction.
+2. Bot runs bid-side only (never needs NVDA inventory; ask side is off the
+   table anyway). Max earnable = the bid side's 500M DEEP.
+3. On fill detection, fire `claimAndDump` next block (~100–200ms on this chain).
+
+**Cost per round trip:** crossing the spread on the dump + 10bps protocol fee
+(direct contract calls skip the 10bps company fee). At a ~15bps spread that's
+~25bps of filled volume — this is the real price of never holding, and DEEP
+earned must beat it. Quote slightly wide to keep fill frequency (and thus dump
+costs) down; the rewards pay for time-on-top, not for getting filled.
+
+**Residual exposure, honestly stated:**
+- Price exposure starts at the *fill*, not the claim — between fill and dump
+  (~1–2 blocks) we own a claim on NVDA inside the contract. On a 100ms chain
+  that's sub-second, but it's not zero.
+- **Does it count legally? Probably doesn't change the core question.** The
+  moment a bid fills, a purchase of the (Reg-S-restricted, not-for-US-persons)
+  security token occurred; holding it for 200ms vs 2 days changes market risk,
+  not the fact of acquisition/beneficial ownership. The restriction regime
+  mostly binds the issuer and distributors rather than criminalizing the
+  holder, and secondary DEX activity is a genuine gray zone — but "atomic dump"
+  is a risk-mitigation, not a safe harbor. Real answer needs a securities
+  lawyer; the mechanics are ready if the answer is yes.
+
 ## The honest caveats
 
 - **US-person issue:** the bid side alone still fills into NVDA stock tokens,
