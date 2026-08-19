@@ -65,8 +65,15 @@ just a settlement venue.
 - **4.3 billion logarithmically spaced price ticks**; tree depth is a fixed 64 bits,
   so per-trade work (gas) is **bounded regardless of book size**. This is the trick
   that makes an EVM CLOB practical.
-- DeLong credits **"Warp"** — a matching-engine design by Joseph Poon (Plasma
-  co-author) & Christopher Jeffrey, EthCC 2023 — as the foundation.
+- DeLong credits **"Warp"** — a matching-engine design by Joseph Poon (Lightning/
+  Plasma co-author) & Christopher Jeffrey, presented at EthCC 2023 — as the
+  foundation. Warp was also announced/presented at **Stanford Blockchain
+  Conference 2023** (there was a dedicated "WARP Assembly" event at Stanford
+  Blockchain Week '23) — Austin saw Poon present it there. So Deepstate is not
+  Warp itself, but DeLong's own implementation built on Warp's onchain
+  matching-engine idea; Warp the project was pitched more broadly as a
+  cross-chain DeFi paradigm. Good podcast thread: "what did you keep and what
+  did you throw away from Poon's design?"
 - Matching contract is **permissionless, non-custodial, non-upgradeable**; other
   frontends can use it directly.
 
