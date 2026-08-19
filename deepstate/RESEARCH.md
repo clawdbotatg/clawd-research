@@ -181,6 +181,7 @@ Reward Pool ID (bytes32): `0x42819cadfbb25aab80543236e280fba4e61aa61e0b5b777541d
 - "$50k in volume! I know it is low but it is big to me."
 - "I can believe they are going to let us do defi summer again. $2.5M in volume
   in 18 hours."
+- "We just crossed $10M in 24 hour volume for the first time."
 
 Good podcast color: he celebrates honestly at small numbers, and the "let us do
 defi summer again" line is a great jumping-off point about the regulatory window
