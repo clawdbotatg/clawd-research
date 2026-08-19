@@ -176,6 +176,17 @@ Deployed contracts (Robinhood Chain):
 
 Reward Pool ID (bytes32): `0x42819cadfbb25aab80543236e280fba4e61aa61e0b5b777541de54ae69da35e4`
 
+### Traction (DeLong's own posts, launch week)
+
+- "$50k in volume! I know it is low but it is big to me."
+- "I can believe they are going to let us do defi summer again. $2.5M in volume
+  in 18 hours."
+
+Good podcast color: he celebrates honestly at small numbers, and the "let us do
+defi summer again" line is a great jumping-off point about the regulatory window
+(new US administration posture, tokenized equities, permissionless DeFi on a
+broker's chain).
+
 ## Independent audit kicked off (2026-08-19)
 
 Austin commissioned a One Dollar Audit of the main contract:
