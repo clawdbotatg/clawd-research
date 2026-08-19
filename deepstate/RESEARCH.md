@@ -238,6 +238,32 @@ Austin commissioned a One Dollar Audit of the main contract:
 10. Is the endgame that the *token* becomes the primary market and price discovery
     happens onchain before Nasdaq opens?
 
+## Extra color from a circulating tweet (Aug 15, unofficial — verify before quoting)
+
+- Framing in trader circles: watch it for **farming/airdrop potential** — top-of-book
+  making earns DEEP, and DEEP→STATE is the only way into governance/fees.
+- STATE mint math (matches the ERC-4626 vault design): DEEP converts to STATE
+  "according to the ratio of the total supply of STATE to all deposited DEEP."
+- Bio extras (unverified, from the tweet): based in **San Antonio, TX**; also
+  "Founder at Untitled"; blockchain architect background in insurance/financial
+  services; led an enterprise into two blockchain consortiums + a PoC with a
+  Fortune 50; built PoCs on Ethereum, Quorum, Hyperledger Fabric, Corda;
+  "worked with the US military on CROW" (fun if true — ask him).
+- ⚠️ The tweet's "SushiSwap's rise to over $200 billion" is hyperbole — that'd be
+  cumulative volume at best; Sushi TVL peaked ~$5B. Don't repeat on air.
+
+### Primary links
+
+- App: https://deepstate.sh/ · X: https://x.com/deepstatesh
+- DeLong announcement: https://x.com/josephdelong/status/2088556822294827502
+- DeLong "warning" thread: https://x.com/josephdelong/status/2088511987038740896
+- "The protocol" thread: https://x.com/josephdelong/status/2088511999890047356
+- Contracts-live post (addresses): https://x.com/josephdelong/status/2088550259211325512
+- GitHub org: https://github.com/Deepstate-Protocol
+  - Contracts: https://github.com/deepstate-protocol/deepstate-contracts
+  - Whitepaper: https://github.com/Deepstate-Protocol/whitepaper
+- Docs: https://docs-production-cdea.up.railway.app/
+
 ## Sources
 
 - Docs: https://docs-production-cdea.up.railway.app/ (overview, superior-price,
