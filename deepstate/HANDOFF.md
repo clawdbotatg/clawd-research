@@ -19,6 +19,8 @@ ends; see "Open threads" at the bottom.
 - **`MAKER-BOT-SPEC.md`** — how to earn DEEP by market-making: live onchain math,
   emission/quantity-ramp tables, competition analysis, bot architecture, the
   atomic claim-and-dump variant, compliance caveats.
+- **`ONE-LINERS.md`** — quotable podcast lines (tree, rewards, "trustless casino
+  trading a trust-me chip", PFOF irony, hypotheticals to spring on Joe).
 - **`HANDOFF.md`** — this file.
 
 ## Published artifacts (claude.ai, Austin's account)
