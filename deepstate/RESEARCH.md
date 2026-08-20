@@ -223,6 +223,11 @@ Austin commissioned a One Dollar Audit of the main contract:
     quantity-ceiling DoS**.
   - **Medium:** fee front-run; fee-recipient DoS; hook gas cost.
   - Many Low/Info.
+- **Update (Aug 20, 03:10 — Phase 2 re-run, still in progress):** 7 domains
+  re-swept, **59 raw findings**. New named issues beyond the prelim: fee-config
+  **read-after-hook ordering bug**, **codeless-hook `extcodesize` bricking**,
+  **right-spine gas-griefing** (radix-tree DoS), and FoT/rebasing **socialized
+  loss**. Not yet deduped/severity-ranked into a final report.
   - Cross-check when final: Deepstate's own published accepted findings already
     admit fee-on-transfer/non-standard-token breakage ("incompatible tokens can
     permanently brick vault flows", "nominal accounting assumes exact
