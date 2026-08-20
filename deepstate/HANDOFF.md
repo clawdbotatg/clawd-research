@@ -92,6 +92,18 @@ $10M/24h.
   = `0x68328323bbb12cd4e9d6680575d0d8a5b45dd89313479ba6efea4fb1a9205f23` on the
   Rewarder (params non-indexed; owner = 4th word of data).
 
+### Verification pass (2026-08-20, second model/session)
+
+All load-bearing claims were independently re-verified: emission math matches
+the contract's own `fullRewardQuantityAt`/`cumulativeEmissionsAt` to 3+ digits;
+decimals confirmed onchain (USDG 6 / NVDA 18 / DEEP 18); event recount matches
+the rewarder's balance drawdown to 0.001%; pull-based settlement, the
+registerClaimant trap, and the 100bps integrator cap confirmed in source.
+**One new trap found:** contract `isBid=true` = buying token0 (USDG) — inverted
+from human NVDA terms; bot must place `isBid=false` to bid for NVDA. See
+MAKER-BOT-SPEC.md §3b. Competition drifted: dominant bot 51.0% (was 54.9%),
+58.2M DEEP distributed, 179 claimants.
+
 ### Live economics snapshot (2026-08-19, day 4.7 of 395)
 - Emissions ~5.44M DEEP/day/side and falling; 94–98% of ceiling actually accrued
   (top-of-book near-continuously held).

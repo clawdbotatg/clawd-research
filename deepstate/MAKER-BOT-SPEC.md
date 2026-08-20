@@ -27,14 +27,20 @@ The window for a small player is roughly **the next two weeks**.
 - Current top orders: **bid 105,512 USDG (~$105k)**, ask 28.2 NVDA (~$5k).
   Someone is already sizing the bid for the quantity ramp.
 
-## Competition (from all 19,909 RewardsDistributed events)
+## Competition (verified twice; latest 2026-08-20 morning, day 5.3)
 
-- **51.8M DEEP distributed** in 4.7 days to **177 distinct claimants**.
-- Concentration: `0x2acb…0706` has **54.9%** (28.4M DEEP, both sides, 5,241
-  claims — a serious always-on bot). Next 11 wallets have 1.4–3.7% each; the
-  tail is dust.
+- **58.2M DEEP distributed** (21,967 events, **179 distinct claimants**).
+  Cross-checked against the rewarder's DEEP balance (1B − 941.79M = 58.21M) —
+  matches to 0.001%.
+- Concentration: `0x2acb…0706` has **51.0%** (29.7M DEEP) — down from 54.9% a
+  day earlier; #2 (`0x8b87…1d3f`) grew to 6.3%. The king is beatable at the
+  margin.
 - Interpretation: it's a latency + uptime war and one player is winning it, but
-  45% of the flow still leaks to others — a competent bot gets a real share.
+  ~half the flow still leaks to others — a competent bot gets a real share.
+- Verification note (2026-08-20): all emission math re-checked against the
+  contract's own view functions (`fullRewardQuantityAt`, `cumulativeEmissionsAt`)
+  — the model in this doc reproduces them to 3+ significant digits. Decimals
+  confirmed onchain: USDG 6, NVDA 18, DEEP 18.
 
 ## The two curves that decide everything (from Rewarder source)
 
@@ -104,6 +110,12 @@ lottery tickets on the protocol working.
    as soon as an order is placed — the engine deletes ownership on cancel/fill,
    and only a registered claimant can collect afterwards. Batch-collect with
    `distributeRewardsBatch` periodically (anyone can call; it pays the claimant).
+3b. **⚠️ Side-naming trap (verified in source, DeepstateV1 line ~2143):** in the
+   contract, `isBid=true` means *buying token0 (USDG) with token1 (NVDA)* —
+   inverted from human NVDA-market intuition. **To bid for NVDA with USDG you
+   place a contract-side ASK (`isBid=false`).** A bot that passes `isBid=true`
+   for "bid on NVDA" quotes the wrong side of the book. Same inversion applies
+   to reading `topOrder(bookId, isBid)`.
 4. **FCFS reality:** Robinhood Chain sequences first-come-first-served — no gas
    bidding. Winning top-of-book races = raw latency to the sequencer. The 55%
    bot is winning that race today; we'd aim for the leak, not the crown.
