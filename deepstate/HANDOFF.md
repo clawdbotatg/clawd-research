@@ -103,15 +103,32 @@ $10M/24h.
   vault fees (~$10k/day at $10M/day volume).
 
 ### The audit (open thread)
-- Austin commissioned **One Dollar Audit #693** of `DeepstateV1.sol`:
-  https://www.onedollaraudit.com/audit/693 (worker: leftclaw.services/jobs/693).
-- The page is a JS SPA — curl gets a placeholder; read it with a real browser.
-  **The engagement state lives ONCHAIN on Base**: Multicall3 → registry
-  `0xb2fb486a9569ad2c97d9c73936b46ef7fdaa413a`, selector `0xbf22c457` +
-  uint256(693). Poll that via Alchemy Base to detect stage changes cheaply.
-- Progress: `accepted` (16:23) → `audit-phase-0-context` → `audit-phase-1-ethskills`
-  (16:50, still there at 18:15). A Monitor was polling; if the session died,
-  re-check the page and **append findings to RESEARCH.md when the report lands**.
+- Austin commissioned **One Dollar Audit #693** of `DeepstateV1.sol`.
+- **TWO links, use the second one:**
+  - Status page (coarse stage only): https://www.onedollaraudit.com/audit/693
+  - **Work log with actual findings: https://leftclaw.services/jobs/693** ← this
+    one. The `onedollaraudit` front page hides the findings behind a stage
+    string; the leftclaw job page shows the running work log and prelim results.
+- Both pages are JS SPAs — curl gets a placeholder; read with a real browser
+  (clawd-browser MCP). **Stage state ALSO lives onchain on Base**: Multicall3 →
+  registry `0xb2fb486a9569ad2c97d9c73936b46ef7fdaa413a`, selector `0xbf22c457` +
+  uint256(693). Poll via Alchemy Base to detect changes cheaply (that's what the
+  Monitor watchers did — but the onchain struct only flips on stage change, so
+  it can sit still for hours mid-phase; the leftclaw work log updates sooner).
+- Job facts: executor `0xEE8f…377c`, paid 164,772 CLAWD (~$1.02), client
+  austingriffith.eth. It sized the target correctly: "3390-LOC CLOB DEX, custom
+  Patricia-trie order book," 7 opus domain agents.
+- Progress: `accepted` (16:23) → `phase-0-context` → `phase-1-ethskills`
+  (16:50) → Phase 1 breadth complete (18:26) → **Phase 2 (pashov-depth, blind)
+  running** at last check ~18:40.
+- **Preliminary findings (18:26, NOT final):** 2 High — (1) pooled-balance
+  fee-on-transfer drain, (2) uint160 quantity-ceiling DoS; 3 Medium — fee
+  front-run, fee-recipient DoS, hook gas cost; ~12 Low, 9 Info. Full list +
+  a cross-check note is in RESEARCH.md under "Independent audit."
+- **TODO when final:** append final severities to RESEARCH.md; check whether the
+  2 Highs are genuinely new or overlap Deepstate's own published accepted
+  fee-on-transfer findings (theirs were about the VAULT; a drain on the BOOK's
+  pooled balances would be new surface). Good podcast material either way.
 
 ## Compliance flag (unresolved, blocks the bot)
 
@@ -124,8 +141,10 @@ harbor. Austin was advised to get a real legal read before funding anything.
 
 ## Open threads, in priority order
 
-1. **Audit #693 findings** → append to RESEARCH.md (+ mention in artifacts if
-   material). Check stage via the Base registry call or the page.
+1. **Audit #693 final findings** → append to RESEARCH.md (+ mention in artifacts
+   if material). Preliminary already logged (2 High / 3 Med). Check
+   https://leftclaw.services/jobs/693 for the finished report; Phase 2 was still
+   running at last check.
 2. **Podcast Friday 2026-08-21** — prep is done (briefing + ELI5 artifacts +
    10 questions in RESEARCH.md). Best hooks: Sushi-scars → governance design;
    SBC/Warp personal connection; "aggression not depth"; PFOF irony of
