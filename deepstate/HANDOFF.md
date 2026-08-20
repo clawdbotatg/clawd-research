@@ -19,6 +19,10 @@ ends; see "Open threads" at the bottom.
 - **`MAKER-BOT-SPEC.md`** — how to earn DEEP by market-making: live onchain math,
   emission/quantity-ramp tables, competition analysis, bot architecture, the
   atomic claim-and-dump variant, compliance caveats.
+- **`COMPOSABILITY.md`** — 11 build-on-top ideas (oracle wrapper, top-of-book
+  mining as token launch, maker-position NFTs, gap market, trust-in-Robinhood
+  CDS, agent trading league) + a raw-materials reference (hooks, integrator
+  fees, oracle views).
 - **`ONE-LINERS.md`** — quotable podcast lines (tree, rewards, "trustless casino
   trading a trust-me chip", PFOF irony, hypotheticals to spring on Joe).
 - **`HANDOFF.md`** — this file.
@@ -94,6 +98,18 @@ $10M/24h.
   = `0x68328323bbb12cd4e9d6680575d0d8a5b45dd89313479ba6efea4fb1a9205f23` on the
   Rewarder (params non-indexed; owner = 4th word of data).
 
+### Volume verification method (2026-08-20 — reuse this, don't re-derive)
+
+To measure true 24h volume onchain: **sum ERC-20 Transfer events from the book
+(`0x6cf1…7B96`) to the vault (`0xbfb7…73D5`) for USDG and NVDA over 24h, divide
+by 0.001** (the 10bps protocol fee on taker output). Result matched the UI's
+displayed 24h volume to 0.4% ($18.61M vs $18.69M on day 5.5). Volume ≈2×
+DeLong's "$10M first time" tweet. DEAD END, do not retry: decoding the
+Ask/Bid/Subtree-Matched events directly — node quantity units are side-dependent
+and ambiguous; the fee method is the clean oracle. Find the 24h-ago block by
+binary-searching timestamps (~860k blocks/day). NVDA traded at $216.56 on
+2026-08-20 (earlier $183 figures in older doc sections are stale).
+
 ### Verification pass (2026-08-20, second model/session)
 
 All load-bearing claims were independently re-verified: emission math matches
@@ -132,9 +148,13 @@ MAKER-BOT-SPEC.md §3b. Competition drifted: dominant bot 51.0% (was 54.9%),
 - Job facts: executor `0xEE8f…377c`, paid 164,772 CLAWD (~$1.02), client
   austingriffith.eth. It sized the target correctly: "3390-LOC CLOB DEX, custom
   Patricia-trie order book," 7 opus domain agents.
-- Progress: `accepted` (16:23) → `phase-0-context` → `phase-1-ethskills`
-  (16:50) → Phase 1 breadth complete (18:26) → **Phase 2 (pashov-depth, blind)
-  running** at last check ~18:40.
+- Progress: `accepted` (Aug 19 16:23) → `phase-0-context` → `phase-1-ethskills`
+  (16:50) → Phase 1 breadth complete (18:26) → overnight re-sweep logged Aug 20
+  03:10 (**59 raw findings**: adds fee-config read-after-hook ordering bug,
+  codeless-hook extcodesize bricking, right-spine gas-griefing, FoT/rebasing
+  socialized loss) → **still "In Progress" with no new log entry as of Aug 20
+  ~10:30** — final dedup/ranking either long-running or stalled. If it never
+  finalizes, the preliminary findings in RESEARCH.md stand as the result.
 - **Preliminary findings (18:26, NOT final):** 2 High — (1) pooled-balance
   fee-on-transfer drain, (2) uint160 quantity-ceiling DoS; 3 Medium — fee
   front-run, fee-recipient DoS, hook gas cost; ~12 Low, 9 Info. Full list +
