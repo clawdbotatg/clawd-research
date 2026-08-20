@@ -182,6 +182,7 @@ Reward Pool ID (bytes32): `0x42819cadfbb25aab80543236e280fba4e61aa61e0b5b777541d
 - "I can believe they are going to let us do defi summer again. $2.5M in volume
   in 18 hours."
 - "We just crossed $10M in 24 hour volume for the first time."
+- (Verified onchain 2026-08-20: ~$18.7M/24h via fee-transfer method, 0.4% off the UI number. NVDA at $216.56.)
 
 ### How the community frames it (unofficial tweet, launch week)
 

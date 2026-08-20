@@ -180,3 +180,13 @@ whenever it holds the top; in three weeks the same play needs five figures, in
 four it needs seven. The decision that matters is not bot design — it's
 **inventory size × the two-week window × whether holding NVDA tokens as a US
 person is acceptable**.
+
+## Volume verification (2026-08-20, day 5.5)
+
+Independently verified 24h volume via protocol-fee transfers (book → vault over
+24h ÷ 10bps): 9,462.6 USDG + 42.25 NVDA in fees → **$18.61M implied taker-output
+volume**, vs the UI's displayed 18,688,555 USDG — a 0.4% match. Volume roughly
+2× DeLong's "$10M first time" tweet. Method note: decoding Matched events
+directly is unit-ambiguous (node quantities); the fee method is the clean
+oracle. NVDA price at check: $216.56 (update any $183-based figures; ask-side
+full-reward max = 5,000 NVDA ≈ $1.08M).
