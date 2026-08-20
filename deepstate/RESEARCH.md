@@ -215,6 +215,20 @@ Austin commissioned a One Dollar Audit of the main contract:
   reads job state via Multicall3 → registry `0xb2fb486a9569ad2c97d9c73936b46ef7fdaa413a`
   (`getJob(uint256)`-style selector `0xbf22c457`).
 - Findings to be appended here when the report lands.
+- Worker: LeftClaw Services (executor `0xEE8f…377c`), payment 164,772 CLAWD
+  (~$1.02), client austingriffith.eth. Work log is public on the job page.
+- **Preliminary findings (work log, 18:26, Phase 0–1 complete across 7 domains
+  — NOT final, Phase 2 depth pass running):**
+  - **2 High:** (1) pooled-balance **fee-on-transfer drain**; (2) **uint160
+    quantity-ceiling DoS**.
+  - **Medium:** fee front-run; fee-recipient DoS; hook gas cost.
+  - Many Low/Info.
+  - Cross-check when final: Deepstate's own published accepted findings already
+    admit fee-on-transfer/non-standard-token breakage ("incompatible tokens can
+    permanently brick vault flows", "nominal accounting assumes exact
+    transfers") — determine whether these Highs are the same accepted risks or
+    genuinely new attack surface on the *book* (pooled balances) rather than
+    the vault. Great podcast material either way.
 
 ## Podcast question ideas
 
