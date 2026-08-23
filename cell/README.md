@@ -45,3 +45,37 @@ Printer needs: 120×80 mm bed, PETG temps, **ironing** (cartridge white patch), 
 - Blood tier rejects anyone on anticoagulants/daily aspirin by design. Touch tier (pulse) is the everyday path.
 - `SAFETY.md`: one device one person, commercial lancets only, sharps container.
 - Local clone + venv: `cell/repo/` (gitignored). `uv venv -p 3.12 .venv && uv pip install -r firmware/requirements.txt && .venv/bin/python firmware/run_tests.py`.
+
+## Amazon links (2026-08-22)
+
+Reader kit:
+- Pi Zero 2 W — https://www.amazon.com/dp/B09LH5SBPS
+- Pi Camera v2 (IMX219) — https://www.amazon.com/dp/B01ER2SKFS
+- Zero camera cable set — https://www.amazon.com/dp/B0DGPHDWTY
+- AS7341 (Waveshare; Adafruit 4698 not on Amazon) — https://www.amazon.com/dp/B08ZS7JKDD
+- 650nm 5mW laser modules (5pk) — https://www.amazon.com/dp/B00VCR036Q
+- 940nm IR LED — https://www.amazon.com/dp/B01BQVLABO
+- 5mm white LEDs — https://www.amazon.com/dp/B01AUI4VQU
+- 2N7002 — https://www.amazon.com/dp/B0C161JDLG
+- Breadboard + jumpers — https://www.amazon.com/dp/B07PTYBFDT
+- SanDisk 32GB microSD — https://www.amazon.com/dp/B06XWMQ81P
+- Black PETG — https://www.amazon.com/dp/B014VM95IK
+- White PETG — https://www.amazon.com/dp/B07GH684RC
+- Lancets 28G ×100 — https://www.amazon.com/dp/B0CSX1XN71
+- Alcohol pads ×100 — https://www.amazon.com/dp/B0864SBFKG
+- Laser transparency film (0.1mm PET) — https://www.amazon.com/dp/B07F45YXJD
+- 3M 300LSE — https://www.amazon.com/dp/B00LWFO5R6
+- Sharps container 1L — https://www.amazon.com/dp/B0BRBPF4YP
+- Matte black paint — https://www.amazon.com/dp/B000PH7OXE
+
+Wallet half:
+- Adafruit ATECC608 (buy 2) — https://www.amazon.com/dp/B07YYRCJ9M
+- ST7789 1.3" 240×240 — https://www.amazon.com/dp/B07P9X3L7M
+- 12mm tactile switches + caps — https://www.amazon.com/dp/B08VNB6BX5
+- USB-C breakout — https://www.amazon.com/dp/B09KC1SMGD
+- Micro-USB OTG adapter — https://www.amazon.com/dp/B01DQ0VIJM
+- USB webcam — https://www.amazon.com/dp/B086XH1P5Y
+- M2.5 heat-set inserts — https://www.amazon.com/dp/B077CJQ3J4
+- M2×6 self-tapping — https://www.amazon.com/dp/B01M0DCPQ5
+
+Not on Amazon: 10mm×0.5mm clear disc (cut from the transparency film for now, or McMaster). Resistors/caps: any assortment kit.
