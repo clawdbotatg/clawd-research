@@ -187,10 +187,14 @@ thread: 700 audits, detections, savings — "effective → efficient, month one.
 
 ## 5. Open items
 
-1. **Chris's ASCII animation is not on this machine.** Searched `~/sage`,
-   Downloads, `~/clawd`, Gmail — the zip Chris sent (per the 08-21 call) isn't
-   anywhere findable. **Austin: drop the zip into `~/sage/` and the intro.sh
-   slot is ready for it.** Building with a placeholder banner until then.
+1. ~~Chris's ASCII animation is not on this machine.~~ **Found** — sent as
+   `sage-intro-skill.zip` in the "Austin <> Levanto Labs" Telegram group,
+   Fri Aug 21 01:16 AM. Recovered via Telegram Web, extracted to
+   `~/sage/sage-intro-skill/`. It's a complete zero-dependency bash animation
+   (`scripts/sage-intro.sh`): ~7.5s arch/sun/wordmark sequence + five
+   rapid-fire decision examples, with built-in static fallback for non-TTY
+   (agent) contexts and a README explaining exactly how to wire it into the
+   skill. Verified working. Use as-is for Phase 1's intro slot.
 2. **Need a `lv_live_...` key in the environment** for Phase 0/2. No key is on
    disk by design.
 3. **Batch billing still unverified** (OPEN-QUESTIONS #3) — matters more now
