@@ -96,6 +96,28 @@ sage-wisdom/
 └── reference.md        # condensed API truth (from API-NOTES.md) the skill reads on demand
 ```
 
+### Pattern library (added 2026-08-24, per Austin)
+
+The skill ships with a documented library of ready-made low-hanging-fruit
+patterns, sourced from Levanto's platform examples page
+(`platform.levanto.ai/intelligence/examples`) plus docs use-cases plus our own
+research. Each pattern is one entry with four parts:
+
+1. **Detection signature** — what to grep/look for in the user's app that
+   marks this pattern (e.g. "an LLM call whose output is parsed for a
+   yes/no/label", "a frontier model inside a request hot path").
+2. **Sage question template** — the tested phrasing (terse, domain-verb
+   style), decision kind, threshold + escalation band.
+3. **Integration recipe** — the minimal diff: where the call goes, fail
+   open/closed guidance, batch shape if multiple questions.
+4. **Eval recipe** — how to build the golden set for *this* pattern and what
+   the head-to-head table should show before shipping.
+
+So when the skill finds a match it doesn't just say "you could use Sage
+here" — it opens the pattern entry and already knows how to implement and
+prove it. *(Blocked: the platform examples page is behind Google login —
+need Austin to log in once in the automation browser or export the page.)*
+
 ### SKILL.md structure
 
 1. **Frontmatter** — name `sage-wisdom`, description written so it triggers on
