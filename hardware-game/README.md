@@ -7,7 +7,10 @@ the same budget, builds machines, and every game tick the machines **produce com
 (hashes, spreadsheets, AI inference, rendered frames…) that sell for in-game money.
 Most money wins the round. Feels like Bitcoin mining × fantasy football × M.U.L.E.
 
-Three research passes feed this doc:
+**→ [GAME-DESIGN.md](GAME-DESIGN.md) is the consolidated master doc** — read that
+first; everything below feeds it.
+
+Research + design docs:
 
 - **[PRIOR-ART.md](PRIOR-ART.md)** — every adjacent game surveyed (PC Building Sim,
   RollerCoin, tycoons, idle math, seasons, fantasy-market games)

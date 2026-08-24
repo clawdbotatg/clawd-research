@@ -138,3 +138,7 @@ stockpiling without storage capex), DATASET consumption.
    price, and the "sell wall at epoch end" is naturally damped.
 5. Contract ratios + quality gates are the GM's pre-committed balance levers; part
    stats are never touched (they're real).
+6. **No player-to-player trading of commodities or goods** (decided 2026-08-24):
+   everything is internal to your own factory until it burns at the contract board.
+   Kills the collusion/wash-trading surface (failure mode #3) and keeps the game
+   readable. Revisit as a season mechanic only if rounds feel too solitary.
