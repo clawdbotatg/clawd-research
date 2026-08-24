@@ -34,6 +34,7 @@ threshold on.** Buy it for decisions on a hot path, not for bulk work.
 | **`VIDEO-CHAT.md`** | The clawd-video-chat filler loop. Sage can see the user's question safely where Haiku structurally cannot. |
 | **`API-NOTES.md`** | Every undocumented quirk and gotcha we hit. **Read before writing any Sage code.** |
 | **`MEETING-2026-07-30.md`** | Call with Marco + Chris (Levanto). **Answers the architecture question** (cut Qwen >300B + classifier head, no decode), GTM context, collaboration terms, action items. |
+| **`MEETING-2026-08-21.md`** | Call with Chris. **The current plan**: monthly "effective → efficient" builds (Aug = $1 audit injection gate, Sep = router), the **Sage Wisdom skill** launching w/ Levanto, batch-16 API, real-time-systems direction. TLDR + full transcript. |
 | **`OPEN-QUESTIONS.md`** | What we deliberately did *not* do, and how to close each gap. **Read before picking this back up.** |
 
 ## Runnable benchmarks
@@ -70,6 +71,21 @@ must be kept blind to the user's question or it starts answering and
 double-speaks. Sage can be shown anything, because there is no channel through
 which it could leak an answer. That reframes it from "a weaker LLM" to "a safe
 component."
+
+## Current plan (as of 2026-08-24, from `MEETING-2026-08-21.md`)
+
+1. **Aug build (due ~Aug 31):** replace the Opus prompt-injection pass in $1 audit
+   (700 audits to date) with the Sage gate from `INJECTION.md`. Tweet detections + savings.
+2. **Sep build:** model-tier router (`demo_router.py`), timed with Levanto's router launch.
+3. **Sage Wisdom skill** (`sage-wisdom.md`): personified, asks profile questions, reads
+   docs + repo, proposes integrations across speed / cost / security / QA. Chris's ASCII
+   intro animation goes in it. Austin writes it → Levanto tests + launches the week of Aug 24.
+4. Follow-up call with Chris on **real-time systems** (voice agents, drones, vision) — the
+   use case where Sage's speed is *effective*, not just efficient.
+
+**API update (Aug 21):** batch up to **16 questions per call**, ~150–200ms total
+(~10ms/question + network). Not yet re-benchmarked here; `demo_videochat.py`'s
+4-question batch is the closest existing harness.
 
 ## Status / risk
 

@@ -40,6 +40,11 @@ estimate tokens at `len(body)//4`.
 matters if a design leans on a batch discount — the injection gate (single
 question) does not; the video-chat router (4 questions) does.
 
+**3b. Batch-16 is unbenchmarked.** Levanto (2026-08-21) says up to 16
+questions per call return in ~150–200ms total. Nothing here has measured it;
+`demo_videochat.py` batches 4. *How to close:* extend `demo_latency.py` with
+1/4/8/16-question batches and record p50/p95.
+
 ## Known coverage gaps
 
 **4. Adversarial robustness is untested.** Every injection sample is English and
