@@ -7,8 +7,10 @@ the same budget, builds machines, and every game tick the machines **produce com
 (hashes, spreadsheets, AI inference, rendered frames…) that sell for in-game money.
 Most money wins the round. Feels like Bitcoin mining × fantasy football × M.U.L.E.
 
-**→ [GAME-DESIGN.md](GAME-DESIGN.md) is the consolidated master doc** — read that
-first; everything below feeds it.
+**→ Picking this up fresh? Read [HANDOFF.md](HANDOFF.md) first** (state of play,
+locked decisions, prototype testing recipe). **[GAME-DESIGN.md](GAME-DESIGN.md)** is
+the consolidated design master doc; everything below feeds it. Playable prototype:
+[prototype/index.html](prototype/index.html).
 
 Research + design docs:
 
