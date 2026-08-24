@@ -66,19 +66,34 @@ The old "$0.19/1k" token math is dead; compare per-unit now.
   not duplicate it: theirs = how to call the API; ours = where it belongs in
   your app and proof it's better.
 
-## Batch latency (partial — ran out of units mid-benchmark)
+## Batch latency (quality mode complete, 2026-08-24)
 
-`demo_batch16.py`, quality mode, 5 reps each: 1 question **210ms** p50,
-4 questions 276ms, 8 questions 275ms. All `fanout`. Then **402** — the key's
-allowance was exhausted (~60 units spent total today, so the plan on this key
-is either tiny or was already mostly used). Fast-mode and 16-question runs
-still TODO — also note fast mode needs Starter+.
+`demo_batch16.py`, 5 reps each, same document, all `compute_mode: fanout`:
+
+| questions | p50 | min |
+|---|---|---|
+| 1 | 193ms | 169ms |
+| 4 | 313ms | 221ms |
+| 8 | 266ms | 262ms |
+| 16 | **420ms** | 320ms |
+
+Sub-linear scaling: 16× the questions for ~2.2× the latency, and it all bills
+as **1 decision unit**. Closes OPEN-QUESTIONS #3b for quality mode.
+
+**Fast mode is plan-gated, confirmed live:** `400 {"detail":"Fast mode is not
+available on your plan. Upgrade or contact team@levanto.ai"}`. This key is on
+Developer. Marco's 156ms-for-16 number is fast mode — unverifiable until we
+have Starter+ (ask Chris for a comped upgrade, it's their headline number).
+
+Note: the earlier 402 that looked like exhaustion happened at ~60 units total
+spent — the key's initial allowance was near-empty, not our burn.
 
 ## Still open
 
-- Fast-mode accuracy delta ("measurably less accurate" — measure it on the
-  injection golden set before recommending it anywhere).
-- 16-question batch p50/p95 in both modes.
-- Whether this key's plan supports fast mode at all.
+- Fast-mode: latency AND accuracy delta on the injection golden set
+  ("measurably less accurate" per the docs) — needs a Starter+ key.
+- `usage` field came back None on batch responses despite being in the
+  schema — billing still not observable in practice; unit math relies on the
+  pricing page.
 - platform.levanto.ai/intelligence/examples is login-gated (Google OAuth) —
   couldn't scrape; need Austin to log in once or export it.
