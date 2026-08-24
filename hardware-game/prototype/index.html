@@ -1,0 +1,506 @@
+<title>Slopfarm</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0B0E11; --panel:#12171C; --panel2:#161D24; --edge:#232E38;
+    --ink:#D7E0E6; --dim:#6E7E8A; --faint:#3B4854;
+    --amber:#FFB454; --green:#46D98D; --blue:#5FA8F5; --red:#F0645A; --violet:#B48EF5;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --sans:"IBM Plex Sans",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45;padding-bottom:70px}
+  button{font:inherit;cursor:pointer;border:1px solid var(--edge);background:var(--panel2);color:var(--ink);border-radius:4px;padding:4px 10px}
+  button:hover{border-color:var(--dim)}
+  button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+  button:disabled{opacity:.35;cursor:default}
+  button.buy{border-color:#3d5a48;color:var(--green)}
+  button.sell{border-color:#5a4a3d;color:var(--amber)}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  /* ---- status bar ---- */
+  #status{position:sticky;top:0;z-index:50;background:linear-gradient(#0B0E11f2,#0B0E11e6);backdrop-filter:blur(6px);border-bottom:1px solid var(--edge);display:flex;flex-wrap:wrap;gap:2px 14px;padding:8px 12px;font-family:var(--mono);font-size:12.5px}
+  #status .stat{display:flex;gap:5px;align-items:baseline;white-space:nowrap}
+  #status .lbl{color:var(--dim);font-size:10px;letter-spacing:.08em}
+  #status .warn{color:var(--red)}
+  .cr{color:var(--amber)} .gm{color:var(--blue)} .ok{color:var(--green)}
+  /* ---- crunch ticker ---- */
+  #ticker{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--edge);background:var(--panel)}
+  .raw{min-width:96px;flex:1;background:var(--panel2);border:1px solid var(--edge);border-radius:6px;padding:6px 9px}
+  .raw .rl{font-size:10px;letter-spacing:.12em;color:var(--dim);font-family:var(--mono)}
+  .raw .rv{font-family:var(--mono);font-size:17px;font-weight:600}
+  .raw .rr{font-family:var(--mono);font-size:10.5px;color:var(--green)}
+  .raw.bump .rv{animation:bump .5s}
+  @keyframes bump{0%{color:var(--green)}100%{color:var(--ink)}}
+  @media (prefers-reduced-motion:reduce){.raw.bump .rv{animation:none}}
+  /* ---- tabs ---- */
+  #tabs{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;background:#0D1116;border-top:1px solid var(--edge)}
+  #tabs button{flex:1;border:0;border-radius:0;background:none;color:var(--dim);padding:10px 2px 12px;font-size:11px;font-family:var(--mono);letter-spacing:.04em}
+  #tabs button.on{color:var(--ink);box-shadow:inset 0 2px 0 var(--amber)}
+  main{max-width:1080px;margin:0 auto;padding:12px}
+  .panel{display:none}
+  .panel.on{display:block}
+  @media(min-width:1000px){
+    #tabs{display:none}
+    main{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+    .panel{display:block!important;margin-bottom:2px}
+  }
+  h2{font-size:12px;font-family:var(--mono);letter-spacing:.14em;color:var(--dim);margin:14px 0 8px;text-transform:uppercase}
+  h2 .hint{letter-spacing:0;text-transform:none;font-family:var(--sans);font-weight:400;color:var(--faint);font-size:11.5px;margin-left:8px}
+  /* ---- cards ---- */
+  .card{background:var(--panel);border:1px solid var(--edge);border-radius:6px;padding:9px 11px;margin-bottom:7px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .name{font-weight:600}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .q1{color:var(--dim)} .q2{color:var(--green)} .q3{color:var(--violet)}
+  .bar{height:4px;background:var(--faint);border-radius:2px;overflow:hidden;margin-top:5px}
+  .bar>i{display:block;height:100%;background:var(--green)}
+  .bar>i.hot{background:var(--red)}
+  #log{font-family:var(--mono);font-size:11.5px;color:var(--dim);max-height:230px;overflow-y:auto}
+  #log .e{padding:2px 0;border-bottom:1px dashed #1a222b}
+  #log .gold{color:var(--amber)} #log .good{color:var(--green)} #log .bad{color:var(--red)} #log .blue{color:var(--blue)}
+  table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:12.5px}
+  td,th{padding:4px 6px;text-align:right;border-bottom:1px solid #1a222b}
+  td:first-child,th:first-child{text-align:left}
+  th{color:var(--dim);font-weight:500;font-size:10.5px;letter-spacing:.08em}
+  .you td{color:var(--amber)}
+  /* ---- overlay ---- */
+  #overlay{position:fixed;inset:0;background:#0B0E11ee;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+  #overlay .box{max-width:520px;background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:26px}
+  #overlay h1{font-family:var(--mono);font-size:30px;letter-spacing:.06em;color:var(--amber)}
+  #overlay .sub{color:var(--dim);margin:4px 0 16px}
+  #overlay p{margin:8px 0;font-size:14.5px}
+  #overlay .k{font-family:var(--mono);color:var(--green)}
+  #overlay button{margin-top:18px;width:100%;padding:12px;font-size:16px;font-family:var(--mono);border-color:#3d5a48;color:var(--green)}
+  .speed{display:flex;gap:4px;margin-left:auto}
+  .speed button{padding:2px 8px;font-size:11px;font-family:var(--mono)}
+  .speed button.on{color:var(--amber);border-color:var(--amber)}
+  .foot{color:var(--faint);font-size:11px;margin:18px 0;font-family:var(--mono)}
+</style>
+
+<div id="overlay"><div class="box" id="obox">
+  <h1>SLOPFARM</h1>
+  <div class="sub">round 0 · feel prototype · offline · nothing is real (except the hardware)</div>
+  <p><span class="k">$100</span> buys your seat → <span class="k">10,000 CR</span>. It never comes back out as cash — what comes out is <span class="k">$GAME</span>.</p>
+  <p>Buy real hardware at real prices. Machines crunch raw resources every second. Sloperators refine raw into goods. Deliver contract baskets to mint <span class="k">$GAME</span> — each epoch's emission is split pro-rata with 6 rivals.</p>
+  <p>Watch your <span class="k">watts</span>, your <span class="k">rack space</span>, your <span class="k">storage</span>, and your burn rate. 20 epochs. Most minted wins.</p>
+  <button id="startBtn">INSERT $100 → START ROUND</button>
+</div></div>
+
+<div id="status"></div>
+<div id="ticker"></div>
+
+<main>
+  <section class="panel on" id="p-rig">
+    <h2>Your rig<span class="hint">machines crunch raw automatically</span></h2>
+    <div id="rig"></div>
+    <h2>Workshop jobs<span class="hint">each job needs a sloperator slot, converts raw → goods</span></h2>
+    <div id="jobs"></div>
+    <h2>Inventory<span class="hint">goods spoil past storage cap</span></h2>
+    <div id="inv" class="card"></div>
+  </section>
+
+  <section class="panel" id="p-shop">
+    <h2>Catalog<span class="hint">snapshot of real street prices · price climbs as the field buys</span></h2>
+    <div id="shop"></div>
+    <h2>Facility</h2>
+    <div id="facility"></div>
+  </section>
+
+  <section class="panel" id="p-staff">
+    <h2>Sloperators<span class="hint">API = wages · open-weight = free but lives in your VRAM</span></h2>
+    <div id="staff"></div>
+  </section>
+
+  <section class="panel" id="p-contracts">
+    <h2>Contract board<span class="hint">deliver baskets → pro-rata share of epoch emission</span></h2>
+    <div id="contracts"></div>
+  </section>
+
+  <section class="panel" id="p-market">
+    <h2>$GAME<span class="hint">sell-only during round · floor is hard-backed</span></h2>
+    <div id="token" class="card"></div>
+    <h2>Standings</h2>
+    <div class="card" style="overflow-x:auto"><table id="board"></table></div>
+    <h2>Feed</h2>
+    <div id="log" class="card"></div>
+    <div class="foot">v0 omissions: assembly (parts are pre-racked), heat, bandwidth, wear, quality boosts, ladders on all SKUs. See GAME-DESIGN.md.</div>
+  </section>
+</main>
+
+<nav id="tabs">
+  <button data-p="p-rig" class="on">RIG</button>
+  <button data-p="p-shop">SHOP</button>
+  <button data-p="p-staff">STAFF</button>
+  <button data-p="p-contracts">CONTRACTS</button>
+  <button data-p="p-market">MARKET</button>
+</nav>
+
+<script>
+'use strict';
+// ============ static data ============
+const EPOCHS=20, EPOCH_TICKS=30, EMISSION=1000, PLAYERS=7, RESERVE=PLAYERS*100;
+const SMAX=EPOCHS*EMISSION, FLOOR=RESERVE/SMAX; // $/GAME
+const ELEC=0.0011; // CR per watt per tick, before tariff
+
+const PARTS=[
+ {id:'rtx5090', n:'RTX 5090',        p:2399, w:575,  ru:2, vr:32, out:{HASH:3.2,FRAME:2.6,TOKEN:1.6}},
+ {id:'rtx5080', n:'RTX 5080',        p:1099, w:360,  ru:2, vr:16, out:{HASH:1.9,FRAME:1.7,TOKEN:0.9}},
+ {id:'rtx4090', n:'RTX 4090 (used)', p:1499, w:450,  ru:2, vr:24, out:{HASH:2.4,FRAME:2.0,TOKEN:1.2}},
+ {id:'rtx3090', n:'RTX 3090 (used)', p:699,  w:350,  ru:2, vr:24, out:{HASH:1.3,FRAME:1.0,TOKEN:1.0}},
+ {id:'rtx5060', n:'RTX 5060 Ti 16GB',p:449,  w:180,  ru:1, vr:16, out:{HASH:0.9,FRAME:0.8,TOKEN:0.5}},
+ {id:'r9950',   n:'Ryzen 9 9950X box',p:899, w:230,  ru:1, vr:0,  out:{CYCLE:2.2}},
+ {id:'r7600',   n:'Ryzen 5 7600 box', p:329, w:120,  ru:1, vr:0,  out:{CYCLE:0.9}},
+ {id:'epyc',    n:'EPYC 9354 (used)', p:1650,w:300,  ru:2, vr:0,  out:{CYCLE:4.5}},
+ {id:'dgx',     n:'DGX Spark',       p:4699, w:240,  ru:1, vr:128,out:{TOKEN:4.2,CYCLE:1.0}},
+ {id:'mac',     n:'Mac Studio M4 Max',p:1999,w:90,   ru:1, vr:36, out:{TOKEN:1.5,CYCLE:1.2,FRAME:0.4}},
+ {id:'s21',     n:'Antminer S21',    p:3199, w:3500, ru:2, vr:0,  out:{HASH:22}},
+ {id:'ssd',     n:'2TB NVMe SSD',    p:119,  w:0,    ru:0, vr:0,  store:40},
+ {id:'hdd',     n:'8TB HDD (rack)',  p:139,  w:5,    ru:1, vr:0,  store:120},
+];
+const FACILITY=[
+ {id:'xfmr', n:'Transformer +1500W', p:900, max:2},
+ {id:'rack', n:'Rack +6 RU',         p:350, max:3},
+];
+const OPS=[
+ {id:'fable', n:'Fable (API)',      q:3, wage:3.2, span:3, vr:0},
+ {id:'haiku', n:'Haiku (API)',      q:2, wage:1.1, span:3, vr:0},
+ {id:'mini',  n:'GPT-5 mini (API)', q:2, wage:0.9, span:2, vr:0},
+ {id:'llama', n:'Llama-70B (open)', q:2, wage:0,   span:2, vr:40},
+ {id:'qwen',  n:'Qwen-32B (open)',  q:1, wage:0,   span:2, vr:20},
+];
+const RECIPES=[
+ {id:'COPY',  n:'Copy',        in:{TOKEN:2}},
+ {id:'SHEET', n:'Spreadsheet', in:{TOKEN:2,CYCLE:1.5}},
+ {id:'SOFT',  n:'Software',    in:{TOKEN:3,CYCLE:2}},
+ {id:'IMAGE', n:'Image',       in:{TOKEN:1.5,FRAME:2}},
+ {id:'BLOCK', n:'Block',       in:{HASH:4}},
+];
+const CONTRACT_TMPL=[
+ {id:'slop',  n:'SLOP FEED',        need:{COPY:8},          minQ:1, base:120},
+ {id:'report',n:'QUARTERLY REPORT', need:{SHEET:4,COPY:2},  minQ:2, base:260},
+ {id:'launch',n:'PRODUCT LAUNCH',   need:{SOFT:2,IMAGE:3},  minQ:2, base:340},
+ {id:'chain', n:'CHAIN SETTLEMENT', need:{BLOCK:5},         minQ:1, base:220},
+ {id:'ads',   n:'AD CAMPAIGN',      need:{IMAGE:5,COPY:5},  minQ:1, base:200},
+ {id:'agency',n:'DESIGN AGENCY',    need:{IMAGE:4,SHEET:2}, minQ:2, base:240},
+];
+const BOTS=[
+ {n:'hashhog.eth',  w:{chain:5,slop:1}},
+ {n:'slopfactory',  w:{slop:5,ads:2}},
+ {n:'sheetlord',    w:{report:4,agency:2}},
+ {n:'tokenbaron',   w:{launch:4,report:2}},
+ {n:'gm_gm_gm',     w:{slop:2,ads:2,chain:2}},
+ {n:'wagmi_farms',  w:{launch:2,agency:2,report:1}},
+];
+const EVENTS={5:{t:'launch',m:2,txt:'DEMAND EVENT · a megacorp ships: PRODUCT LAUNCH pays ×2 (epochs 5–9)'},
+              10:{t:'chain',m:2.5,txt:'DEMAND EVENT · fee spike onchain: CHAIN SETTLEMENT pays ×2.5 (epochs 10–14)'},
+              15:{t:'ads',m:2,txt:'DEMAND EVENT · election season: AD CAMPAIGN pays ×2 (epochs 15–20)'}};
+
+// ============ state ============
+const S={
+ tick:0, epoch:1, speed:1, running:false, over:false,
+ cr:10000, minted:0, held:0, cashed:0,
+ machines:{}, fac:{}, ops:{}, jobs:{},
+ raw:{HASH:0,TOKEN:0,CYCLE:0,FRAME:0},
+ goods:{}, // goods[recipeId][q] = count
+ contracts:[], pressure:{}, eventMult:{},
+ bots:BOTS.map(b=>({...b, minted:0})),
+ tariff:1, autodeliver:{}, sold:{}, // sold[partId] = units bought by field (ladder)
+ spoiled:0,
+};
+RECIPES.forEach(r=>{S.goods[r.id]={1:0,2:0,3:0}});
+CONTRACT_TMPL.forEach(t=>{S.pressure[t.id]=1});
+
+// ============ helpers ============
+const $=id=>document.getElementById(id);
+const fmt=(x,d=0)=>x.toLocaleString('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});
+function log(msg,cls){S.log=S.log||[];const el=$('log');const e=document.createElement('div');e.className='e'+(cls?' '+cls:'');e.textContent=`[e${S.epoch}] ${msg}`;el.prepend(e);while(el.children.length>60)el.lastChild.remove();}
+
+function ladderPrice(part){const n=S.sold[part.id]||0;return Math.round(part.p*(1+0.12*n));}
+function wattCap(){return 1500+1500*(S.fac.xfmr||0);}
+function ruCap(){return 8+6*(S.fac.rack||0);}
+function storeCap(){let c=60;for(const[id,n]of Object.entries(S.machines)){const p=PARTS.find(p=>p.id===id);if(p.store)c+=p.store*n;}return c;}
+function wattsUsed(){let w=0;for(const[id,n]of Object.entries(S.machines))w+=PARTS.find(p=>p.id===id).w*n;return w;}
+function ruUsed(){let r=0;for(const[id,n]of Object.entries(S.machines))r+=PARTS.find(p=>p.id===id).ru*n;return r;}
+function vramTotal(){let v=0;for(const[id,n]of Object.entries(S.machines))v+=PARTS.find(p=>p.id===id).vr*n;return v;}
+function vramUsedByOps(){let v=0;for(const[id,n]of Object.entries(S.ops))v+=OPS.find(o=>o.id===id).vr*n;return v;}
+function spanTotal(){let s=0;for(const[id,n]of Object.entries(S.ops))s+=OPS.find(o=>o.id===id).span*n;return s;}
+function jobsActive(){return Object.values(S.jobs).reduce((a,b)=>a+b,0);}
+function wages(){let w=0;for(const[id,n]of Object.entries(S.ops))w+=OPS.find(o=>o.id===id).wage*n;return w;}
+function goodsCount(){let c=0;for(const g of Object.values(S.goods))c+=g[1]+g[2]+g[3];return c;}
+// jobs are staffed best-quality-first; returns list of q values, one per active job slot
+function jobQualities(){
+ const slots=[];
+ const hired=Object.entries(S.ops).flatMap(([id,n])=>{const o=OPS.find(o=>o.id===id);return Array(n).fill(o);});
+ hired.sort((a,b)=>b.q-a.q);
+ for(const o of hired)for(let i=0;i<o.span;i++)slots.push(o.q);
+ return slots;
+}
+
+// ============ actions ============
+function buyPart(id){
+ const p=PARTS.find(p=>p.id===id), price=ladderPrice(p);
+ if(S.cr<price)return;
+ if(p.w&&wattsUsed()+p.w>wattCap()){log(`blocked: ${p.n} needs ${p.w}W — feed is ${wattCap()}W (buy a transformer)`,'bad');render();return;}
+ if(p.ru&&ruUsed()+p.ru>ruCap()){log(`blocked: no rack space for ${p.n} (buy a rack)`,'bad');render();return;}
+ S.cr-=price;S.machines[id]=(S.machines[id]||0)+1;S.sold[id]=(S.sold[id]||0)+1;
+ log(`bought ${p.n} for ${fmt(price)} CR${price>p.p?` (ladder +${fmt(price-p.p)})`:''}`,'gold');render();
+}
+function sellPart(id){ // salvage at 50%, frees watts/space
+ const p=PARTS.find(p=>p.id===id);if(!(S.machines[id]>0))return;
+ // hosting check: can't strand hosted operators' VRAM
+ if(p.vr&&vramTotal()-p.vr<vramUsedByOps()){log(`blocked: hosted models need that VRAM — fire the operator first`,'bad');render();return;}
+ const back=Math.round(ladderPrice(p)*0.5);
+ S.machines[id]--;if(!S.machines[id])delete S.machines[id];S.cr+=back;
+ log(`salvaged ${p.n} for ${fmt(back)} CR (50%)`,'gold');render();
+}
+function buyFac(id){
+ const f=FACILITY.find(f=>f.id===id);const owned=S.fac[id]||0;
+ if(owned>=f.max||S.cr<f.p)return;
+ S.cr-=f.p;S.fac[id]=owned+1;log(`installed ${f.n} for ${fmt(f.p)} CR`,'gold');render();
+}
+function hireOp(id){
+ const o=OPS.find(o=>o.id===id);
+ if(o.vr&&vramUsedByOps()+o.vr>vramTotal()){log(`blocked: ${o.n} needs ${o.vr}GB VRAM — you have ${vramTotal()-vramUsedByOps()}GB free`,'bad');render();return;}
+ S.ops[id]=(S.ops[id]||0)+1;log(`hired ${o.n}${o.wage?` @ ${o.wage} CR/s`:' (self-hosted, no wage)'}`,'good');render();
+}
+function fireOp(id){
+ if(!(S.ops[id]>0))return;
+ S.ops[id]--;if(!S.ops[id])delete S.ops[id];
+ const cap=spanTotal();let excess=jobsActive()-cap;
+ for(const r of [...RECIPES].reverse()){while(excess>0&&S.jobs[r.id]>0){S.jobs[r.id]--;excess--;}}
+ log(`released ${OPS.find(o=>o.id===id).n}`);render();
+}
+function jobDelta(id,d){
+ const cur=S.jobs[id]||0;
+ if(d>0&&jobsActive()>=spanTotal()){log(`no free sloperator slots (${jobsActive()}/${spanTotal()}) — hire more staff`,'bad');render();return;}
+ S.jobs[id]=Math.max(0,cur+d);render();
+}
+function deliver(ci,silent){
+ const c=S.contracts[ci];if(!c)return false;
+ // check goods at minQ+
+ for(const[g,n]of Object.entries(c.need)){
+  let have=0;for(let q=c.minQ;q<=3;q++)have+=S.goods[g][q];
+  if(have<n)return false;
+ }
+ for(const[g,n]of Object.entries(c.need)){
+  let left=n;for(let q=c.minQ;q<=3&&left>0;q++){const take=Math.min(S.goods[g][q],left);S.goods[g][q]-=take;left-=take;}
+ }
+ c.you++;if(!silent)render();
+ return true;
+}
+function sellGame(n){
+ n=Math.min(n,S.held);if(n<=0)return;
+ S.held-=n;S.cashed+=n*FLOOR;
+ log(`sold ${fmt(n)} $GAME at floor → +$${fmt(n*FLOOR,2)} (floor ratchets up for holders)`,'blue');render();
+}
+
+// ============ contracts & bots ============
+function rollContracts(){
+ const mult=t=>S.eventMult[t]||1;
+ // allocation: base × pressure adjustment × event, normalized to EMISSION
+ const pool=[...CONTRACT_TMPL].sort(()=>Math.random()-.5).slice(0,3);
+ let ws=pool.map(t=>t.base*Math.min(1.8,Math.max(0.6,1/S.pressure[t.id]))*mult(t.id));
+ const tot=ws.reduce((a,b)=>a+b,0);
+ S.contracts=pool.map((t,i)=>({...t,alloc:Math.round(EMISSION*ws[i]/tot),you:0,bots:0}));
+}
+function botPoints(){
+ for(const c of S.contracts){
+  let pts=0;
+  for(const b of S.bots){
+   const w=b.w[c.id]||0.3;
+   pts+=w*(0.6+0.5*Math.random())*(1+S.epoch*0.06);
+  }
+  c.bots=pts;
+ }
+}
+function settleEpoch(){
+ botPoints();
+ let mintedNow=0;
+ for(const c of S.contracts){
+  const tot=c.you+c.bots;
+  S.pressure[c.id]=0.5*S.pressure[c.id]+0.5*Math.max(0.2,tot/6); // memo of crowding
+  if(c.you>0){
+   const share=c.alloc*c.you/tot;
+   mintedNow+=share;
+   // bots' share, attributed by archetype weight
+  }
+  const botShare=c.alloc*(c.bots/Math.max(tot,0.001));
+  let wsum=0;S.bots.forEach(b=>wsum+=(b.w[c.id]||0.3));
+  S.bots.forEach(b=>b.minted+=botShare*(b.w[c.id]||0.3)/wsum);
+ }
+ if(mintedNow>0){S.minted+=mintedNow;S.held+=mintedNow;log(`epoch ${S.epoch} settled: minted ${fmt(mintedNow,1)} $GAME`,'blue');}
+ else log(`epoch ${S.epoch} settled: you minted nothing — deliver baskets!`,'bad');
+}
+
+// ============ tick ============
+function step(){
+ if(!S.running||S.over)return;
+ S.tick++;
+ // tariff drifts with your load + a slow wave
+ const load=wattsUsed()/wattCap();
+ S.tariff=1+0.35*load+0.15*Math.sin(S.tick/40);
+ // costs
+ const elec=wattsUsed()*ELEC*S.tariff, wage=wages();
+ const burn=elec+wage;
+ let halted=false;
+ if(S.cr>=burn){S.cr-=burn;}else{S.cr=0;halted=true;}
+ // production
+ if(!halted){
+  for(const[id,n]of Object.entries(S.machines)){
+   const p=PARTS.find(p=>p.id===id);if(!p.out)continue;
+   for(const[r,v]of Object.entries(p.out))S.raw[r]+=v*n;
+  }
+  // workshops: one good per job per tick if inputs allow; quality from best-first staffing
+  const quals=jobQualities();let slot=0;
+  for(const r of RECIPES){
+   const jn=S.jobs[r.id]||0;
+   for(let j=0;j<jn;j++){
+    const q=quals[slot++]||1;
+    let ok=true;for(const[raw,need]of Object.entries(r.in))if(S.raw[raw]<need){ok=false;break;}
+    if(ok){for(const[raw,need]of Object.entries(r.in))S.raw[raw]-=need;S.goods[r.id][q]++;}
+   }
+  }
+ }else if(S.tick%10===0){log('OUT OF CREDITS — machines dark, wages unpaid. Salvage something.','bad');}
+ // storage spoilage
+ let over=goodsCount()-storeCap();
+ if(over>0){
+  for(const r of RECIPES){for(let q=1;q<=3&&over>0;q++){const t=Math.min(S.goods[r.id][q],over);S.goods[r.id][q]-=t;over-=t;S.spoiled+=t;}}
+  if(S.tick%5===0)log(`storage overflow — goods spoiling! (cap ${storeCap()})`,'bad');
+ }
+ // autodeliver
+ S.contracts.forEach((c,i)=>{if(S.autodeliver[c.id])while(deliver(i,true)){}});
+ // epoch boundary
+ if(S.tick%EPOCH_TICKS===0){
+  settleEpoch();
+  S.epoch++;
+  if(S.epoch>EPOCHS){endRound();return;}
+  if(EVENTS[S.epoch]){const ev=EVENTS[S.epoch];S.eventMult={};S.eventMult[ev.t]=ev.m;log(ev.txt,'gold');}
+  if(S.epoch===8||S.epoch===14){S.cr+=1500;log('stipend drop: +1,500 CR — the market has moved, re-decide','gold');}
+  rollContracts();
+ }
+ render();
+}
+function endRound(){
+ S.over=true;S.running=false;
+ const rows=[{n:'YOU',m:S.minted,you:1},...S.bots.map(b=>({n:b.n,m:b.minted}))].sort((a,b)=>b.m-a.m);
+ const rank=rows.findIndex(r=>r.you)+1;
+ const worth=S.cashed+S.held*FLOOR;
+ $('obox').innerHTML=`<h1>ROUND OVER</h1>
+  <div class="sub">graduation: emission stops · supply fixed · AMM opens</div>
+  <p>You finished <span class="k">#${rank} of ${rows.length}</span> with <span class="k">${fmt(S.minted,1)} $GAME</span> minted.</p>
+  <p>Cashed at floor: <span class="k">$${fmt(S.cashed,2)}</span> · still holding ${fmt(S.held,1)} $GAME (floor value $${fmt(S.held*FLOOR,2)})</p>
+  <p>Total floor worth: <span class="k">$${fmt(worth,2)}</span> on your $100 seat.${S.spoiled?` You let <span class="k">${fmt(S.spoiled)}</span> goods spoil.`:''}</p>
+  <p style="color:var(--dim)">The carnival test: was that fun even if the number was $0?</p>
+  <button onclick="location.reload()">RUN IT BACK</button>`;
+ $('overlay').style.display='flex';
+}
+
+// ============ render ============
+let lastRaw={...S.raw};
+function render(){
+ const wu=wattsUsed(),wc=wattCap(),burn=wu*ELEC*S.tariff+wages();
+ $('status').innerHTML=`
+  <span class="stat"><span class="lbl">CR</span><span class="num cr">${fmt(S.cr)}</span></span>
+  <span class="stat"><span class="lbl">PWR</span><span class="num ${wu>wc*0.9?'warn':''}">${fmt(wu)}/${fmt(wc)}W</span></span>
+  <span class="stat"><span class="lbl">RU</span><span class="num">${ruUsed()}/${ruCap()}</span></span>
+  <span class="stat"><span class="lbl">STORE</span><span class="num ${goodsCount()>storeCap()*0.9?'warn':''}">${fmt(goodsCount())}/${fmt(storeCap())}</span></span>
+  <span class="stat"><span class="lbl">BURN</span><span class="num">${fmt(burn*60,0)}/min</span></span>
+  <span class="stat"><span class="lbl">$GAME</span><span class="num gm">${fmt(S.held,1)}</span></span>
+  <span class="stat"><span class="lbl">EPOCH</span><span class="num">${S.epoch}/${EPOCHS} · ${EPOCH_TICKS-(S.tick%EPOCH_TICKS)}s</span></span>
+  <span class="speed">${[['⏸',0],['1×',1],['2×',2],['4×',4]].map(([l,v])=>`<button class="${S.speed===v&&(v===0?!S.running:S.running)?'on':''}" onclick="setSpeed(${v})">${l}</button>`).join('')}</span>`;
+ // ticker
+ $('ticker').innerHTML=Object.entries(S.raw).map(([r,v])=>{
+  const rate=rawRate(r);
+  const bumped=v>lastRaw[r];
+  return `<div class="raw${bumped?' bump':''}"><div class="rl">${r}</div><div class="rv num">${fmt(v,1)}</div><div class="rr">${rate>0?'+'+fmt(rate,1)+'/s':'idle'}</div></div>`;
+ }).join('');
+ lastRaw={...S.raw};
+ renderRig();renderShop();renderStaff();renderContracts();renderMarket();
+}
+function rawRate(r){let v=0;for(const[id,n]of Object.entries(S.machines)){const p=PARTS.find(p=>p.id===id);if(p.out&&p.out[r])v+=p.out[r]*n;}return v;}
+function renderRig(){
+ const m=Object.entries(S.machines);
+ $('rig').innerHTML=m.length?m.map(([id,n])=>{
+  const p=PARTS.find(p=>p.id===id);
+  const outs=p.out?Object.entries(p.out).map(([r,v])=>`${r} +${fmt(v*n,1)}/s`).join(' · '):(p.store?`+${p.store*n} storage`:'');
+  return `<div class="card row"><div><div class="name">${p.n} ×${n}</div><div class="meta">${fmt(p.w*n)}W · ${p.ru*n}RU${p.vr?` · ${p.vr*n}GB VRAM`:''} · ${outs}</div></div>
+   <button class="sell" onclick="sellPart('${id}')">salvage 50%</button></div>`;
+ }).join(''):'<div class="card" style="color:var(--dim)">No machines. Hit SHOP — your 10,000 CR is doing nothing.</div>';
+ $('jobs').innerHTML=RECIPES.map(r=>{
+  const jn=S.jobs[r.id]||0;
+  const ins=Object.entries(r.in).map(([k,v])=>`${v} ${k}`).join(' + ');
+  return `<div class="card row"><div><div class="name">${r.n}</div><div class="meta">${ins} → 1 ${r.id}</div></div>
+   <div class="row"><button onclick="jobDelta('${r.id}',-1)" ${jn?'':'disabled'}>−</button><span class="num" style="min-width:20px;text-align:center">${jn}</span><button onclick="jobDelta('${r.id}',1)">+</button></div></div>`;
+ }).join('')+`<div class="meta" style="margin-top:4px">sloperator slots used: ${jobsActive()}/${spanTotal()}</div>`;
+ $('inv').innerHTML='<table><tr><th>good</th><th class="q1">Q1</th><th class="q2">Q2</th><th class="q3">Q3</th></tr>'+
+  RECIPES.map(r=>`<tr><td>${r.id}</td><td class="num q1">${fmt(S.goods[r.id][1])}</td><td class="num q2">${fmt(S.goods[r.id][2])}</td><td class="num q3">${fmt(S.goods[r.id][3])}</td></tr>`).join('')+'</table>';
+}
+function renderShop(){
+ $('shop').innerHTML=PARTS.map(p=>{
+  const price=ladderPrice(p);
+  const outs=p.out?Object.entries(p.out).map(([r,v])=>`${r} ${v}/s`).join(' · '):`+${p.store} storage`;
+  const wpg=p.out&&p.w?` · ${fmt(Object.values(p.out)[0]/p.w*1000,1)}/kW`:'';
+  return `<div class="card row"><div><div class="name">${p.n}</div><div class="meta">${p.w?fmt(p.w)+'W · ':''}${p.ru?p.ru+'RU · ':''}${p.vr?p.vr+'GB · ':''}${outs}${wpg}</div></div>
+   <button class="buy" onclick="buyPart('${p.id}')" ${S.cr<price?'disabled':''}>${fmt(price)} CR${(S.sold[p.id]||0)>0?' ↑':''}</button></div>`;
+ }).join('');
+ $('facility').innerHTML=FACILITY.map(f=>{
+  const owned=S.fac[f.id]||0;
+  return `<div class="card row"><div><div class="name">${f.n}</div><div class="meta">owned ${owned}/${f.max}</div></div>
+   <button class="buy" onclick="buyFac('${f.id}')" ${owned>=f.max||S.cr<f.p?'disabled':''}>${fmt(f.p)} CR</button></div>`;
+ }).join('');
+}
+function renderStaff(){
+ $('staff').innerHTML=OPS.map(o=>{
+  const n=S.ops[o.id]||0;
+  return `<div class="card row"><div><div class="name">${o.n} <span class="q${o.q}">Q${o.q}</span>${n?` ×${n}`:''}</div>
+   <div class="meta">${o.wage?fmt(o.wage,1)+' CR/s wage':'no wage · '+o.vr+'GB VRAM'} · runs ${o.span} jobs</div></div>
+   <div class="row">${n?`<button onclick="fireOp('${o.id}')">release</button>`:''}<button class="buy" onclick="hireOp('${o.id}')">hire</button></div></div>`;
+ }).join('')+`<div class="meta">VRAM: ${vramUsedByOps()}/${vramTotal()}GB used by hosted models</div>`;
+}
+function renderContracts(){
+ $('contracts').innerHTML=S.contracts.map((c,i)=>{
+  const need=Object.entries(c.need).map(([g,n])=>`${n}×${g}`).join(' + ');
+  const canOne=(()=>{for(const[g,n]of Object.entries(c.need)){let h=0;for(let q=c.minQ;q<=3;q++)h+=S.goods[g][q];if(h<n)return false;}return true;})();
+  return `<div class="card"><div class="row"><div><div class="name">${c.n} ${(S.eventMult[c.id]||1)>1?'<span class="gm">×EVENT</span>':''}</div>
+   <div class="meta">${need} · min <span class="q${c.minQ}">Q${c.minQ}</span> · pool <span class="gm num">${fmt(c.alloc)} $GAME</span></div></div>
+   <button class="buy" onclick="deliver(${i})" ${canOne?'':'disabled'}>deliver ×1</button></div>
+   <div class="row" style="margin-top:6px"><span class="meta">your baskets this epoch: <span class="num ok">${c.you}</span> · rival pressure: ${'▮'.repeat(Math.min(8,Math.round(c.bots||estPressure(c))))||'▯'}</span>
+   <label class="meta"><input type="checkbox" ${S.autodeliver[c.id]?'checked':''} onchange="S.autodeliver['${c.id}']=this.checked"> auto</label></div></div>`;
+ }).join('');
+}
+function estPressure(c){let pts=0;for(const b of S.bots)pts+=(b.w[c.id]||0.3);return pts*(1+S.epoch*0.06)*0.85;}
+function renderMarket(){
+ $('token').innerHTML=`<div class="row"><div><div class="name num gm">${fmt(S.held,1)} $GAME held</div>
+  <div class="meta">minted ${fmt(S.minted,1)} · floor $${FLOOR.toFixed(3)} · reserve $${fmt(RESERVE)} · S<sub>max</sub> ${fmt(SMAX)}</div>
+  <div class="meta">cashed out: $${fmt(S.cashed,2)}</div></div>
+  <div class="row"><button class="sell" onclick="sellGame(50)" ${S.held<1?'disabled':''}>sell 50</button>
+  <button class="sell" onclick="sellGame(S.held)" ${S.held<1?'disabled':''}>sell all</button></div></div>
+  <div class="meta" style="margin-top:6px">sell-only until graduation · every early exit ratchets the floor up for holders</div>`;
+ const rows=[{n:'YOU (seat #7)',m:S.minted,you:1},...S.bots.map(b=>({n:b.n,m:b.minted}))].sort((a,b)=>b.m-a.m);
+ $('board').innerHTML='<tr><th>#</th><th>player</th><th>$GAME minted</th></tr>'+
+  rows.map((r,i)=>`<tr class="${r.you?'you':''}"><td>${i+1}</td><td>${r.n}</td><td class="num">${fmt(r.m,1)}</td></tr>`).join('');
+}
+
+// ============ controls ============
+let timer=null;
+function setSpeed(v){
+ if(v===0){S.running=false;}else{S.running=true;S.speed=v;}
+ if(timer)clearInterval(timer);
+ if(S.running)timer=setInterval(step,1000/S.speed);
+ render();
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+ document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+ b.classList.add('on');$(b.dataset.p).classList.add('on');
+}));
+$('startBtn').addEventListener('click',()=>{
+ $('overlay').style.display='none';
+ rollContracts();
+ log('round 0 open · 7 seats · reserve $700 · floor locked at $'+FLOOR.toFixed(3),'blue');
+ log('tip: raw crunches alone, but nothing mints until a sloperator refines goods and you deliver contracts','gold');
+ setSpeed(1);
+});
+render();
+</script>
