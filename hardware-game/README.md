@@ -15,6 +15,8 @@ Three research passes feed this doc:
   anti-meta mechanics, onchain architecture, the AI-employee idea
 - **[TOKENOMICS.md](TOKENOMICS.md)** — the real-money layer: $100 buy-in → curve →
   burn-to-mint token, sell-only valve, graduation to open trading, seasons
+- **[RESOURCES.md](RESOURCES.md)** — the full sink/faucet graph: 5 constraints,
+  hardware classes, sloperators, 6 raw commodities, 10 refined goods, contract board
 - **[PRIOR-ART-TOKENS.md](PRIOR-ART-TOKENS.md)** — buy-in/curve game history: FOMO3D,
   Words3 (closest precedent), Axie/StepN spirals, one-way valves, legality landscape
 - **[../hardware-db/DATA-SOURCES.md](../hardware-db/DATA-SOURCES.md)** — the real-data
