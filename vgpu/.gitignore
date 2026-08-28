@@ -2,3 +2,6 @@ spike/node_modules/
 spike/out.mp4
 spike/frame.png
 spike/gradient.png
+experiment/node_modules/
+experiment/work/
+experiment/experiment.mp4

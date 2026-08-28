@@ -61,3 +61,23 @@ name. Time in browser loops comes from `clock(gpu)`. Missing binding =
 
 - `spike/render-video.mjs` — WGSL → ffmpeg mp4 pipeline (the 183 fps run).
 - `spike/frame.png` / `spike/out.mp4` — gitignored outputs; rerun to regenerate.
+
+## Experiment: morning show over a live shader (2026-08-28)
+
+`experiment/` re-composites the first 24s of the REAL 2026-08-21 show with the
+black background replaced by a vgpu-rendered set: scrolling perspective grid,
+voice-reactive waveform + horizon glow (per-frame RMS from voice.norm.wav),
+and a black stage panel with a glowing border that tracks the avatar's
+full→PIP move (the avatar clips are on pure black, so the panel makes the
+square read as design). **clawd-morning-show was not modified** — inputs are
+copies, coordinates cribbed from its show.filter.
+
+- `experiment/bg.mjs` — levels extraction + shader render → `work/bg.mp4`
+  (732 frames of 720p in ~1.7s; a full 2:20 show ≈ 10s).
+- `experiment/comp.sh` — ffmpeg-full comp: bg + avatar concat + story card +
+  ticker + captions.ass + delayed audio → `experiment.mp4`.
+- To regenerate: copy the listed inputs from a show's `out/work-<date>/` into
+  `experiment/work/`, then `node bg.mjs && ./comp.sh`.
+- Integration shape if adopted: one new stage writes `bg.mp4`; 05-render's
+  base layer becomes that file instead of black. Nothing else changes.
+- Watch: https://claude.ai/code/artifact/a4f8f3de-9eac-432e-9cd9-613d91d04963
