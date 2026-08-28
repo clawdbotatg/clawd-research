@@ -1,0 +1,425 @@
+# QUOTRONS V2 — Complete Reference
+
+Last updated 2026-08-13.
+
+This is factual project documentation for QUOTRONS V2. Promotional
+rewards are not dividends, investment income, equity, or a share of
+profits. Nothing here is financial, investment, legal, or tax advice.
+
+## 1. Current status
+
+V1 is permanently retired after a stale-approval exploit affecting its
+ERC-721 mirror. V2 is a separate collection and contract stack; it does
+not replace or mutate the V1 collection.
+
+The verified V2 contracts are deployed on Robinhood Chain, chain id
+4663. The snapshot-based zero-action distribution is finalized: eligible
+V1 dark terminals, hardwired terminals, fractional balances, and approved
+restitution allocations were delivered directly to V2 wallets.
+
+The canonical QUOTRON/WETH pool is seeded. The token and hook are open,
+trading and hardwiring are live, and launch fees are permanently
+finalized at 3%. The website continues to read those onchain gates and
+fails closed; it does not rely on a date countdown.
+
+The collection is revealed and its assets are pinned to IPFS. The launch
+transaction executed the one-way metadata freeze, so the base URIs are
+immutable; the website reads and displays that onchain state.
+
+## 2. What QUOTRONS is
+
+QUOTRONS is a 4,444-terminal ERC-404 collection. The NFTs are pixel-art
+renderings of machines that carried stock prices through history, from
+an 1814 semaphore to a 1971 dealer terminal.
+
+One whole liquid QUOTRON materializes one dark terminal. Selling below a
+whole liquid unit dissolves a dark terminal back into circulation.
+Burning the one-token backing of a dark terminal hardwires it:
+
+- the burn is permanent and irreversible;
+- the terminal becomes a permanent ERC-721;
+- its metadata changes permanently from dark art to animated lit art;
+- it no longer dissolves when liquid QUOTRON is sold; and
+- its owner can claim promotional stock rewards.
+
+V2 preserves the invariant:
+
+  liquid ERC-20 supply + hardwired terminals × 1e18 = 4,444e18
+
+There is no NFT mint sale. Whole liquid units materialize dark terminals.
+
+## 3. The machines
+
+The four standard tiers and reward weights are:
+
+- Quotron I Keypad (1960): 2,450 total, 1.0x weight.
+- Quotron II Desk Unit (1962): 1,330 total, 1.5x weight.
+- Quotron 800 (1970s): 530 total, 2.5x weight.
+- NASDANK Terminal (1971): 130 total, 5.0x weight.
+
+Each of the ten reward tracks has the same 245 / 133 / 53 / 13 standard
+tier mix. The remaining four IDs are one-of-one relics:
+
+- #4441, The Semaphore (1814): one third of the 12.5% basket carve from
+  every reward stock, equal to about 0.0833% of steady-state volume.
+- #4442, The Universal Ticker (1871): the same basket share.
+- #4443, The Trans-Lux (1923): the same basket share.
+- #4444, The Gold Indicator (1867): 5% of each reward-stock inflow,
+  equal to 0.10% of steady-state volume.
+
+Relic reward pots can accrue before hardwiring, but only a hardwired
+relic owner can claim them.
+
+## 4. One trading market, ten reward stocks
+
+V2 does not trade against ten stocks in ten QUOTRON pools. It has one
+canonical QUOTRON/WETH Uniswap v4 pool.
+
+The ten tokenized-stock markets are reward conversion routes:
+
+NVDA, AAPL, TSLA, GME, SPCX, SPY, PLTR, NFLX, RDDT, and MSTR.
+
+Every standard terminal is assigned permanently to one reward track.
+Fresh WETH reward fees are converted to those stocks in bounded epochs.
+The resulting stock is deposited into the reflections engine, where
+hardwired terminals claim it directly.
+
+The Gold Indicator accrues the ten stock tokens directly. V2 has no
+fresh PAXG conversion rail. The zero-action distribution did not move
+accrued V1 rewards into V2.
+
+## 5. Fee policy
+
+The permanent base fee is 3% of WETH-side volume. At that rate:
+
+- 2.0000% of volume funds hardwired-terminal stock rewards;
+- 0.6375% compounds protocol-owned locked QUOTRON liquidity;
+- 0.2125% buys and burns STONKBROKERS; and
+- 0.1500% goes to the creator.
+
+The hook first collects WETH. Destination-locked contracts then process
+the three protocol pots; no caller can redirect their recipient.
+
+Before one-way launch-fee finalization:
+
+- the keeper pays 3%;
+- wallets accepted by the published eligibility registry pay 3%;
+- STONK BROKER holders qualify through the registry's live collection
+  check and pay 3%;
+- other public wallets pay 90%; and
+- a recipient that actually pays the 90% buy fee is transfer-restricted
+  for one hour.
+
+The owner manually finalizes launch fees after the reviewed launch
+sequence. Finalization is irreversible and makes the fee 3% for
+everyone. That finalization has executed. There is no six-hour timer and
+no 40% V2 tier.
+
+## 6. Stock reward epochs
+
+At the 3% base fee, two points of every WETH-side trade enter the hook's
+reflection pot. The epoch converter:
+
+- opens only after at least 0.1 WETH is available;
+- is capped at 100 WETH per epoch;
+- enforces at least 60 seconds between epochs;
+- splits each opened WETH budget equally across all ten reward tracks;
+- uses sealed WETH -> USDG -> stock routes; and
+- sends each converted stock only to the V2 reflections contract.
+
+The Machine's Record uses cumulative onchain accounting rather than
+displaying the live reflection pot as lifetime earnings. It adds every
+historical reward-pot pull to the current queue, then separately shows
+WETH already converted and allocated, WETH in an active conversion, and
+WETH waiting for the next epoch. The displayed USD equivalent uses the
+current ETH/USD mark, not a historical per-epoch exchange rate.
+
+For each track's converted stock:
+
+- 82.5% goes to ordinary hardwired terminals on that track by live
+  reward weight;
+- 12.5% goes to the three basket relics, one third each; and
+- 5% goes to the Gold Indicator.
+
+Within an ordinary reward track:
+
+  share = terminal live weight / total active track weight
+
+Tier weights are 1.0 / 1.5 / 2.5 / 5.0. If the terminal owner holds a
+STONK BROKER NFT, the terminal's live weight is 1.25x. Anyone may call
+poke(id) after the owner's Broker status changes; accounting settles at
+the previous weight before repricing.
+
+Claims are terminal-ID based. Pending rewards travel with a hardwired NFT
+when it transfers. A seller may claim immediately before a sale, so
+buyers should re-check pending balances at execution time.
+
+## 7. Canonical routing enforcement
+
+The only supported market route is:
+
+  user -> QuotronWethRouter -> registered QUOTRON/WETH v4 pool
+
+Enforcement exists at multiple layers:
+
+- the hook rejects swaps unless the sender is the immutable canonical
+  router;
+- the hook rejects any pool except the registered pool;
+- the QUOTRON token requires one-shot PoolManager settlement
+  authorization issued by that hook;
+- the token verifies that authorization was consumed;
+- known non-v4 AMM venue code hashes can be banned; and
+- EOA code hashes cannot be banned, preserving wallet-to-wallet use.
+
+This makes an alternate v4 pool or direct PoolManager settlement unable
+to bypass the canonical fee hook. Known non-v4 venue codehashes can be
+blocked, but ordinary ERC-20 transfers remain possible; this is not a
+claim that every arbitrary future custom contract is categorically
+impossible. The canonical router supports:
+
+  buyExactEth(minQuotronOut, recipient, deadline) payable
+    -> quotronOut
+
+  sellExactQuotronForEth(quotronIn, minEthOut, recipient, deadline)
+    -> ethOut
+
+Sells require ERC-20 approval to the canonical router. Approve only the
+amount needed. Aggregators should eth_call QuotronWethQuoter with
+(amount, payer). That returns output and the payer's fee without the
+payer holding ETH, QUOTRON, or a router allowance. Execution still
+goes through the canonical router with an explicit slippage minimum.
+Exact-output buys are unavailable when the payer's fee is 50% or higher.
+There is no hosted quote API key.
+
+Public integration resources:
+
+- guide: https://quotrons.cash/integration.md
+- manifest: https://quotrons.cash/integration/manifest.json
+- router ABI:
+  https://quotrons.cash/integration/QuotronWethRouter.abi.json
+- token ABI:
+  https://quotrons.cash/integration/Quotron404V2.abi.json
+- hook ABI:
+  https://quotrons.cash/integration/QuotronWethHook.abi.json
+- quoter ABI:
+  https://quotrons.cash/integration/QuotronWethQuoter.abi.json
+
+## 8. V1 to V2 distribution
+
+The V2 distribution used a published snapshot and Merkle commitment.
+It was executed without requiring users to sign a migration transaction.
+
+The ledger preserved exact terminal IDs and hardwired state where
+eligible, rerolled liquid allocations according to the published plan,
+and included reviewed restitution replacements. V1 purchases on any
+venue after the applicable cutoff were not honored: OpenSea, unofficial
+external pools, or direct transfers. Dark ownership, liquid balances,
+and fractional balances froze at halt block 34984482; lit copies for
+terminals already hardwired at that block followed V1 NFT ownership
+through block 35337540.
+
+The migration reserve was capped to the committed ledger. Distribution
+could finalize only after:
+
+- total distributed amount equaled the cap; and
+- the migration reserve held zero QUOTRON.
+
+Finalization permanently closes all remaining claim, assignment,
+handoff, fractional, and restitution functions. The website's V1
+Migration Record is now a read-only audit view, except that users can
+still revoke unsafe V1 operator approvals.
+
+The zero-action distribution copied eligible V2 IDs and hardwired state
+without taking the V1 NFTs. It emitted no legacy-reward migration events,
+so accrued V1 rewards remain separate V1 entitlements; V2 terminals earn
+new rewards from V2 epochs.
+
+The final V1 historical rewards record is $113,849.84 in
+tokenized-stock rewards generated for hardwired holders. The site rounds
+this to $113,850 for display. The archive derives it from the final
+onchain V1 burn pots, the contract's exact 80/17 reward-to-burn fee
+ratio, and the frozen stock marks used for final V1 accounting. It is
+not a live claimable balance or a current-market-price valuation. The
+machine-readable calculation is served at:
+
+  /migration/v1-historical-rewards.json
+
+## 9. V2 security and disclosed controls
+
+V2 was designed after the V1 stale-approval incident. It does not rely
+on the V1 mirror for V2 ownership or approvals.
+
+The V2 mirror clears an NFT's individual approval whenever a
+base-driven ownership or approval-domain transition occurs, including
+materialization and hardwiring. Wallet-wide operator approvals remain
+explicit choices controlled by the wallet owner.
+
+Disclosed emergency controls exist:
+
+- the owner can pause the core and hook, ban or unban non-EOA venue
+  codehashes, and irreversibly finalize the public fee at 3%;
+- the blacklist guardian can freeze addresses but cannot remove a freeze;
+- the recovery administrator can add or remove freezes;
+- the recovery administrator is a Safe with a threshold of at least two;
+- that Safe can forcibly move V2 ERC-20 balances or terminal NFTs
+  between eligible non-protocol accounts;
+- protected protocol accounts cannot be arbitrary recovery targets; and
+- every freeze and recovery action emits an onchain event.
+
+The production configuration publishes:
+
+- blacklist guardian:
+  0x7171E64E979265aeD6588577D1c6b60A701d7866
+- recovery Safe:
+  0x15277aA1ecC13734d57C519a2DAA1cc4A748bA89
+
+These controls are trust assumptions, not decentralization claims.
+Metadata base URIs and the ERC721-C transfer validator become immutable
+at launch.
+
+## 10. NFT transfers and creator earnings
+
+The V2 mirror uses ERC721-C transfer validation. The intended creator
+earning is 5% of an NFT sale:
+
+- 4% to the keeper; and
+- 1% to the creator.
+
+Marketplace support depends on whether the venue honors the configured
+transfer validator and required payment split. Buyers and sellers must
+verify venue compatibility. This NFT creator earning is separate from
+the 0.15% creator carve on canonical token-market volume.
+
+## 11. Metadata and assignment
+
+The collection is revealed. The assignment was generated
+deterministically with seed 44440707 and committed by hash before V2
+deployment. IDs, reward stocks, tiers, and art cannot be rerolled by an admin.
+
+Canonical asset CIDs:
+
+- Dark images:
+  ipfs://bafybeibxh5bcdw353ufuprmzyzmk4wwtptjkym7em6igmmwp4izzoxrjym/
+- Hardwired animations:
+  ipfs://bafybeicmrosixas4ry3mp6afuevniqbqzq72to2n65ys5umuqqzijzsmsm/
+- V2 dark metadata:
+  ipfs://bafybeig447r5kqu34u2qm5aklrvgk5igor6qe6o7ng6wmuj2vet3idiwhe/
+- V2 hardwired metadata:
+  ipfs://bafybeigl2vkhz4pwib27k6l6g5nqsvp5i6zgnhogc27csap3cltlvvx5mi/
+
+## 12. Production V2 contracts
+
+- QUOTRON core:
+  0x5a86828Efd322bfb16d93cFeD16EE9BC14940D7F
+- ERC-721 mirror:
+  0x027ACa2794E44f24950D81227DcD516FfBB49d6e
+- Reflections:
+  0xe04fba61FD54Ba78Dd450A30d8Af40167aF5d3Ec
+- Canonical hook:
+  0x62E200Cc8e4D95cf622f40Dd70f407C883EcB0cc
+- Canonical router:
+  0x42024fCFdB4F3089Dd619A0cEF0Cd24E7b841C18
+- View quoter:
+  0xb8960fdC8A0Be155d196C2795b75747763562df2
+- Eligibility registry:
+  0x94CfC3798Ca6320Ac5e6af04484EFE90bD04aC81
+- Epoch converter:
+  0x24e62Dd5C7058CC41ad9c5375C137460ea1Da2FE
+- WETH burn vault:
+  0xd1258efafa9d1B1d09c86403139Db78465540760
+- Destination-locked burn adapter:
+  0x59b09A326984dd3c1076B864aa27F0BDd9876f0a
+- Migration contract, now finalized:
+  0x205E13e6Ec07baa4eD1c57d677DE9FeE1C88Cd6D
+- Empty finalized migration reserve:
+  0xCF39cb2363f85d3adad4fF891bb357C1766ef292
+- Fractional migration sink:
+  0x077403e402B63Da54a594Cbd2CfC46DbC92927ad
+- Locked LP vault:
+  0x4b7A4F53D9b7E4B4941bc9CF74e852D55444cCBe
+- Liquidity seeder:
+  0xCc949C33860E0F695be3373628955D77Dd922Fee
+- Royalty splitter:
+  0xd8eb805e96B05cb412A1e48eb3a85B6267f901d7
+- STONK BROKERS NFT:
+  0x539CdD042c2f3d93EbC5BE7DfFf0c79F3B4fAbF0
+
+Canonical QUOTRON/WETH pool id:
+  0x0b142aaf734f1b063355bfe854e282a13b26dcac86e2e564e74540f9b218d069
+
+V1 archive:
+
+- V1 QUOTRON:
+  0x40686524e56AfF0F1446958725dCF6e6dA5381E6
+- V1 mirror:
+  0xbde7BEc47cbFc689e5E952B6cdD113A500abcd83
+- V1 reflections:
+  0x666A51Eb731a9CF79d97B4A9c64cD5a4806c877C
+
+## 13. Common questions
+
+Is V2 the same OpenSea collection as V1?
+
+No. The V2 mirror is a new ERC-721 contract and appears as a separate
+collection. V1 remains visible as historical onchain state.
+
+Why did V2 NFTs appear without a migration transaction?
+
+The reviewed genesis distributor delivered the committed allocations
+directly. Users did not need to claim.
+
+Can I trade now?
+
+Only when the V2 core reports launched and neither the core nor the
+canonical hook is paused. The website displays those onchain states.
+
+Do dark terminals earn?
+
+Ordinary dark terminals do not participate in stock rewards. Relic pots
+can accrue before hardwiring, but cannot be claimed until the relic is
+hardwired.
+
+Can I undo hardwiring?
+
+No. Hardwiring burns one liquid token permanently.
+
+Can I choose a reward stock or machine?
+
+No. Assignment is deterministic and terminal creation draws from the
+available ID pool. Selling below a whole unit dissolves a dark terminal;
+crossing back above a whole unit can draw another available ID.
+
+What creates rewards?
+
+Canonical QUOTRON/WETH trading fees. WETH is converted to the ten stocks
+by the sealed epoch converter. NFT marketplace creator earnings do not
+fund the V2 stock reward pots.
+
+Is QUOTRONS affiliated with Robinhood, NASDAQ, Quotron, or Trans-Lux?
+
+No. It is an independent project using historical machines as subject
+matter. Living trademarks are parodied; defunct brands are referenced
+as historical facts.
+
+## 14. Risks
+
+- Smart contracts, wallets, marketplaces, RPCs, and a young chain can
+  fail.
+- The canonical market can be extremely volatile and illiquid.
+- A 90% launch-phase fee is intentionally punitive; always read the
+  onchain fee for the actual payer before signing. A recipient that
+  actually pays it is transfer-restricted for one hour.
+- Hardwiring is irreversible.
+- Reward volume may never materialize.
+- Tokenized stocks are third-party upgradeable assets whose issuer can
+  pause or change them.
+- The blacklist guardian and recovery Safe are explicit trust
+  assumptions.
+- Canonical v4 settlement is enforced and known venue codehashes can be
+  blocked, but arbitrary future custom contracts cannot be represented
+  as categorically impossible.
+- ERC721-C marketplace compatibility varies; unsupported venues may
+  reject NFT transfers or listings.
+- Stock-token access is restricted in some jurisdictions, including the
+  United States region.
+- Never risk more than you can afford to lose completely.
