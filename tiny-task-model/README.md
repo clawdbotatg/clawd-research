@@ -1,5 +1,8 @@
 # tiny-task-model — fine-tune a 0.6B model on one narrow task, locally
 
+> Picking this up fresh? **Read [`HANDOFF.md`](HANDOFF.md)** — full operational
+> knowledge: landmines, exact commands, the production plan and its gate.
+
 Inspired by [Tobi's tweet](https://x.com/tobi/status/2094808564355191249)
 (2026-09-01): Shopify fine-tuned a 0.8B model that beats GPT 5.6-sol xhigh on a
 specialized task, via a "self improving recursive flywheel." This dir is that
