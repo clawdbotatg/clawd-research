@@ -1,0 +1,120 @@
+{"out": "{\n  \"title\": \"Add Voice Input\",\n  \"desc\": \"Add voice input to the search bar using the web speech api\",\n  \"tab\": \"voice input\"\n}"}
+{"out": "{\n  \"title\": \"UTC Conversion\",\n  \"desc\": \"Audit DST edges and convert events to UTC\",\n  \"tab\": \"timezone\""}
+{"out": "```json\n{\n  \"title\": \"WebSocket Reconnect\",\n  \"desc\": \"Implement exponential backoff with jittered backoff and resubscribe on reconnect\",\n  \"tab\": \"WebSocket\"\n}\n```"}
+{"out": "{\"title\": \"Migrate Blog\", \"desc\": \"Migrate blog posts from WordPress to a static Astro site\", \"tab\": \"Migrate\"}"}
+{"out": "```json\n{\n  \"title\": \"cache queries\",\n  \"desc\": \"cache per-query with short TTLs and invalidate on product writes\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "{\"title\": \"PDF Invoice Generator\", \"desc\": \"Generates PDF invoices with Unicode support\", \"tab\": \"PDF\"}"}
+{"out": "```json\n{\n  \"title\": \"PR Label Bot\",\n  \"desc\": \"Create a GitHub bot to label PRs by files they touch\",\n  \"tab\": \"github\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"ML Model Deployment\",\n  \"desc\": \"Deploy ML model behind fastapi endpoint with batching\",\n  \"tab\": \"Deployment\"\n}\n```"}
+{"out": "{\n  \"title\": \"iOS App Review\",\n  \"desc\": \"Audit location usage and entitlements for rejection\",\n  \"tab\": \"Review\"\n}"}
+{"out": "{\"title\": \"Fuzzy Search\", \"desc\": \"Add fuzzy search with typo tolerance\", \"tab\": \"search\"}"}
+{"out": "```json\n{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Switch to SafeERC20 and add tests for tokens that return false.\",\n  \"tab\": \"AI Coding\"\n}\n```"}
+{"out": "{\n  \"title\": \"batch rpc calls\",\n  \"desc\": \"aggregate balance reads into multicall requests\",\n  \"tab\": \"batch\"\n}"}
+{"out": "{\n  \"title\": \"VOICE INPUT\",\n  \"desc\": \"Add voice input to search bar using web speech API\",\n  \"tab\": \"VOICE INPUT\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Calendar Widget\",\n  \"desc\": \"Events displayed in correct timezone\",\n  \"tab\": \"UI\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"WebSocket Reconnect\",\n  \"desc\": \"Implement exponential backoff with jittered reconnection\",\n  \"tab\": \"WebSocket\"\n}\n```"}
+{"out": "{\n  \"title\": \"Migrate Blog\",\n  \"desc\": \"Migrate blog posts from WordPress to a static Astro site\",\n  \"tab\": \"Migrate\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Redis Cache\",\n  \"desc\": \"Add Redis cache for product queries with short TTLs\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PDF Invoice Generator\",\n  \"desc\": \"Mangles Unicode customer names for rendering\",\n  \"tab\": \"PDF Invoice\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PR Labeling Bot\",\n  \"desc\": \"A GitHub bot that labels PRs by files they touch.\",\n  \"tab\": \"PR\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"ML Model Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"Deployment\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"iOS Location Audit\",\n  \"desc\": \"Audit location usage strings and entitlements against review guidelines\",\n  \"tab\": \"Location Audit\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Fuzzy Search with Typo Tolerance\",\n  \"desc\": \"Add fuzzy search with typo tolerance and mobile compatibility\",\n  \"tab\": \"search\"\n}\n```"}
+{"out": "{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Audit flagged an unchecked transfer return value\",\n  \"tab\": \"SafeERC20\"\n}"}
+{"out": "```json\n{\n  \"title\": \"batch rpc calls\",\n  \"desc\": \"batch multicall on portfolio page\",\n  \"tab\": \"multicall\"\n}\n```"}
+{"out": "{\"title\": \"Voice Search\", \"desc\": \"Add voice input to search bar using web speech api\", \"tab\": \"Voice\"}"}
+{"out": "```json\n{\n  \"title\": \"Calendar Widget\",\n  \"desc\": \"Store UTC, convert to viewer's zone, audit DST edges\",\n  \"tab\": \"timezone\"\n}\n```"}
+{"out": "{\"title\": \"WebSocket Reconnect\", \"desc\": \"Implement WebSocket Reconnect with Exponential Backoff and Jittered Backoff\", \"tab\": \"client\"}"}
+{"out": "```json\n{\n  \"title\": \"Migrate Blog\",\n  \"desc\": \"Migrate blog posts from WordPress to a static Astro site\",\n  \"tab\": \"Migrate\"\n}\n```"}
+{"out": "{\"title\": \"Redis Cache\", \"desc\": \"Add Redis cache in front of product catalog queries\", \"tab\": \"cache\"}"}
+{"out": "```json\n{\n  \"title\": \"PDF Invoice Generator\",\n  \"desc\": \"Generates PDF invoices with Unicode support\",\n  \"tab\": \"PDF\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PR Labeling Bot\",\n  \"desc\": \"A GitHub bot that labels PRs by files they touch\",\n  \"tab\": \"PR\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"ML Model Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"Deployment\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"iOS Location Audit\",\n  \"desc\": \"Audit location usage strings and entitlements for rejection reasons\",\n  \"tab\": \"Location Audit\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Fuzzy Search\",\n  \"desc\": \"Add fuzzy search with typo tolerance\",\n  \"tab\": \"Fuzzy Search\"\n}\n```"}
+{"out": "{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Unchecked transfer return value fix\",\n  \"tab\": \"SafeERC20\"\n}"}
+{"out": "{\n  \"title\": \"batch rpc calls\",\n  \"desc\": \"batch rpc calls on portfolio page\",\n  \"tab\": \"multicall\"\n}"}
+{"out": "```json\n{\n  \"title\": \"VOICE INPUT SEARCH\",\n  \"desc\": \"Add voice input to search bar using web speech API\",\n  \"tab\": \"VOICE INPUT\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Calendar Widget\",\n  \"desc\": \"Events displayed in the wrong timezone\",\n  \"tab\": \"Timezone\"\n}\n```"}
+{"out": "{\"title\": \"WebSocket Reconnect\", \"desc\": \"Implement WebSocket Reconnect with Exponential Backoff and Jittered Backoff\", \"tab\": \"WebSocket\"}"}
+{"out": "{\"title\": \"Migrate Blog\", \"desc\": \"Migrate WordPress blog to static Astro site\", \"tab\": \"Migrate\"}"}
+{"out": "```json\n{\n  \"title\": \"cache queries\",\n  \"desc\": \"cache per-query with short TTLs and invalidate on product writes\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "{\n  \"title\": \"PDF Invoice Generator\",\n  \"desc\": \"Unicode text normalization for PDF invoices\",\n  \"tab\": \"PDF\"\n}"}
+{"out": "```json\n{\n  \"title\": \"PR Labeling Bot\",\n  \"desc\": \"Labels PRs by files they touch\",\n  \"tab\": \"github\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"ML Model Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"Deployment\"\n}\n```"}
+{"out": "{\n  \"title\": \"iOS Location Audit\",\n  \"desc\": \"Audit location usage strings and entitlements against review guidelines, test touch path and hit targets, add unit tests for model.\",\n  \"tab\": \"Model\"\n}"}
+{"out": "{\n  \"title\": \"Fuzzy Search\",\n  \"desc\": \"Add fuzzy search with typo tolerance and profile optimization.\",\n  \"tab\": \"Optimization\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Audit flagged unchecked transfer return values\",\n  \"tab\": \"SafeERC20\"\n}\n```"}
+{"out": "{\n  \"title\": \"Batch RPC Calls\",\n  \"desc\": \"Aggregate balance reads into multicall requests per block\",\n  \"tab\": \"batch\"\n}"}
+{"out": "{\n  \"title\": \"Voice Input\",\n  \"desc\": \"Add voice input to search bar using web speech API\",\n  \"tab\": \"Voice Input\"\n}"}
+{"out": "{\n  \"title\": \"Debugging\",\n  \"desc\": \"Debugging a null pointer issue on mobile\",\n  \"tab\": \"Debugging\"\n}"}
+{"out": "{\n  \"title\": \"WebSocket Reconnect\",\n  \"desc\": \"Implement exponential backoff with jittered reconnection\",\n  \"tab\": \"WebSocket\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Migrate Blog\",\n  \"desc\": \"Migrate blog posts to a static astro site\",\n  \"tab\": \"Migrate\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Redis Cache\",\n  \"desc\": \"Add Redis cache for product catalog queries\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "{\"title\": \"PDF Invoice Generator\", \"desc\": \"Generates PDF invoices with Unicode support\", \"tab\": \"PDF\"}"}
+{"out": "```json\n{\n  \"title\": \"GitHub PR Bot\",\n  \"desc\": \"Label PRs by files they touch\",\n  \"tab\": \"GitHub\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"ML Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"Deployment\"\n}\n```"}
+{"out": "{\n  \"title\": \"iOS App Review\",\n  \"desc\": \"Audit location usage and entitlements for rejection\",\n  \"tab\": \"iOS\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Fuzzy Search\",\n  \"desc\": \"Add fuzzy search with typo tolerance and edit distance ranking\",\n  \"tab\": \"search\"\n}\n```"}
+{"out": "{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Audit flagged an unchecked transfer return value\",\n  \"tab\": \"Smart Contract Audit\"\n}"}
+{"out": "{\n  \"title\": \"batch rpc calls\",\n  \"desc\": \"aggregate balance reads into multicall requests\",\n  \"tab\": \"multicall\"\n}"}
+{"out": "{\"title\": \"Voice Input\", \"desc\": \"Add voice input to search bar using web speech api\", \"tab\": \"voice\"}"}
+{"out": "{\n  \"title\": \"Calendar\",\n  \"desc\": \"Shows events in the correct timezone\",\n  \"tab\": \"Timezone\"\n}"}
+{"out": "{\"title\": \"WebSocket Reconnect\", \"desc\": \"Implement WebSocket Reconnect with Exponential Backoff\", \"tab\": \"WebSocket\"}"}
+{"out": "{\"title\": \"Migrate Blog\", \"desc\": \"Migrate blog posts to static Astro site\", \"tab\": \"Migrate\"}"}
+{"out": "```json\n{\n  \"title\": \"Redis Cache\",\n  \"desc\": \"Add Redis cache for product queries with short TTLs\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PDF Invoice Generator\",\n  \"desc\": \"Unicode support and performance optimization\",\n  \"tab\": \"PDF\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PR Labeling Bot\",\n  \"desc\": \"Write a GitHub bot to label PRs by files they touch\",\n  \"tab\": \"github\"\n}\n```"}
+{"out": "{\n  \"title\": \"ML Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"Deployment\"\n}"}
+{"out": "{\n  \"title\": \"iOS Location Audit\",\n  \"desc\": \"Audit location usage strings and entitlements for rejection reasons\",\n  \"tab\": \"Location Audit\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Fuzzy Search\",\n  \"desc\": \"Add fuzzy search with typo tolerance\",\n  \"tab\": \"Fuzzy Search\"\n}\n```"}
+{"out": "{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Add tests for tokens that return false and ensure lint passes\",\n  \"tab\": \"Smart Contract Audit\"\n}"}
+{"out": "{\"title\": \"Batch RPC Calls\", \"desc\": \"Batch RPC calls on portfolio page\", \"tab\": \"Batch\"}"}
+{"out": "{\"title\": \"VOICE INPUT\", \"desc\": \"Add voice input to search bar using web speech api\", \"tab\": \"VOICE INPUT\"}"}
+{"out": "```json\n{\n  \"title\": \"Calendar Widget\",\n  \"desc\": \"Store UTC, convert time, audit DST edges, and memoize hot paths.\",\n  \"tab\": \"Tab Ages\"\n}\n```"}
+{"out": "{\"title\": \"WebSocket Reconnect\", \"desc\": \"Implement WebSocket reconnect with exponential backoff and jittered backoff\", \"tab\": \"debugging\"}"}
+{"out": "{\"title\": \"Migrate Blog\", \"desc\": \"Migrate blog from wordpress to static astro site\", \"tab\": \"Migrate\"}"}
+{"out": "{\n  \"title\": \"cache queries\",\n  \"desc\": \"Redis cache with short TTLs for product catalog queries\",\n  \"tab\": \"cache\"\n}"}
+{"out": "{\"title\": \"PDF Invoice Generator\", \"desc\": \"Generates PDF invoices with Unicode support\", \"tab\": \"PDF\"}"}
+{"out": "{\n  \"title\": \"GitHub Bot\",\n  \"desc\": \"Label PRs by files they touch\",\n  \"tab\": \"GitHub\"\n}"}
+{"out": "```json\n{\n  \"title\": \"ML Model Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"Deployment\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"iOS Location Audit\",\n  \"desc\": \"Audit location usage strings and entitlements against review guidelines\",\n  \"tab\": \"Location Audit\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Fuzzy Search\",\n  \"desc\": \"Add fuzzy search with typo tolerance\",\n  \"tab\": \"Fuzzy Search\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Switch to SafeERC20 and add tests for tokens that return false.\",\n  \"tab\": \"Codebase\"\n}\n```"}
+{"out": "{\n  \"title\": \"batch rpc calls\",\n  \"desc\": \"batch rpc calls on portfolio page\",\n  \"tab\": \"multicall\"\n}"}
+{"out": "{\"title\": \"voice input\", \"desc\": \"Add voice input to search bar using web speech api\", \"tab\": \"voice input\"}"}
+{"out": "```json\n{\n  \"title\": \"Calendar Events\",\n  \"desc\": \"Store UTC, convert at render, audit DST edges, handle empty input\",\n  \"tab\": \"Event Management\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"WebSocket Reconnect\",\n  \"desc\": \"Implement exponential backoff with jittered reconnection\",\n  \"tab\": \"reconnect\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Migrate Blog\",\n  \"desc\": \"Migrate blog posts to a static Astro site\",\n  \"tab\": \"Migrate\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"cache queries\",\n  \"desc\": \"Add Redis cache for product catalog queries with unit testing\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PDF Invoice Generator\",\n  \"desc\": \"Generates PDF invoices with Unicode support\",\n  \"tab\": \"PDF\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PR Label Bot\",\n  \"desc\": \"Labels PRs by files they touch\",\n  \"tab\": \"github\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"ML Deployment\",\n  \"desc\": \"Deploy ML model with FastAPI endpoint and batching\",\n  \"tab\": \"Deployment\"\n}\n```"}
+{"out": "{\n  \"title\": \"Debugging\",\n  \"desc\": \"Debugging iOS app for background location\",\n  \"tab\": \"Debugging\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Fuzzy Search\",\n  \"desc\": \"Add fuzzy search with typo tolerance\",\n  \"tab\": \"search\"\n}\n```"}
+{"out": "{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Add tests for tokens that return false in SafeERC20\",\n  \"tab\": \"test\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Batch RPC Calls\",\n  \"desc\": \"Aggregate balance reads into multicall requests per block\",\n  \"tab\": \"batch\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"Add Voice Input to Search Bar\",\n  \"desc\": \"Add voice input to search bar using web speech api\",\n  \"tab\": \"voice input\"\n}\n```"}
+{"out": "{\n  \"title\": \"UTC Conversion\",\n  \"desc\": \"Audit DST edges and convert events to UTC\",\n  \"tab\": \"timezone\""}
+{"out": "```json\n{\n  \"title\": \"WebSocket Reconnect\",\n  \"desc\": \"Implement exponential backoff with jittered reconnection\",\n  \"tab\": \"reconnect\"\n}\n```"}
+{"out": "{\"title\": \"Migrate Blog\", \"desc\": \"Migrate blog from wordpress to static astro site\", \"tab\": \"Migrate\"}"}
+{"out": "```json\n{\n  \"title\": \"Redis Cache\",\n  \"desc\": \"Add Redis cache in front of product catalog queries\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "{\n  \"title\": \"PDF Invoice Generator\",\n  \"desc\": \"Generates PDF invoices with Unicode support and mobile compatibility\",\n  \"tab\": \"PDF\"\n}"}
+{"out": "```json\n{\n  \"title\": \"PR Labeling\",\n  \"desc\": \"Label PRs by files they touch\",\n  \"tab\": \"local projects\"\n}\n```"}
+{"out": "{\n  \"title\": \"ML Model Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"tab ages\"\n}"}
+{"out": "```json\n{\n  \"title\": \"iOS App Review\",\n  \"desc\": \"Audit location usage and entitlements for rejection\",\n  \"tab\": \"iOS\"\n}\n```"}
+{"out": "{\n  \"title\": \"Fuzzy Search\",\n  \"desc\": \"Add fuzzy search with typo tolerance and index using trigrams.\",\n  \"tab\": \"search\"\n}"}
+{"out": "{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Add tests for tokens that return false in SafeERC20\",\n  \"tab\": \"SafeERC20\"\n}"}
+{"out": "{\n  \"title\": \"batch rpc calls\",\n  \"desc\": \"aggregate balance reads into multicall requests\",\n  \"tab\": \"multicall\"\n}"}
+{"out": "{\n  \"title\": \"Voice Input Integration\",\n  \"desc\": \"Add voice input to search bar using web speech API\",\n  \"tab\": \"voice input\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Calendar Widget\",\n  \"desc\": \"UTC conversion and mobile performance\",\n  \"tab\": \"Timezone\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"WebSocket Reconnect\",\n  \"desc\": \"Implement exponential backoff with jittered backoff and resubscribe on reconnect\",\n  \"tab\": \"WebSocket\"\n}\n```"}
+{"out": "{\"title\": \"Migrate Blog\", \"desc\": \"Migrate WordPress blog to static Astro site\", \"tab\": \"Migrate\"}"}
+{"out": "```json\n{\n  \"title\": \"Redis Cache\",\n  \"desc\": \"Add Redis cache for product queries with short TTLs\",\n  \"tab\": \"cache\"\n}\n```"}
+{"out": "```json\n{\n  \"title\": \"PDF Invoice Generator\",\n  \"desc\": \"Unicode handling and text normalization\",\n  \"tab\": \"PDF\"\n}\n```"}
+{"out": "{\n  \"title\": \"github bot\",\n  \"desc\": \"label PRs by files they touch\",\n  \"tab\": \"github\"\n}"}
+{"out": "```json\n{\n  \"title\": \"ML Deployment\",\n  \"desc\": \"Deploy ML model with fastapi endpoint and batching\",\n  \"tab\": \"ML\"\n}\n```"}
+{"out": "{\n  \"title\": \"iOS App Rejection Audit\",\n  \"desc\": \"Audit location usage and entitlements for iOS app rejection\",\n  \"tab\": \"rejection audit\"\n}"}
+{"out": "```json\n{\n  \"title\": \"Fuzzy Search with Typo Tolerance\",\n  \"desc\": \"Index with trigrams and edit-distance-weighted relevance for mobile compatibility\",\n  \"tab\": \"search\"\n}\n```"}
+{"out": "{\n  \"title\": \"Smart Contract Audit\",\n  \"desc\": \"Add tests for tokens that return false in SafeERC20\",\n  \"tab\": \"test\"\n}"}
+{"out": "{\n  \"title\": \"batch rpc calls\",\n  \"desc\": \"batch rpc calls on portfolio page\",\n  \"tab\": \"multicall\"\n}"}

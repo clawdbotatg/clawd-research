@@ -1,0 +1,120 @@
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget events timezone formatting\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Exponential backoff websocket reconnect\", \"desc\": \"Add jittered exponential backoff to websocket reconnect\", \"tab\": \"websocket reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product catalog cache\", \"desc\": \"Add Redis cache in front of product catalog queries\", \"tab\": \"cache\"}"}
+{"out": "{\"title\": \"Unicode customer name fix\", \"desc\": \"Fix mangled Unicode customer names in PDF invoice generator\", \"tab\": \"unicode fix\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Write GitHub bot labeling PRs by files they touch\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track down iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy search docs\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix contract audit transfer return value\", \"desc\": \"Fix smart contract audit flagged unchecked transfer return value\", \"tab\": \"contract fix\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch multicall RPC portfolio balance reads\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget events timezone formatting\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Exponential backoff websocket reconnect\", \"desc\": \"Add exponential backoff reconnection to WebSocket\", \"tab\": \"websocket reconn\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache before product catalog queries\", \"tab\": \"redis cache\"}"}
+{"out": "{\"title\": \"Unicode invoice generator\", \"desc\": \"Fix mangled Unicode customer names in PDF invoices\", \"tab\": \"pdf uni\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Write GitHub bot labeling PRs by touched files\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track and fix iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy search docs\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix unchecked contract transfer audit\", \"desc\": \"Fix flagged unchecked contract transfer return value audit\", \"tab\": \"contract audit\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch multicall RPC portfolio balance reads\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget events showing wrong timezone\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Websocket reconnect\", \"desc\": \"Add exponential backoff websocket reconnect\", \"tab\": \"reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache before product catalog queries\", \"tab\": \"redis cache\"}"}
+{"out": "{\"title\": \"Unicode customer name generator\", \"desc\": \"Mangle Unicode customer names in PDF invoices\", \"tab\": \"name mangle\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Label PRs by touching files\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"FastAPI ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deployment\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track down iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy search docs\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix contract audit transfer return value\", \"desc\": \"Fix unchecked transfer return value in smart contract audit\", \"tab\": \"contract fix\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch multicall portfolio rpc calls\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget events timezone formatting\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Websocket reconnect\", \"desc\": \"Add exponential backoff reconnection websocket\", \"tab\": \"reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache before product catalog queries\", \"tab\": \"redis cache\"}"}
+{"out": "{\"title\": \"Fix unicode customer name mangling\", \"desc\": \"Fix mangled Unicode customer names in PDF invoice generator\", \"tab\": \"pdf fix\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Write GitHub bot labeling PRs by files they touch\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"FastAPI ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track and fix iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy search docs\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix unchecked transfer audit\", \"desc\": \"Fix flagged unchecked transfer return value audit\", \"tab\": \"transfer fix\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch and multicall RPC portfolio balance reads\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget timezone errors\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Websocket reconnect\", \"desc\": \"Add exponential backoff reconnection to WebSocket\", \"tab\": \"reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product catalog cache\", \"desc\": \"Add Redis cache to product catalog queries\", \"tab\": \"cache\"}"}
+{"out": "{\"title\": \"Unicode customer name generator\", \"desc\": \"Fix mangled Unicode customer names in PDF invoice generator\", \"tab\": \"unicode name\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Write GitHub bot labeling PRs by touched files\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track down iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy search docs\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix unchecked transfer audit\", \"desc\": \"Fix flagged unchecked transfer return value audit\", \"tab\": \"transfer fix\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch and multicall RPC balance reads on portfolio\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget events showing wrong timezone\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Websocket reconnect\", \"desc\": \"Add exponential backoff websocket reconnect\", \"tab\": \"reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache in front of product catalog queries\", \"tab\": \"cache\"}"}
+{"out": "{\"title\": \"Unicode-safe invoice generator\", \"desc\": \"Fix mangled Unicode customer names in PDF invoices\", \"tab\": \"pdf uni\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Write GitHub bot labeling PRs by files they touch\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track down iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy doc search\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix unchecked transfer audit\", \"desc\": \"Fix smart contract audit flagged unchecked transfer return value\", \"tab\": \"uins audit\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch multicall RPC portfolio balance reads\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add voice input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget timezone errors\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Websocket reconnect\", \"desc\": \"Add exponential backoff and jittered websocket reconnect\", \"tab\": \"reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache before product catalog queries\", \"tab\": \"cache\"}"}
+{"out": "{\"title\": \"Unicode invoice generator\", \"desc\": \"Fix mangled Unicode customer names in PDF invoices\", \"tab\": \"pdf uni\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Label PRs by touching files\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track and fix iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy search docs\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix unchecked transfer audit\", \"desc\": \"Fix smart contract audit flagged unchecked transfer return value\", \"tab\": \"transfer fix\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch multicall RPC portfolio balance reads\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget events showing wrong timezone\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Websocket reconnect\", \"desc\": \"Add exponential backoff reconnection to WebSocket\", \"tab\": \"reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache before product catalog queries\", \"tab\": \"redis cache\"}"}
+{"out": "{\"title\": \"Unicode invoice generator\", \"desc\": \"Fix mangled Unicode customer names in PDF invoices\", \"tab\": \"pdf uni\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Label PRs by touching files\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection debugging\", \"desc\": \"Track and fix iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy search docs\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix contract audit transfer return value\", \"desc\": \"Fix unchecked transfer return value audit in smart contract\", \"tab\": \"transfer fix\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch multicall RPC portfolio balance reads\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget events showing wrong timezone\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Websocket reconnect\", \"desc\": \"Add exponential backoff reconnection to WebSocket\", \"tab\": \"reconnect\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache in front of product catalog queries\", \"tab\": \"redis cache\"}"}
+{"out": "{\"title\": \"Unicode customer name generator\", \"desc\": \"Mangle Unicode customer names in PDF invoices\", \"tab\": \"unicode names\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Write GitHub bot labeling PRs by touched files\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"FastAPI ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track and fix iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy doc search\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix contract audit transfer return value\", \"desc\": \"Fix smart contract audit flagged unchecked transfer return value\", \"tab\": \"contract fix\"}"}
+{"out": "{\"title\": \"Multicall portfolio RPC\", \"desc\": \"Batch multicall RPC portfolio balance reads\", \"tab\": \"multicall\"}"}
+{"out": "{\"title\": \"Voice input search\", \"desc\": \"Add web speech input to search bar\", \"tab\": \"voice input\"}"}
+{"out": "{\"title\": \"Fix timezone issues\", \"desc\": \"Fix calendar widget timezone errors\", \"tab\": \"timezone fix\"}"}
+{"out": "{\"title\": \"Exponential backoff websocket reconnect\", \"desc\": \"Add exponential backoff reconnection with jitter\", \"tab\": \"websocket reconn\"}"}
+{"out": "{\"title\": \"Migrate blog to Astro\", \"desc\": \"Migrate WordPress blog posts to Astro\", \"tab\": \"blog migrate\"}"}
+{"out": "{\"title\": \"Product cache\", \"desc\": \"Add Redis cache before product catalog queries\", \"tab\": \"redis cache\"}"}
+{"out": "{\"title\": \"Unicode customer name generator\", \"desc\": \"Fix mangled Unicode customer names in PDF invoice generator\", \"tab\": \"unicode name\"}"}
+{"out": "{\"title\": \"PR label bot\", \"desc\": \"Label PRs by touching files\", \"tab\": \"pr label\"}"}
+{"out": "{\"title\": \"FastAPI ML model deployment\", \"desc\": \"Deploy ML model behind FastAPI endpoint with batching\", \"tab\": \"ml deploy\"}"}
+{"out": "{\"title\": \"iOS location rejection audit\", \"desc\": \"Track and fix iOS app background location rejection\", \"tab\": \"ios location\"}"}
+{"out": "{\"title\": \"Fuzzy doc search\", \"desc\": \"Add typo-tolerant fuzzy search over docs\", \"tab\": \"fuzzy search\"}"}
+{"out": "{\"title\": \"Fix contract audit transfer return value\", \"desc\": \"Fix smart contract audit flagged unchecked transfer return value\", \"tab\": \"contract fix\"}"}
+{"out": "{\"title\": \"Portfolio multicall\", \"desc\": \"Batch multicall RPC balance reads on portfolio page\", \"tab\": \"multicall\"}"}

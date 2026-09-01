@@ -1,0 +1,120 @@
+{"out": "{\"title\":\"Add Voice Search Input\",\"desc\":\"Integrate Web Speech API microphone input into the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Event Timezone\",\"desc\":\"Render UTC events correctly across viewer zones and DST.\",\"tab\":\"event timezone\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement jittered reconnect, resubscription, and max-retry handling\",\"tab\":\"reconnect\"}"}
+{"out": "{\"title\":\"Migrate Blog to Astro\",\"desc\":\"Convert WordPress blog into a static Astro site\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Add Product Catalog Cache\",\"desc\":\"Cache catalog queries in Redis with invalidation and empty-input handling.\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Support Unicode customer names in generated PDF invoices\",\"tab\":\"invoice unicode\"}"}
+{"out": "{\"title\":\"Label PRs by Files\",\"desc\":\"Build a GitHub bot that labels PRs using changed file paths.\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched FastAPI Model\",\"desc\":\"Serve ML inference with micro-batching, warmup, and health checks\",\"tab\":\"model API\"}"}
+{"out": "{\"title\":\"Fix iOS Location Rejection\",\"desc\":\"Audit background location strings and entitlements, then ship after lint.\",\"tab\":\"location rejection\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant documentation search with trigram indexing and relevance ranking\",\"tab\":\"fuzzy search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfers\",\"desc\":\"Adopt SafeERC20 and test false-returning token behavior.\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate portfolio balance reads via multicall3 and add tests\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search Input\",\"desc\":\"Implement Web Speech API input and optimize responsiveness\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Event Timezone\",\"desc\":\"Correct event timezone rendering, DST handling, and mobile usability\",\"tab\":\"timezone\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement jittered retries, resubscription, and max-retry state\",\"tab\":\"reconnect\"}"}
+{"out": "{\"title\":\"Migrate WordPress to Astro\",\"desc\":\"Convert blog content, URLs, theme, and tests to Astro\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Cache Product Catalog Queries\",\"desc\":\"Add Redis caching with TTLs and write invalidation\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Prevent customer names from breaking during invoice PDF rendering\",\"tab\":\"PDF unicode\"}"}
+{"out": "{\"title\":\"PR File Labeling Bot\",\"desc\":\"Build and test a bot labeling PRs by touched files\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched ML API\",\"desc\":\"Serve an ML model via FastAPI with micro-batching and health checks\",\"tab\":\"ML API\"}"}
+{"out": "{\"title\":\"Fix Background Location Rejection\",\"desc\":\"Audit iOS permissions and entitlements to resolve App Store rejection.\",\"tab\":\"location rejection\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant docs search with mobile support\",\"tab\":\"fuzzy search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20, test false returns, and verify lint.\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Use multicall for balances and handle empty input.\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search Input\",\"desc\":\"Integrate Web Speech API into the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Event Timezone\",\"desc\":\"Correct event rendering by viewer timezone and DST\",\"tab\":\"calendar timezone\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement reconnect backoff, resubscription, retry state, and tests\",\"tab\":\"reconnect\"}"}
+{"out": "{\"title\":\"Migrate WordPress to Astro\",\"desc\":\"Port blog content, URLs, and theme to static Astro.\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Add Product Catalog Cache\",\"desc\":\"Cache catalog queries in Redis with write invalidation\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Use Unicode fonts, normalize names, and handle empty input.\",\"tab\":\"PDF Unicode\"}"}
+{"out": "{\"title\":\"PR File Labeling Bot\",\"desc\":\"Build and ship a bot labeling PRs by touched files\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched ML Endpoint\",\"desc\":\"Serve an ML model via FastAPI with micro-batching and health checks\",\"tab\":\"ML endpoint\"}"}
+{"out": "{\"title\":\"Fix iOS Location Rejection\",\"desc\":\"Audit background location strings and entitlements for App Review compliance.\",\"tab\":\"location review\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement fast typo-tolerant search with codebase-consistent naming\",\"tab\":\"docs search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20 and test false-returning token transfers\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate portfolio balance reads using Multicall3 per block\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search\",\"desc\":\"Implement Web Speech API input in the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Event Timezone\",\"desc\":\"Render UTC events correctly in viewer timezone with DST handling\",\"tab\":\"timezone\"}"}
+{"out": "{\"title\":\"Implement WebSocket Reconnect\",\"desc\":\"Add jittered backoff, resubscription, retry state, and tests.\",\"tab\":\"WS reconnect\"}"}
+{"out": "{\"title\":\"Migrate WordPress to Astro\",\"desc\":\"Convert blog content, URLs, and theme to a static Astro site\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Cache Product Catalog Queries\",\"desc\":\"Add Redis caching with invalidation and fix resulting console error\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Support Unicode customer names in generated PDF invoices\",\"tab\":\"PDF Unicode\"}"}
+{"out": "{\"title\":\"Label PRs by Files\",\"desc\":\"Build a GitHub bot applying labels from changed file paths.\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched ML Endpoint\",\"desc\":\"Serve an ML model via FastAPI with optimized request batching.\",\"tab\":\"ML endpoint\"}"}
+{"out": "{\"title\":\"Fix iOS Location Rejection\",\"desc\":\"Audit background location permissions, entitlements, and review compliance\",\"tab\":\"location review\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant docs search and optimize performance\",\"tab\":\"fuzzy search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20 and test false-returning token transfers\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Use multicall for portfolio balances and add tests\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search Input\",\"desc\":\"Integrate Web Speech API microphone into the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Timezones\",\"desc\":\"Correct event zones, mobile usability, and rendering performance\",\"tab\":\"calendar TZ\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement jittered reconnect, resubscription, and max-retry state\",\"tab\":\"reconnect\"}"}
+{"out": "{\"title\":\"Migrate WordPress to Astro\",\"desc\":\"Convert blog content, theme, and URLs to static Astro.\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Add Product Catalog Cache\",\"desc\":\"Cache product queries in Redis with invalidation and empty-input handling\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Ensure customer names render correctly using Unicode fonts and normalization.\",\"tab\":\"PDF Unicode\"}"}
+{"out": "{\"title\":\"PR File Labeling Bot\",\"desc\":\"Build a GitHub bot that labels PRs from touched file paths\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched Model API\",\"desc\":\"Serve the ML model via FastAPI with batching and tests\",\"tab\":\"model API\"}"}
+{"out": "{\"title\":\"Fix iOS Location Rejection\",\"desc\":\"Audit background location strings and entitlements for App Review compliance\",\"tab\":\"location rejection\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant document search and resolve integration errors\",\"tab\":\"fuzzy search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20 and test false-returning tokens\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate portfolio balance reads using Multicall3 per block\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search Input\",\"desc\":\"Integrate Web Speech API into the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Timezone\",\"desc\":\"Correct event rendering across viewer zones and DST boundaries\",\"tab\":\"calendar timezone\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement resilient client reconnection with jitter, retries, and resubscription.\",\"tab\":\"reconnect\"}"}
+{"out": "{\"title\":\"Migrate WordPress to Astro\",\"desc\":\"Convert blog to a performant static Astro site\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Cache Product Catalog Queries\",\"desc\":\"Add Redis caching with TTLs and write invalidation\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Support Unicode names and optimize invoice rendering\",\"tab\":\"PDF Unicode\"}"}
+{"out": "{\"title\":\"Build PR Labeling Bot\",\"desc\":\"Label pull requests based on changed file path globs\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched FastAPI Model\",\"desc\":\"Serve ML inference with batching, warmup, health checks, and mobile support\",\"tab\":\"model API\"}"}
+{"out": "{\"title\":\"Investigate iOS Location Rejection\",\"desc\":\"Audit background location strings and entitlements for App Review compliance\",\"tab\":\"location rejection\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant search with empty-input handling\",\"tab\":\"fuzzy search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20 and test failed transfer returns\",\"tab\":\"safe transfer\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate balance reads with multicall and optimize the hot path\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search\",\"desc\":\"Integrate mobile-friendly Web Speech API input into the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Event Timezones\",\"desc\":\"Correct timezone rendering, DST handling, and performance\",\"tab\":\"calendar timezone\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement resilient reconnect, resubscription, retries, and mobile support.\",\"tab\":\"reconnect\"}"}
+{"out": "{\"title\":\"Migrate WordPress to Astro\",\"desc\":\"Export posts, preserve URLs, port theme, and add tests\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Add Product Catalog Cache\",\"desc\":\"Cache catalog queries in Redis and invalidate on product writes.\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Render customer names correctly and optimize invoice generation performance.\",\"tab\":\"PDF Unicode\"}"}
+{"out": "{\"title\":\"PR File Labeling Bot\",\"desc\":\"Automatically label pull requests based on touched file paths\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched ML API\",\"desc\":\"Serve an ML model via FastAPI with micro-batching and health checks\",\"tab\":\"ML API\"}"}
+{"out": "{\"title\":\"Fix Background Location Rejection\",\"desc\":\"Audit iOS location permissions and entitlements for App Store compliance\",\"tab\":\"location rejection\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant docs search aligned with codebase conventions\",\"tab\":\"docs search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20, add failure tests, and align naming conventions\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate portfolio balance reads using Multicall3 per block\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search Input\",\"desc\":\"Integrate Web Speech API into the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Timezones\",\"desc\":\"Render UTC events correctly across viewer zones and DST\",\"tab\":\"calendar TZ\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement jittered retries, resubscription, and max-retry state\",\"tab\":\"WS reconnect\"}"}
+{"out": "{\"title\":\"Migrate Blog to Astro\",\"desc\":\"Convert WordPress blog into a static Astro site\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Cache Product Catalog Queries\",\"desc\":\"Add Redis query caching, invalidation, and tests for edge cases.\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Use Unicode fonts and normalization for customer names\",\"tab\":\"invoice unicode\"}"}
+{"out": "{\"title\":\"Label PRs by Files\",\"desc\":\"Build a GitHub bot applying labels from touched file paths\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched FastAPI Model\",\"desc\":\"Serve ML inference with batching, warmup, health checks, and lint compliance\",\"tab\":\"model API\"}"}
+{"out": "{\"title\":\"Fix iOS Location Rejection\",\"desc\":\"Audit background location permissions and entitlements for App Store compliance\",\"tab\":\"location rejection\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant docs search and optimize performance\",\"tab\":\"fuzzy search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20 and test false-returning token transfers\",\"tab\":\"safe transfer\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate portfolio balance reads using Multicall3 per block\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search Input\",\"desc\":\"Implement and test mobile-friendly Web Speech API search input\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Timezones\",\"desc\":\"Render UTC events correctly across viewer zones and DST\",\"tab\":\"calendar TZ\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement jittered retries, resubscription, and max-retry client state\",\"tab\":\"WS reconnect\"}"}
+{"out": "{\"title\":\"Migrate Blog to Astro\",\"desc\":\"Convert WordPress blog into a tested static Astro site\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Cache Product Catalog Queries\",\"desc\":\"Add Redis caching and invalidate entries on product writes.\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode Invoice PDFs\",\"desc\":\"Render customer names correctly using Unicode-capable fonts and normalization\",\"tab\":\"invoice Unicode\"}"}
+{"out": "{\"title\":\"Path-Based PR Labeler\",\"desc\":\"GitHub bot labels pull requests from changed file paths\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched ML Endpoint\",\"desc\":\"Serve model via FastAPI with batching, warmup, and health checks\",\"tab\":\"ML endpoint\"}"}
+{"out": "{\"title\":\"Fix iOS Background Location Rejection\",\"desc\":\"Audit permissions and entitlements to resolve the App Review rejection\",\"tab\":\"location review\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant document search with relevance ranking\",\"tab\":\"docs search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20 and test false-returning token transfers\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate portfolio balance reads using Multicall3 per block\",\"tab\":\"portfolio multicall\"}"}
+{"out": "{\"title\":\"Add Voice Search\",\"desc\":\"Implement mobile-friendly Web Speech API input for the search bar\",\"tab\":\"voice search\"}"}
+{"out": "{\"title\":\"Fix Calendar Timezones\",\"desc\":\"Correct event timezone rendering, mobile usability, and performance.\",\"tab\":\"calendar timezone\"}"}
+{"out": "{\"title\":\"WebSocket Reconnect Backoff\",\"desc\":\"Implement jittered retries, resubscription, and max-retry state\",\"tab\":\"reconnect\"}"}
+{"out": "{\"title\":\"Migrate WordPress to Astro\",\"desc\":\"Convert blog content, URLs, and theme to a static Astro site\",\"tab\":\"blog migration\"}"}
+{"out": "{\"title\":\"Cache Product Catalog Queries\",\"desc\":\"Add Redis caching and invalidate entries on product writes\",\"tab\":\"catalog cache\"}"}
+{"out": "{\"title\":\"Fix Unicode PDF Invoices\",\"desc\":\"Use Unicode fonts and normalize customer names in generated invoices.\",\"tab\":\"PDF Unicode\"}"}
+{"out": "{\"title\":\"Label PRs by Files\",\"desc\":\"Build a GitHub bot applying labels from changed file paths.\",\"tab\":\"PR labels\"}"}
+{"out": "{\"title\":\"Deploy Batched FastAPI Model\",\"desc\":\"Serve an ML model with batching, warmup, and health checks.\",\"tab\":\"model API\"}"}
+{"out": "{\"title\":\"Fix iOS Location Rejection\",\"desc\":\"Audit background location strings and entitlements for App Review\",\"tab\":\"location rejection\"}"}
+{"out": "{\"title\":\"Add Fuzzy Docs Search\",\"desc\":\"Implement typo-tolerant docs search with mobile support\",\"tab\":\"fuzzy search\"}"}
+{"out": "{\"title\":\"Fix Unchecked Token Transfer\",\"desc\":\"Use SafeERC20 and test false-returning token transfers\",\"tab\":\"SafeERC20\"}"}
+{"out": "{\"title\":\"Batch Portfolio RPC Calls\",\"desc\":\"Aggregate portfolio balance reads using Multicall3 per block\",\"tab\":\"portfolio multicall\"}"}
