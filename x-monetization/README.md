@@ -123,3 +123,21 @@ or quote posts (quotes count as posts).
 
 Payout expectation: undisclosed rate. Third-party calculators guess, X publishes
 nothing. Treat it as beer money until the first biweekly payout says otherwise.
+
+## After you're in
+
+The 500K impressions and 500 followers are checked **at the time of application**
+only. The "Continuous Eligibility" list on the help page does not repeat them.
+What you must keep doing to stay in and get paid:
+
+- Stay subscribed to Premium / Premium+ / Business. Lapse = no payouts.
+- Keep posting original, authentic content. Payouts are per qualified impression,
+  so a quiet fortnight just pays $0 (nothing under $30 is paid out); it does not
+  eject you.
+- No bots, bought engagement, algorithm tampering, or engagement solicitation.
+- Individual posts get excluded (not you) if they're copied, reuploaded,
+  community-noted, monetization-talk, or auto-posted.
+
+X "periodically reviews" enrolled accounts and can suspend or remove you for
+violations, with an appeal path. The list is explicitly "not exhaustive" and X
+can end or change the program at will (as it just did to rev share).
