@@ -1,3 +1,8 @@
 simple-eval/__pycache__/
 __pycache__/
 ~/
+
+# jev-ultrafast: upstream clone + automation chrome profile (cookies), never commit
+jev-ultrafast/upstream/
+jev-ultrafast/chrome-profile/
+jev-ultrafast/chrome.log
