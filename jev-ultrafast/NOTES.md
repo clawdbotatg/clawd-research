@@ -87,6 +87,24 @@ Inspector note: "Page observed · ready for a decision" after Start demo is idle
 nothing moves until Run automatically or Choose next. Run automatically doubles as a pause
 toggle. Clicks from the clawd-browser bridge did not fire the Start button; `el.click()` did.
 
+## Where it stops working: the Airlines filter (2026-09-17)
+
+Goal with "United only" fails every time at the 60-action cap. Two layers:
+
+1. Google's airline checkboxes are Material-style: the native input is opacity 0 behind a
+   styled `<label>`. The snapshot dropped them (invisible input, label not in the selector).
+   Patched: for hidden checkbox/radio inputs, geometry, visibility and the hit test come
+   from `labels[0]` in both `snapshot.js` and `browser.py` (in `covered-elements.patch`).
+   After that the checkboxes appear in the action list.
+2. United is 1,000 px down a 425 px scroll list inside the dialog. The model only sees
+   visible text, so it has no evidence United exists. It clicked "Select all airlines"
+   48 times in a row and never chose SCROLL_DOWN, even with the goal literally saying to
+   scroll the list. Not a quick fix: the state would need a "more below" signal for inner
+   scrollers, or a text search over offscreen controls.
+
+Applied the filter by hand via CDP: Google returns "No United flights found" for
+DEN-BOM Nov 1 to Nov 7. Closest unfiltered option was Lufthansa + United, 1 stop, $1,638.
+
 ## Port-collision trap
 
 The first launcher used port 9333. Another headless Chrome (a clone of the real profile,

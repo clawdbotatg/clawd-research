@@ -1,14 +1,55 @@
+diff --git a/jev_ultrafast/browser.py b/jev_ultrafast/browser.py
+index 38e3ace..856231a 100644
+--- a/jev_ultrafast/browser.py
++++ b/jev_ultrafast/browser.py
+@@ -143,12 +143,16 @@ def browser_operation(request):
+             # Code-owned node IDs refer to actual observed elements, never model-generated selectors.
+             target = evaluate("""(action => {
+               const e=window.__jevFast?.nodes.get(action.node);
++              const vis=n=>n.checkVisibility({checkOpacity:true,checkVisibilityCSS:true});
++              // Same label proxy as snapshot.js for hidden native checkbox/radio inputs.
++              const p=(e && e.tagName==='INPUT' && ['checkbox','radio'].includes(e.type) && !vis(e) &&
++                e.labels && e.labels[0]) ? e.labels[0] : e;
+               if (!e?.isConnected || e.matches(':disabled') || e.closest('[aria-disabled="true"],[inert]') ||
+-                  !e.checkVisibility({checkOpacity:true,checkVisibilityCSS:true})) return null;
++                  !vis(p)) return null;
+               if (action.kind==='fill' && (e.readOnly || e.getAttribute('aria-readonly')==='true')) return null;
+-              const r=e.getBoundingClientRect(), x=r.x+r.width/2, y=r.y+r.height/2;
++              const r=p.getBoundingClientRect(), x=r.x+r.width/2, y=r.y+r.height/2;
+               if (!r.width || !r.height || x<0 || y<0 || x>=innerWidth || y>=innerHeight) return null;
+-              if (!e.contains(document.elementFromPoint(x,y))) return null;
++              if (!p.contains(document.elementFromPoint(x,y))) return null;
+               if (action.kind==='select') {
+                 if (e.tagName!=='SELECT' || ![...e.options].some(o=>o.value===action.value &&
+                     !o.disabled && !o.closest('optgroup[disabled]'))) return null;
 diff --git a/jev_ultrafast/snapshot.js b/jev_ultrafast/snapshot.js
-index cf74837..65ad952 100644
+index cf74837..2c55ca4 100644
 --- a/jev_ultrafast/snapshot.js
 +++ b/jev_ultrafast/snapshot.js
-@@ -57,6 +57,9 @@
-     if (!safe(e) || !visible(e) || e.matches(':disabled') || e.closest('[aria-disabled="true"]')) continue;
-     const r=e.getBoundingClientRect(), x=r.x+r.width/2, y=r.y+r.height/2, rname=role(e);
+@@ -9,6 +9,10 @@
+   const safe = e => !['password','file','hidden'].includes(e.type);
+   const visible = e => !e.closest('[aria-hidden="true"],[inert]') &&
+     e.checkVisibility({checkOpacity:true,checkVisibilityCSS:true});
++  // Material-style checkboxes/radios hide the native input (opacity 0) behind a styled <label>.
++  // Geometry, visibility and the hit test come from that label; the node identity stays the input.
++  const proxy = e => (e.tagName==='INPUT' && ['checkbox','radio'].includes(e.type) && !visible(e) &&
++    e.labels && e.labels[0]) ? e.labels[0] : e;
+   const name = (e,seen=new Set()) => {
+     if (!e || seen.has(e)) return '';
+     seen.add(e);
+@@ -54,9 +58,13 @@
+   };
+   const actions=[];
+   for (const e of document.querySelectorAll(selector)) {
+-    if (!safe(e) || !visible(e) || e.matches(':disabled') || e.closest('[aria-disabled="true"]')) continue;
+-    const r=e.getBoundingClientRect(), x=r.x+r.width/2, y=r.y+r.height/2, rname=role(e);
++    const p=proxy(e);
++    if (!safe(e) || !visible(p) || e.matches(':disabled') || e.closest('[aria-disabled="true"]')) continue;
++    const r=p.getBoundingClientRect(), x=r.x+r.width/2, y=r.y+r.height/2, rname=role(e);
      if (!rname || r.width<=0 || r.height<=0 || x<0 || y<0 || x>=innerWidth || y>=innerHeight) continue;
 +    // Same hit test the executor applies: a control whose center is covered (e.g. a calendar month
 +    // clipped by a horizontal scroller) can never be clicked, so it must not be offered as a target.
-+    const hit=document.elementFromPoint(x,y); if (!hit || !e.contains(hit)) continue;
++    const hit=document.elementFromPoint(x,y); if (!hit || !p.contains(hit)) continue;
      if (rname==='gridcell' && e.querySelector('button,[role="button"]')) continue;
      const base={node:identity(e),role:rname,label:name(e)||rname,
        rect:{x:r.x,y:r.y,w:r.width,h:r.height}};
