@@ -69,6 +69,24 @@ Run:
 
 First bare API call: 283 ms, 347 input tokens, two questions answered in one request.
 
+## Bug found + patched: covered elements spin the loop (2026-09-17)
+
+Goal: "im looking for a flight from denver to mumbai land nov 1 fly out nov 7". The run got to
+the date picker in 6 actions, then burned 113 model calls choosing "Sunday, November 1, 2026"
+and never clicking it. November is the third month in the picker, clipped off the right edge
+of its horizontal scroller. `snapshot.js` still lists it (checkVisibility ignores overflow
+clipping), Jev correctly picks it, the executor's hit test correctly refuses it as covered,
+`tick` retries, repeat until the 120-call demo budget.
+
+Fix (`covered-elements.patch`, applied in `upstream/`, not yet upstreamed): in `snapshot.js`
+drop any control whose center fails the same `elementFromPoint` test the executor uses. Then
+the model sees only "Next" for November and the run completes: 11 actions, 15 calls, 11.0 s,
+Denver -> Mumbai, Next month, Nov 1, Nov 7, Search, DONE. Worth a PR to browser-use.
+
+Inspector note: "Page observed · ready for a decision" after Start demo is idle by design;
+nothing moves until Run automatically or Choose next. Run automatically doubles as a pause
+toggle. Clicks from the clawd-browser bridge did not fire the Start button; `el.click()` did.
+
 ## Port-collision trap
 
 The first launcher used port 9333. Another headless Chrome (a clone of the real profile,

@@ -1,0 +1,14 @@
+diff --git a/jev_ultrafast/snapshot.js b/jev_ultrafast/snapshot.js
+index cf74837..65ad952 100644
+--- a/jev_ultrafast/snapshot.js
++++ b/jev_ultrafast/snapshot.js
+@@ -57,6 +57,9 @@
+     if (!safe(e) || !visible(e) || e.matches(':disabled') || e.closest('[aria-disabled="true"]')) continue;
+     const r=e.getBoundingClientRect(), x=r.x+r.width/2, y=r.y+r.height/2, rname=role(e);
+     if (!rname || r.width<=0 || r.height<=0 || x<0 || y<0 || x>=innerWidth || y>=innerHeight) continue;
++    // Same hit test the executor applies: a control whose center is covered (e.g. a calendar month
++    // clipped by a horizontal scroller) can never be clicked, so it must not be offered as a target.
++    const hit=document.elementFromPoint(x,y); if (!hit || !e.contains(hit)) continue;
+     if (rname==='gridcell' && e.querySelector('button,[role="button"]')) continue;
+     const base={node:identity(e),role:rname,label:name(e)||rname,
+       rect:{x:r.x,y:r.y,w:r.width,h:r.height}};
