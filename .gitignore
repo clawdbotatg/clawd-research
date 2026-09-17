@@ -6,3 +6,5 @@ __pycache__/
 jev-ultrafast/upstream/
 jev-ultrafast/chrome-profile/
 jev-ultrafast/chrome.log
+jev-ultrafast/chrome.pid
+jev-ultrafast/inspector.log

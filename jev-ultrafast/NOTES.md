@@ -44,20 +44,34 @@ Prereqs done on this Mac:
 - `uv sync` in `upstream/` done, `uv run pytest` 31 passed, `ruff` clean.
 - `upstream/.env` written (gitignored). OpenRouter key copied from
   `~/clawd/dead-simple-agent/.env`, verified live, no spend cap. Mercury 2.5 is
-  $0.04 / $0.15 per Mtok in/out. **`TYPESAFE_API_KEY` is empty.**
+  $0.04 / $0.15 per Mtok in/out. `TYPESAFE_API_KEY` set 2026-09-17 (key named jev-ultrafast in austin's org).
 - Dedicated Chrome: `./start-chrome.sh` (headless) or `./start-chrome.sh --windowed`.
-  Profile in `chrome-profile/` (gitignored), CDP on 127.0.0.1:9333. `.env` sets
-  `BU_NAME=jev` and `BU_CDP_URL=http://127.0.0.1:9333` so browser-harness uses it and
+  Profile in `chrome-profile/` (gitignored), CDP on 127.0.0.1:9444. `.env` sets
+  `BU_NAME=jev` and `BU_CDP_URL=http://127.0.0.1:9444` so browser-harness uses it and
   never touches the real Chrome. Verified: `scripts/check_guards.py` passed 21 real
   browser checks with no model calls.
 
-To finish:
+Run:
 
-1. Get a key at https://console.typesafe.ai/settings/keys (Google login, may land on a
-   waitlist). Put it in `upstream/.env` as `TYPESAFE_API_KEY=`.
-2. `./start-chrome.sh`
-3. `cd upstream && uv run jev`, open http://127.0.0.1:8766, Start demo.
-   Or: `uv run --env-file .env python examples/flights.py --keep-open`.
+1. `./start-chrome.sh` (refuses if the port is held; see the port-collision note below)
+2. `cd upstream && uv run jev`, open http://127.0.0.1:8766, Start demo.
+   Or: `uv run --env-file .env python examples/flights.py`.
+
+## Results on this Mac (2026-09-17)
+
+| Task | Time | Actions | Result |
+|---|---|---|---|
+| Wikipedia main page -> Gödel article | 3.0 s | 2 | landed on the article |
+| Google Flights ZRH->LON one-way 2026-09-20 | 8.0 s | ~12 | all 7 checks pass, real BA/easyJet results |
+
+First bare API call: 283 ms, 347 input tokens, two questions answered in one request.
+
+## Port-collision trap
+
+The first launcher used port 9333. Another headless Chrome (a clone of the real profile,
+running since Sep 10) already held 127.0.0.1:9333, so mine only bound IPv6 and every CDP
+call landed in that other browser. `start-chrome.sh` now uses 9444, refuses to start if the
+port is held, and prints the target list so you can see it's only about:blank.
 
 ## Known issues (upstream, day one)
 
