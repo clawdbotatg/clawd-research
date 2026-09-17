@@ -54,7 +54,10 @@ Prereqs done on this Mac:
 Run:
 
 1. `./start-chrome.sh` (refuses if the port is held; see the port-collision note below)
-2. `cd upstream && uv run jev`, open http://127.0.0.1:8766, Start demo.
+2. `cd upstream && uv run --env-file .env jev`, open http://127.0.0.1:8766, Start demo.
+   `--env-file` is required: `demo.py` imports browser-harness before it reads `.env`, so
+   without it the harness looks for a daemon named `default`, spawns one, and that one dies
+   with "daemon already running on bu-jev.sock" (the UI shows "Paused · needs attention").
    Or: `uv run --env-file .env python examples/flights.py`.
 
 ## Results on this Mac (2026-09-17)
