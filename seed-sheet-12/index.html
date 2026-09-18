@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>12-word seed phrase sheet — 2-of-3 split</title>
+<style>
+  /* US Letter landscape, no printer margin: the cards carry their own margins. */
+  @page { size: 11in 8.5in; margin: 0; }
+  html, body { margin: 0; padding: 0; background: #fff; color: #111;
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .sheet { width: 11in; height: 8.5in; position: relative; page-break-after: always;
+    display: flex; align-items: center; justify-content: space-evenly; padding: 0 0.3in; }
+  .sheet:last-child { page-break-after: auto; }
+
+  /* Cut guides: full-height dashed lines between the columns. */
+  .cut { position: absolute; top: 0.25in; bottom: 0.25in; width: 0; border-left: 1px dashed #999; }
+  .cut::before { content: "✂"; position: absolute; top: -0.22in; left: -0.09in; font-size: 11pt; color: #777;
+    transform: rotate(90deg); }
+  .cut.c1 { left: 3.667in; }  .cut.c2 { left: 7.333in; }
+
+  .card { width: 3.2in; height: 7.6in; border: 1.5px solid #222; border-radius: 0.12in;
+    padding: 0.28in 0.28in 0.22in; display: flex; flex-direction: column; position: relative; }
+  .card .tag { position: absolute; top: 0.2in; right: 0.24in; font-weight: 800; font-size: 22pt; letter-spacing: 0.02em; }
+  .card h1 { font-size: 13pt; margin: 0 0 0.02in; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .card .sub { font-size: 9.5pt; color: #444; margin: 0 0 0.2in; }
+  .card .sub b { color: #111; }
+
+  ol.slots { list-style: none; margin: 0; padding: 0; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  ol.slots li { display: flex; align-items: flex-end; height: 0.62in; }
+  ol.slots li .n { width: 0.42in; font-size: 11pt; font-weight: 700; color: #333; padding-bottom: 0.04in; font-variant-numeric: tabular-nums; }
+  ol.slots li .line { flex: 1; border-bottom: 1px solid #222; height: 0.4in; }
+  ol.slots li.gap { height: 0.22in; }
+  ol.slots li.gap .line { border-bottom: 0; }
+
+  .foot { margin-top: 0.18in; font-size: 7.5pt; color: #666; display: flex; justify-content: space-between; align-items: baseline; }
+  .foot .brand { font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #333; }
+
+  /* Back side */
+  .back h1 { font-size: 13pt; text-transform: none; letter-spacing: 0; margin-bottom: 0.1in; }
+  .back p, .back li { font-size: 8.6pt; line-height: 1.35; margin: 0 0 0.09in; }
+  .back ol { padding-left: 0.18in; margin: 0 0 0.1in; }
+  .back ol li { margin-bottom: 0.06in; }
+  .back .map { border: 1px solid #bbb; border-radius: 0.06in; padding: 0.08in 0.1in; margin: 0.04in 0 0.12in;
+    font-size: 8.4pt; font-variant-numeric: tabular-nums; }
+  .map table { border-collapse: collapse; width: 100%; }
+  .map td { padding: 0.015in 0; }
+  .map td:first-child { font-weight: 700; width: 0.75in; }
+  .map tr.me td { background: #f0f0f0; }
+  .back .warn { border-left: 3px solid #b00; padding: 0.05in 0 0.05in 0.1in; background: #fff5f5; }
+  .back .warn b { color: #b00; }
+  .back .spacer { flex: 1; }
+</style>
+</head>
+<body>
+
+<!-- ============================ FRONT ============================ -->
+<section class="sheet">
+  <div class="cut c1"></div><div class="cut c2"></div>
+
+  <div class="card">
+    <div class="tag">A</div>
+    <h1>12-word seed</h1>
+    <p class="sub">Card A · words <b>1–8</b> · one of three</p>
+    <ol class="slots">
+      <li><span class="n">1.</span><span class="line"></span></li>
+      <li><span class="n">2.</span><span class="line"></span></li>
+      <li><span class="n">3.</span><span class="line"></span></li>
+      <li><span class="n">4.</span><span class="line"></span></li>
+      <li><span class="n">5.</span><span class="line"></span></li>
+      <li><span class="n">6.</span><span class="line"></span></li>
+      <li><span class="n">7.</span><span class="line"></span></li>
+      <li><span class="n">8.</span><span class="line"></span></li>
+    </ol>
+    <div class="foot"><span class="brand">2-of-3 split</span><span>pairs with B or C</span></div>
+  </div>
+
+  <div class="card">
+    <div class="tag">B</div>
+    <h1>12-word seed</h1>
+    <p class="sub">Card B · words <b>5–12</b> · one of three</p>
+    <ol class="slots">
+      <li><span class="n">5.</span><span class="line"></span></li>
+      <li><span class="n">6.</span><span class="line"></span></li>
+      <li><span class="n">7.</span><span class="line"></span></li>
+      <li><span class="n">8.</span><span class="line"></span></li>
+      <li><span class="n">9.</span><span class="line"></span></li>
+      <li><span class="n">10.</span><span class="line"></span></li>
+      <li><span class="n">11.</span><span class="line"></span></li>
+      <li><span class="n">12.</span><span class="line"></span></li>
+    </ol>
+    <div class="foot"><span class="brand">2-of-3 split</span><span>pairs with A or C</span></div>
+  </div>
+
+  <div class="card">
+    <div class="tag">C</div>
+    <h1>12-word seed</h1>
+    <p class="sub">Card C · words <b>1–4</b> and <b>9–12</b> · one of three</p>
+    <ol class="slots">
+      <li><span class="n">1.</span><span class="line"></span></li>
+      <li><span class="n">2.</span><span class="line"></span></li>
+      <li><span class="n">3.</span><span class="line"></span></li>
+      <li><span class="n">4.</span><span class="line"></span></li>
+      <li><span class="n">9.</span><span class="line"></span></li>
+      <li><span class="n">10.</span><span class="line"></span></li>
+      <li><span class="n">11.</span><span class="line"></span></li>
+      <li><span class="n">12.</span><span class="line"></span></li>
+    </ol>
+    <div class="foot"><span class="brand">2-of-3 split</span><span>pairs with A or B</span></div>
+  </div>
+</section>
+
+<!-- ============================ BACK ============================ -->
+<!-- Column order is mirrored (C, B, A) so a duplex print flipped on the SHORT edge
+     lands each back on its own card. -->
+<section class="sheet">
+  <div class="cut c1"></div><div class="cut c2"></div>
+
+  <!-- C back -->
+  <div class="card back">
+    <div class="tag">C</div>
+    <h1>How this card works</h1>
+    <p>Your 12-word recovery phrase is spread over three cards. Each card holds 8 of the 12 words. <b>Any two cards</b> together contain all 12; one card alone does not.</p>
+    <div class="map"><table>
+      <tr><td>Card A</td><td>words 1–8</td></tr>
+      <tr><td>Card B</td><td>words 5–12</td></tr>
+      <tr class="me"><td>Card C</td><td>words 1–4, 9–12 (this card)</td></tr>
+    </table></div>
+    <ol>
+      <li>Write each word next to its number. Wrong numbering breaks recovery.</li>
+      <li>Fill all three cards, then restore the wallet from two of them to prove it works before funding it.</li>
+      <li>Store the cards in three separate places. Never photograph them.</li>
+    </ol>
+    <p class="warn"><b>12 words are a weaker split than 24.</b> Someone holding one card knows 8 words and only has to guess 4 (about a trillion candidates after the checksum). That is within reach of a serious attacker with GPUs. Treat a lone card as sensitive, add a BIP39 passphrase, or use SLIP-39 for large balances.</p>
+    <div class="spacer"></div>
+    <div class="foot"><span class="brand">2-of-3 split</span><span>seed-sheet-12</span></div>
+  </div>
+
+  <!-- B back -->
+  <div class="card back">
+    <div class="tag">B</div>
+    <h1>How this card works</h1>
+    <p>Your 12-word recovery phrase is spread over three cards. Each card holds 8 of the 12 words. <b>Any two cards</b> together contain all 12; one card alone does not.</p>
+    <div class="map"><table>
+      <tr><td>Card A</td><td>words 1–8</td></tr>
+      <tr class="me"><td>Card B</td><td>words 5–12 (this card)</td></tr>
+      <tr><td>Card C</td><td>words 1–4, 9–12</td></tr>
+    </table></div>
+    <ol>
+      <li>Write each word next to its number. Wrong numbering breaks recovery.</li>
+      <li>Fill all three cards, then restore the wallet from two of them to prove it works before funding it.</li>
+      <li>Store the cards in three separate places. Never photograph them.</li>
+    </ol>
+    <p class="warn"><b>12 words are a weaker split than 24.</b> Someone holding one card knows 8 words and only has to guess 4 (about a trillion candidates after the checksum). That is within reach of a serious attacker with GPUs. Treat a lone card as sensitive, add a BIP39 passphrase, or use SLIP-39 for large balances.</p>
+    <div class="spacer"></div>
+    <div class="foot"><span class="brand">2-of-3 split</span><span>seed-sheet-12</span></div>
+  </div>
+
+  <!-- A back -->
+  <div class="card back">
+    <div class="tag">A</div>
+    <h1>How this card works</h1>
+    <p>Your 12-word recovery phrase is spread over three cards. Each card holds 8 of the 12 words. <b>Any two cards</b> together contain all 12; one card alone does not.</p>
+    <div class="map"><table>
+      <tr class="me"><td>Card A</td><td>words 1–8 (this card)</td></tr>
+      <tr><td>Card B</td><td>words 5–12</td></tr>
+      <tr><td>Card C</td><td>words 1–4, 9–12</td></tr>
+    </table></div>
+    <ol>
+      <li>Write each word next to its number. Wrong numbering breaks recovery.</li>
+      <li>Fill all three cards, then restore the wallet from two of them to prove it works before funding it.</li>
+      <li>Store the cards in three separate places. Never photograph them.</li>
+    </ol>
+    <p class="warn"><b>12 words are a weaker split than 24.</b> Someone holding one card knows 8 words and only has to guess 4 (about a trillion candidates after the checksum). That is within reach of a serious attacker with GPUs. Treat a lone card as sensitive, add a BIP39 passphrase, or use SLIP-39 for large balances.</p>
+    <div class="spacer"></div>
+    <div class="foot"><span class="brand">2-of-3 split</span><span>seed-sheet-12</span></div>
+  </div>
+</section>
+
+</body>
+</html>
