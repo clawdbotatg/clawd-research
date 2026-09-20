@@ -41,3 +41,26 @@ Re-download: `hf download prism-ml/Ternary-Bonsai-2-27B-gguf Ternary-Bonsai-2-27
 - Demo repo (setup.sh, Open WebUI, vision, speculative decoding docs): https://github.com/PrismML-Eng/Bonsai-demo
 - Whitepaper: https://github.com/PrismML-Eng/Bonsai-demo/blob/main/bonsai-2-27b-whitepaper.pdf
 - Blog: https://prismml.com/news/bonsai-2-27b
+
+## Verified 2026-09-17 on this Mac (M3 Max, 128 GB, macOS 26.2)
+
+Fork commit `5d80cff` (branch `prism`), built with Metal. Everything below was run through `serve.sh` / `bench.sh`.
+
+| check | result |
+|---|---|
+| server start to `/health` ok | 7 s |
+| text Q&A (reasoning on) | coherent, reasoning trace returned in `reasoning_content` |
+| code gen (Fibonacci w/ docstring) | correct |
+| vision (64px PNG, red square on blue) | "blue background with a red square centered in the middle" |
+| llama-bench pp512 (prefill) | 180 tok/s |
+| llama-bench tg128 (decode) | 18.6 tok/s |
+
+Decode is the same ~18 tok/s PrismML lists for an M4 Pro, well under what M3 Max bandwidth
+(~400 GB/s over 6.7 GiB ≈ 60 tok/s ceiling) should allow. The ternary Metal kernel is not
+bandwidth-saturating on M3 yet; PrismML's own numbers are all M5. Worth re-benching after fork updates.
+
+Gotchas hit:
+- The harness exports `PORT=8787`, so the server script uses `BONSAI_PORT` instead.
+- `llama-cli` in this fork is the new interactive-only one (no `-no-cnv`); use `llama-server` + curl for scripted use.
+- `reasoning_effort` is passed as `"chat_template_kwargs": {"reasoning_effort": "medium"}` in the request body.
+- Ollama can't run it (no fork), and the Qwen3.8 hybrid-attention arch means an F16 GGUF also won't help there.
