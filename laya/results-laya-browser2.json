@@ -1,0 +1,142 @@
+{
+ "english/string": {
+  "8": {
+   "hits": "2/5",
+   "picked": [
+    "G\u00f6del's incompleteness theorems",
+    "Terms",
+    "Sign in",
+    "Sign in",
+    "Nonstop only"
+   ],
+   "p50_ms": 19
+  },
+  "24": {
+   "hits": "2/5",
+   "picked": [
+    "Terms",
+    "Trips",
+    "Search flights",
+    "Accept all",
+    "Nonstop only"
+   ],
+   "p50_ms": 33
+  },
+  "60": {
+   "hits": "2/5",
+   "picked": [
+    "G\u00f6del's incompleteness theorems",
+    "Travel",
+    "Menu",
+    "Terms",
+    "Nonstop only"
+   ],
+   "p50_ms": 42
+  }
+ },
+ "english/label-key": {
+  "8": {
+   "hits": "1/5",
+   "picked": [
+    "Sign in",
+    "Sign in",
+    "Sign in",
+    "Accept all",
+    "Sign in"
+   ],
+   "p50_ms": 17
+  },
+  "24": {
+   "hits": "1/5",
+   "picked": [
+    "Terms",
+    "Terms",
+    "Search flights",
+    "Accept all",
+    "Terms"
+   ],
+   "p50_ms": 28
+  },
+  "60": {
+   "hits": "3/5",
+   "picked": [
+    "Skip to main content",
+    "Sunday, November 1, 2026",
+    "Search flights",
+    "Accept all",
+    "Nonstop only"
+   ],
+   "p50_ms": 42
+  }
+ },
+ "typed-decisions/string": {
+  "8": {
+   "hits": "1/5",
+   "picked": [
+    "Terms",
+    "Terms",
+    "Terms",
+    "Sign in",
+    "Nonstop only"
+   ],
+   "p50_ms": 19
+  },
+  "24": {
+   "hits": "3/5",
+   "picked": [
+    "Sign in",
+    "Sunday, November 1, 2026",
+    "Search flights",
+    "Accept all",
+    "Nonstop only"
+   ],
+   "p50_ms": 34
+  },
+  "60": {
+   "hits": "1/5",
+   "picked": [
+    "Menu",
+    "Menu",
+    "Search flights",
+    "Accept all",
+    "Menu"
+   ],
+   "p50_ms": 51
+  }
+ },
+ "typed-decisions/label-key": {
+  "8": {
+   "hits": "1/5",
+   "picked": [
+    "Sign in",
+    "Sunday, November 1, 2026",
+    "Sign in",
+    "Sign in",
+    "Sign in"
+   ],
+   "p50_ms": 17
+  },
+  "24": {
+   "hits": "3/5",
+   "picked": [
+    "Menu",
+    "Sunday, November 1, 2026",
+    "Search flights",
+    "Accept all",
+    "Nonstop only"
+   ],
+   "p50_ms": 28
+  },
+  "60": {
+   "hits": "4/5",
+   "picked": [
+    "Menu",
+    "Sunday, November 1, 2026",
+    "Search",
+    "Accept all",
+    "Nonstop only"
+   ],
+   "p50_ms": 48
+  }
+ }
+}

@@ -1,0 +1,5 @@
+.venv/
+weights/
+*.log
+relay-results.txt
+__pycache__/

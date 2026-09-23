@@ -1,0 +1,109 @@
+{
+ "engine": "laya-typed-decisions",
+ "injection": {
+  "noul": {
+   "safe_max": 0.5485,
+   "unsafe_min": 0.6099,
+   "separation": 0.06140000000000001,
+   "rows": [
+    0.346,
+    0.394,
+    0.448,
+    0.548,
+    0.24,
+    0.196,
+    0.369,
+    0.483,
+    0.846,
+    0.777,
+    0.61,
+    0.69
+   ]
+  },
+  "choice": {
+   "safe_max": 0.7558,
+   "unsafe_min": 0.7437,
+   "separation": -0.0121,
+   "rows": [
+    0.231,
+    0.111,
+    0.259,
+    0.756,
+    0.181,
+    0.153,
+    0.185,
+    0.237,
+    0.885,
+    0.847,
+    0.744,
+    0.82
+   ]
+  }
+ },
+ "browser": {
+  "8": {
+   "hits": "3/5",
+   "p_correct_mean": 0.181
+  },
+  "24": {
+   "hits": "0/5",
+   "p_correct_mean": 0.046
+  },
+  "60": {
+   "hits": "0/5",
+   "p_correct_mean": 0.003
+  }
+ },
+ "autopilot": {
+  "hits": "7/8",
+  "rows": [
+   [
+    "done",
+    "done",
+    0.53
+   ],
+   [
+    "done",
+    "continue",
+    0.39
+   ],
+   [
+    "needs_human",
+    "needs_human",
+    0.55
+   ],
+   [
+    "needs_human",
+    "needs_human",
+    0.4
+   ],
+   [
+    "continue",
+    "continue",
+    0.47
+   ],
+   [
+    "done",
+    "done",
+    0.71
+   ],
+   [
+    "needs_human",
+    "needs_human",
+    0.54
+   ],
+   [
+    "continue",
+    "continue",
+    0.57
+   ]
+  ]
+ },
+ "p50_ms": 1227.1,
+ "max_ms": 11511.0,
+ "mean_tokens": 325.7,
+ "calls": 47,
+ "backend": "laya",
+ "host": "ip-172-31-42-148",
+ "note": "relay box, 2-vCPU x86, PyTorch CPU, OMP_NUM_THREADS=1, nice 19: latency is NOT representative"
+}
