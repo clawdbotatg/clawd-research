@@ -68,16 +68,16 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 <p class="sub">Two ways to cut it. Buy Picos at $7 retail and solder them on ourselves: saves $36. Put only the joystick and buttons on the front and solder those 3 parts by hand: one-sided assembly, saves $50. Both together gets the order near $100.</p></section>
 
 <section><h2>Will it work</h2><div class="note">
-<div class="conf"><b>75%</b><span>chance the first batch runs the firmware with no board fix. Checked on 2026-09-23: Pico footprint, joystick, charger, diode. Still open: switch drawing, screen module pin order.</span></div>
+<div class="conf"><b>80%</b><span>chance the first batch runs the firmware with no board fix. Every net re-checked from the compiled netlist on 2026-09-23: Pico mirror and all 40 labels, joystick, ATECC608B SOIC-8 pinout, TP4056 pinout, diode direction, switch common pin, 7-pin screen header. Nobody has powered one.</span></div>
 <ul>
 <li><b>Pico footprint on the back: checked.</b> Pin 1 lands top-right and USB right when you look at the back, which is what a Pico looks like with its USB on the right. All 40 pin labels match the official pinout.</li>
 <li><b>Joystick: checked.</b> ALPS datasheet: pin 2 is center push, pin 5 is common. Both wired right. Its four directions run on the diagonals, so it now sits at 45° like on the Waveshare board. Which direction is which is a firmware table, and the firmware already has a key-test screen for that.</li>
 <li><b>Screen header order: checked against five Amazon listings.</b> The 1.3" module is almost always 7-pin GND VCC SCL SDA RES DC BLK. That is now our header. Buy a 7-pin one.</li>
-<li><b>Power switch.</b> Middle pin as common is the standard for this 3-pin slide switch and my pads match that layout. No drawing found to confirm. If wrong, the switch just works backwards or not at all, and a wire fixes it.</li>
+<li><b>Power switch: checked by geometry.</b> Pad 2 sits between pads 1 and 3, the common on every SPDT slide switch of this type, and pad 2 is the one wired to the battery. The LCSC datasheet PDF would not download, so this is by convention and geometry, not a drawing.</li>
 <li><b>WiFi.</b> The Pico's antenna is at its right end, under the B button and the battery plug. Expect some range loss, not a dead radio.</li>
-<li><b>No battery protection on the board.</b> Buy LiPos with a built-in protection board. Charger is set to about 580 mA, which is a hard 2.9C on a 200 mAh cell. Fine for a test, but v1 should use a 5k PROG resistor (~230 mA) or a bigger cell.</li>
+<li><b>No battery protection on the board.</b> Buy LiPos with a built-in protection board. Charge current set to about 235 mA (5.1k PROG resistor), right for a 200 mAh cell.</li>
 <li><b>Thickness.</b> About 20 mm: screen stack 14 mm on the front, Pico 4 mm on the back. The battery adds nothing.</li>
-<li><b>Not electrically tested.</b> This is a design that passed tscircuit's checks. Nobody has powered one.</li>
+<li><b>Not electrically tested.</b> Passed tscircuit netlist, placement and shorts checks, plus a manual net-by-net review against datasheets. Nobody has powered one. JLCPCB runs its own manufacturing check at upload.</li>
 </ul></div></section>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
