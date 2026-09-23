@@ -150,7 +150,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
     ptr.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
     ray.setFromCamera(ptr,camera);
     var hit=ray.intersectObjects(parts.map(function(p){return p.obj;}),true)[0];
-    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',BT1:'LiPo 402030 under the screen, drawn only',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
+    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',BT1:'LiPo 402030 under the screen, drawn only',J2:'battery plug (JST-PH)',J1:'7-pin screen header + screen module',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
     var n=''; if(hit){var o=hit.object; while(o&&o.parent&&o.parent!==scene&&!labels[o.name]) o=o.parent; n=labels[o.name]||o.name;}
     nameEl.textContent=n;
   });
