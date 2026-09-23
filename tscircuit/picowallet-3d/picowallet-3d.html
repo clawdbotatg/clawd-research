@@ -1,4 +1,4 @@
-<title>picowallet v0.2 in 3D</title>
+<title>picowallet v0.3 in 3D</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap">
 <style>
 :root{--bg:#F3F5F2;--ink:#14201B;--mute:#5F6E66;--mask:#1F5F46;--copper:#B87333;--line:#D4DBD6;--panel:#FFFFFF;--stage:#E4E9E5}
@@ -34,7 +34,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 @media (prefers-reduced-motion: reduce){#stage{scroll-behavior:auto}}
 </style>
 <main>
-<header><h1>picowallet v0.2 in 3D</h1><p class="sub">Drag to rotate, pinch or scroll to zoom. Slide to pop the parts off the board. Grey square is the 1.3" screen module. 64 × 46 mm.</p></header>
+<header><h1>picowallet v0.3 in 3D</h1><p class="sub">Drag to rotate, pinch or scroll to zoom. Slide to pop the parts off the board. Grey square is the 1.3" screen module. Under it: the battery, charger, and secure element. 60 × 42 mm.</p></header>
 
 <div id="stage"><div id="loading">loading the model (10 MB)…</div><div id="tip">drag · scroll · tap a part</div><div id="name"></div></div>
 <div class="bar">
@@ -46,19 +46,19 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 </div>
 
 <section><h2>What changed</h2><div class="note"><ul>
-<li>Two buttons, A over B, on the right. Joystick on the left. Screen in the middle.</li>
-<li>Battery strip along the bottom edge on the back: TP4056 charger fed from the Pico's own USB, slide power switch, Schottky diode into VSYS, JST-PH plug for a LiPo.</li>
-<li>Pico 2 W on the back, USB out the left edge. ATECC608B on the back, bottom left. The grey slab behind the Pico is a 30 × 20 mm LiPo, drawn to show where it goes. It's not a JLCPCB part.</li>
-<li>Board shrank from 70 × 40 to 64 × 46 mm. Routed, no shorts, placement clean.</li>
+<li>Joystick left, screen center, A over B right. The screen sits on an 8.5 mm female header, and that pocket under it now holds everything: a 30 × 20 × 5 mm LiPo lying flat, the ATECC608B, the TP4056 charger, diode, and the battery solder pads. Nothing sticks out.</li>
+<li>Power slide switch pokes out the bottom edge, left of the screen header. Charger runs off the Pico's own USB. Battery leads solder to two pads beside the LiPo (cut the JST plug off).</li>
+<li>Back: only the Pico 2 W, USB out the left edge. Thickness about 4 mm back, 14 mm front, 1.6 mm board.</li>
+<li>Board: 60 × 42 mm, down from 64 × 46. Routed, no shorts, placement clean.</li>
 </ul></div></section>
 
 <section><h2>Cost, 5 boards</h2><div class="wrap"><table>
 <tr><th>Item</th><th>Note</th><th class="m">USD</th></tr>
 <tr><td>Parts from LCSC</td><td>Pico 2 W is $14.20 there (5 × $14.20 = $71). Everything else about $2.50 a board.</td><td class="m">84</td></tr>
-<tr><td>Bare PCBs</td><td>5 pcs, 2 layers, 64 × 46 mm</td><td class="m">5</td></tr>
-<tr><td>Assembly setup</td><td>Parts on both sides forces "standard" assembly, $50 flat. One side would be $0.</td><td class="m">50</td></tr>
+<tr><td>Bare PCBs</td><td>5 pcs, 2 layers, 60 × 42 mm</td><td class="m">5</td></tr>
+<tr><td>Assembly setup</td><td>Pico on the back, everything else on the front. Two sides = "standard" assembly, $50 flat. Solder the Pico yourself and it's $0.</td><td class="m">50</td></tr>
 <tr><td>Feeder fees</td><td>6 non-basic part types × $3 (Pico, ATECC, joystick, button, TP4056, switch)</td><td class="m">18</td></tr>
-<tr><td>Hand-soldered parts</td><td>JST plug + screen header, one $3.50 fee plus a few cents a joint</td><td class="m">6</td></tr>
+<tr><td>Hand-soldered parts</td><td>Screen header + battery pads, one $3.50 fee plus a few cents a joint</td><td class="m">6</td></tr>
 <tr><td>Shipping</td><td>DHL to the US. Slow post is about $10.</td><td class="m">25</td></tr>
 <tr class="total"><td>JLCPCB order</td><td>5 assembled boards</td><td class="m">≈ 190</td></tr>
 <tr><td>Screens</td><td>5 × 1.3" ST7789 240×240 modules, Amazon</td><td class="m">20</td></tr>
@@ -74,9 +74,9 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 <li><b>Joystick: checked.</b> ALPS datasheet: pin 2 is center push, pin 5 is common. Both wired right. Its four directions run on the diagonals, so it now sits at 45° like on the Waveshare board. Which direction is which is a firmware table, and the firmware already has a key-test screen for that.</li>
 <li><b>Screen header order.</b> GND VCC SCL SDA RES DC CS BLK matches the common Amazon 1.3" module. Some clones differ. Check the one you buy.</li>
 <li><b>Power switch.</b> Middle pin as common is the standard for this 3-pin slide switch and my pads match that layout. No drawing found to confirm. If wrong, the switch just works backwards or not at all, and a wire fixes it.</li>
-<li><b>WiFi.</b> The Pico's antenna sits at the right end. The power switch and battery plug are close to it. Expect some range loss, not a dead radio.</li>
+<li><b>WiFi.</b> The Pico's antenna is at its right end, under the B button and the battery pads. Expect some range loss, not a dead radio.</li>
 <li><b>No battery protection on the board.</b> Buy LiPos with a built-in protection board. Charger is fixed at about 580 mA, fine for 500 mAh and up.</li>
-<li><b>Thickness.</b> Screen on the front (12 mm) plus Pico on the back (4 mm): about 17 mm total. The case gets a bit chunkier.</li>
+<li><b>Thickness.</b> About 20 mm: screen stack 14 mm on the front, Pico 4 mm on the back. The battery no longer adds anything. A lower female header would shave 3 mm but then the LiPo doesn't fit under the screen.</li>
 <li><b>Not electrically tested.</b> This is a design that passed tscircuit's checks. Nobody has powered one.</li>
 </ul></div></section>
 </main>
@@ -150,7 +150,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
     ptr.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
     ray.setFromCamera(ptr,camera);
     var hit=ray.intersectObjects(parts.map(function(p){return p.obj;}),true)[0];
-    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',J2:'battery plug (JST-PH)',BT1:'LiPo 502030, drawn only',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
+    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',J2:'battery solder pads',BT1:'LiPo 502030 under the screen, drawn only',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
     var n=''; if(hit){var o=hit.object; while(o&&o.parent&&o.parent!==scene&&!labels[o.name]) o=o.parent; n=labels[o.name]||o.name;}
     nameEl.textContent=n;
   });
