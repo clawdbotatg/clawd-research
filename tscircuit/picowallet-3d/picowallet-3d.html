@@ -48,7 +48,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 <section><h2>What changed</h2><div class="note"><ul>
 <li>Two buttons, A over B, on the right. Joystick on the left. Screen in the middle.</li>
 <li>Battery strip along the bottom edge on the back: TP4056 charger fed from the Pico's own USB, slide power switch, Schottky diode into VSYS, JST-PH plug for a LiPo.</li>
-<li>Pico 2 W on the back, USB out the left edge. ATECC608B on the back, bottom left.</li>
+<li>Pico 2 W on the back, USB out the left edge. ATECC608B on the back, bottom left. The grey slab behind the Pico is a 30 × 20 mm LiPo, drawn to show where it goes. It's not a JLCPCB part.</li>
 <li>Board shrank from 70 × 40 to 64 × 46 mm. Routed, no shorts, placement clean.</li>
 </ul></div></section>
 
@@ -68,12 +68,12 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 <p class="sub">Two ways to cut it. Buy Picos at $7 retail and solder them on ourselves: saves $36. Put only the joystick and buttons on the front and solder those 3 parts by hand: one-sided assembly, saves $50. Both together gets the order near $100.</p></section>
 
 <section><h2>Will it work</h2><div class="note">
-<div class="conf"><b>65%</b><span>chance the first batch runs the firmware with no board fix. The rest is "works after one small bodge or a firmware pin remap."</span></div>
+<div class="conf"><b>75%</b><span>chance the first batch runs the firmware with no board fix. Checked on 2026-09-23: Pico footprint, joystick, charger, diode. Still open: switch drawing, screen module pin order.</span></div>
 <ul>
-<li><b>Pico footprint on the back.</b> The module is mirrored because it's on the bottom layer. I mapped pin 1 by hand. Wrong mirror = every GPIO in the wrong place. Must be checked against the Pico 2 W drawing before ordering. Biggest risk.</li>
-<li><b>Joystick directions.</b> Which of pins A/B/C/D is up/down/left/right is a guess until I read the datasheet. A wrong guess is a one-line firmware fix.</li>
+<li><b>Pico footprint on the back: checked.</b> Pin 1 lands top-right and USB right when you look at the back, which is what a Pico looks like with its USB on the right. All 40 pin labels match the official pinout.</li>
+<li><b>Joystick: checked.</b> ALPS datasheet: pin 2 is center push, pin 5 is common. Both wired right. Its four directions run on the diagonals, so it now sits at 45° like on the Waveshare board. Which direction is which is a firmware table, and the firmware already has a key-test screen for that.</li>
 <li><b>Screen header order.</b> GND VCC SCL SDA RES DC CS BLK matches the common Amazon 1.3" module. Some clones differ. Check the one you buy.</li>
-<li><b>Power switch pinout.</b> I assumed the middle pin of the slide switch is common. Verify.</li>
+<li><b>Power switch.</b> Middle pin as common is the standard for this 3-pin slide switch and my pads match that layout. No drawing found to confirm. If wrong, the switch just works backwards or not at all, and a wire fixes it.</li>
 <li><b>WiFi.</b> The Pico's antenna sits at the right end. The power switch and battery plug are close to it. Expect some range loss, not a dead radio.</li>
 <li><b>No battery protection on the board.</b> Buy LiPos with a built-in protection board. Charger is fixed at about 580 mA, fine for 500 mAh and up.</li>
 <li><b>Thickness.</b> Screen on the front (12 mm) plus Pico on the back (4 mm): about 17 mm total. The case gets a bit chunkier.</li>
@@ -150,7 +150,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
     ptr.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
     ray.setFromCamera(ptr,camera);
     var hit=ray.intersectObjects(parts.map(function(p){return p.obj;}),true)[0];
-    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',J2:'battery plug (JST-PH)',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
+    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',J2:'battery plug (JST-PH)',BT1:'LiPo 502030, drawn only',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
     var n=''; if(hit){var o=hit.object; while(o&&o.parent&&o.parent!==scene&&!labels[o.name]) o=o.parent; n=labels[o.name]||o.name;}
     nameEl.textContent=n;
   });
