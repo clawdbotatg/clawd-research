@@ -1,0 +1,171 @@
+<title>picowallet v0.2 in 3D</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+:root{--bg:#F3F5F2;--ink:#14201B;--mute:#5F6E66;--mask:#1F5F46;--copper:#B87333;--line:#D4DBD6;--panel:#FFFFFF;--stage:#E4E9E5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0F1613;--ink:#E6EDE8;--mute:#93A39B;--mask:#4FB88A;--copper:#D99A5B;--line:#26322C;--panel:#161F1A;--stage:#0A100D}}
+:root[data-theme="dark"]{--bg:#0F1613;--ink:#E6EDE8;--mute:#93A39B;--mask:#4FB88A;--copper:#D99A5B;--line:#26322C;--panel:#161F1A;--stage:#0A100D}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif;margin:0}
+main{max-width:920px;margin:0 auto;padding:24px 16px 64px;display:grid;gap:24px}
+h1{font:500 26px/1.15 "IBM Plex Mono",ui-monospace,monospace;margin:0;text-wrap:balance}
+.sub{color:var(--mute);margin:6px 0 0;max-width:62ch}
+#stage{position:relative;background:var(--stage);border:1px solid var(--line);border-radius:6px;overflow:hidden;height:min(70vh,560px);touch-action:none}
+#stage canvas{display:block;width:100%;height:100%}
+#tip{position:absolute;left:12px;top:10px;font:12px/1.4 "IBM Plex Mono",ui-monospace,monospace;color:var(--mute);pointer-events:none}
+#name{position:absolute;right:12px;top:10px;font:500 13px/1 "IBM Plex Mono",ui-monospace,monospace;color:var(--copper);pointer-events:none}
+#loading{position:absolute;inset:0;display:grid;place-items:center;font:14px "IBM Plex Mono",ui-monospace,monospace;color:var(--mute)}
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.bar label{font:500 12px/1 "IBM Plex Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);display:flex;align-items:center;gap:10px}
+input[type=range]{width:220px;accent-color:var(--copper)}
+button{font:500 13px "IBM Plex Mono",ui-monospace,monospace;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 12px;cursor:pointer}
+button:hover{border-color:var(--mask)} button:focus-visible{outline:2px solid var(--mask);outline-offset:2px}
+button[aria-pressed=true]{background:var(--mask);color:#fff;border-color:var(--mask)}
+h2{font:500 14px/1 "IBM Plex Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--mask);margin:8px 0 0}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+td,th{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 12px/1 "IBM Plex Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+td.m{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+th.m{text-align:right}
+tr.total td{font-weight:600;border-top:2px solid var(--line)}
+ul{margin:0;padding-left:20px} li{margin:6px 0}
+.note{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:14px 16px}
+.conf{display:flex;gap:16px;align-items:baseline}
+.conf b{font:500 40px/1 "IBM Plex Mono",ui-monospace,monospace;color:var(--copper)}
+@media (prefers-reduced-motion: reduce){#stage{scroll-behavior:auto}}
+</style>
+<main>
+<header><h1>picowallet v0.2 in 3D</h1><p class="sub">Drag to rotate, pinch or scroll to zoom. Slide to pop the parts off the board. Grey square is the 1.3" screen module. 64 × 46 mm.</p></header>
+
+<div id="stage"><div id="loading">loading the model (10 MB)…</div><div id="tip">drag · scroll · tap a part</div><div id="name"></div></div>
+<div class="bar">
+  <label>explode <input id="ex" type="range" min="0" max="100" value="0"></label>
+  <button id="auto" aria-pressed="false">auto explode</button>
+  <button id="front">front</button>
+  <button id="back">back</button>
+  <button id="spin" aria-pressed="true">spin</button>
+</div>
+
+<section><h2>What changed</h2><div class="note"><ul>
+<li>Two buttons, A over B, on the right. Joystick on the left. Screen in the middle.</li>
+<li>Battery strip along the bottom edge on the back: TP4056 charger fed from the Pico's own USB, slide power switch, Schottky diode into VSYS, JST-PH plug for a LiPo.</li>
+<li>Pico 2 W on the back, USB out the left edge. ATECC608B on the back, bottom left.</li>
+<li>Board shrank from 70 × 40 to 64 × 46 mm. Routed, no shorts, placement clean.</li>
+</ul></div></section>
+
+<section><h2>Cost, 5 boards</h2><div class="wrap"><table>
+<tr><th>Item</th><th>Note</th><th class="m">USD</th></tr>
+<tr><td>Parts from LCSC</td><td>Pico 2 W is $14.20 there (5 × $14.20 = $71). Everything else about $2.50 a board.</td><td class="m">84</td></tr>
+<tr><td>Bare PCBs</td><td>5 pcs, 2 layers, 64 × 46 mm</td><td class="m">5</td></tr>
+<tr><td>Assembly setup</td><td>Parts on both sides forces "standard" assembly, $50 flat. One side would be $0.</td><td class="m">50</td></tr>
+<tr><td>Feeder fees</td><td>6 non-basic part types × $3 (Pico, ATECC, joystick, button, TP4056, switch)</td><td class="m">18</td></tr>
+<tr><td>Hand-soldered parts</td><td>JST plug + screen header, one $3.50 fee plus a few cents a joint</td><td class="m">6</td></tr>
+<tr><td>Shipping</td><td>DHL to the US. Slow post is about $10.</td><td class="m">25</td></tr>
+<tr class="total"><td>JLCPCB order</td><td>5 assembled boards</td><td class="m">≈ 190</td></tr>
+<tr><td>Screens</td><td>5 × 1.3" ST7789 240×240 modules, Amazon</td><td class="m">20</td></tr>
+<tr><td>Batteries</td><td>5 × 500 mAh LiPo with protection board, JST-PH</td><td class="m">30</td></tr>
+<tr class="total"><td>Everything</td><td>5 working wallets, about $48 each</td><td class="m">≈ 240</td></tr>
+</table></div>
+<p class="sub">Two ways to cut it. Buy Picos at $7 retail and solder them on ourselves: saves $36. Put only the joystick and buttons on the front and solder those 3 parts by hand: one-sided assembly, saves $50. Both together gets the order near $100.</p></section>
+
+<section><h2>Will it work</h2><div class="note">
+<div class="conf"><b>65%</b><span>chance the first batch runs the firmware with no board fix. The rest is "works after one small bodge or a firmware pin remap."</span></div>
+<ul>
+<li><b>Pico footprint on the back.</b> The module is mirrored because it's on the bottom layer. I mapped pin 1 by hand. Wrong mirror = every GPIO in the wrong place. Must be checked against the Pico 2 W drawing before ordering. Biggest risk.</li>
+<li><b>Joystick directions.</b> Which of pins A/B/C/D is up/down/left/right is a guess until I read the datasheet. A wrong guess is a one-line firmware fix.</li>
+<li><b>Screen header order.</b> GND VCC SCL SDA RES DC CS BLK matches the common Amazon 1.3" module. Some clones differ. Check the one you buy.</li>
+<li><b>Power switch pinout.</b> I assumed the middle pin of the slide switch is common. Verify.</li>
+<li><b>WiFi.</b> The Pico's antenna sits at the right end. The power switch and battery plug are close to it. Expect some range loss, not a dead radio.</li>
+<li><b>No battery protection on the board.</b> Buy LiPos with a built-in protection board. Charger is fixed at about 580 mA, fine for 500 mAh and up.</li>
+<li><b>Thickness.</b> Screen on the front (12 mm) plus Pico on the back (4 mm): about 17 mm total. The case gets a bit chunkier.</li>
+<li><b>Not electrically tested.</b> This is a design that passed tscircuit's checks. Nobody has powered one.</li>
+</ul></div></section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+  var stage=document.getElementById('stage'), nameEl=document.getElementById('name');
+  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  stage.appendChild(renderer.domElement);
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(35,1,1,2000);
+  var controls=new THREE.OrbitControls(camera,renderer.domElement);
+  controls.enableDamping=true; controls.dampingFactor=0.08; controls.autoRotate=true; controls.autoRotateSpeed=1.2;
+  scene.add(new THREE.HemisphereLight(0xffffff,0x445544,0.9));
+  var sun=new THREE.DirectionalLight(0xffffff,0.8); sun.position.set(1,2,1.5); scene.add(sun);
+  var sun2=new THREE.DirectionalLight(0xffffff,0.35); sun2.position.set(-1,-2,-1); scene.add(sun2);
+
+  var parts=[], normal=new THREE.Vector3(0,1,0), center=new THREE.Vector3(), radius=50, boardMid=0;
+  var slider=document.getElementById('ex'), autoBtn=document.getElementById('auto'), spinBtn=document.getElementById('spin');
+  var auto=false, t0=0, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){var w=stage.clientWidth,h=stage.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();}
+  addEventListener('resize',resize); resize();
+
+  function applyExplode(k){
+    parts.forEach(function(p){
+      var d=p.side*k*radius*0.6;
+      var spread=p.rel.clone().multiplyScalar(k*0.35);
+      p.obj.position.copy(p.home).addScaledVector(normal,d).add(spread);
+    });
+  }
+  function view(sign){
+    controls.autoRotate=false; spinBtn.setAttribute('aria-pressed','false');
+    var dist=radius*2.6;
+    camera.position.copy(center).addScaledVector(normal,sign*dist).add(new THREE.Vector3(0.001,0,0.001).multiplyScalar(dist));
+    camera.up.set(0,0,-sign); controls.target.copy(center); controls.update();
+  }
+
+  fetch('board.json').then(function(r){return r.json();}).then(function(j){var s=atob(j.glb),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);new THREE.GLTFLoader().parse(u.buffer,'',function(g){
+    var root=g.scene; scene.add(root);
+    var box=new THREE.Box3().setFromObject(root); box.getCenter(center); radius=box.getSize(new THREE.Vector3()).length()/2;
+    // board = the mesh named Box0 (tscircuit's board). Its thinnest axis is the board normal.
+    var boardObj=null;
+    root.traverse(function(o){ if(o.isMesh){ o.material=o.material.clone(); o.material.side=THREE.DoubleSide; } });
+    root.children.forEach(function(o){ if(o.name==='Box0') boardObj=o; });
+    if(boardObj){ var bb=new THREE.Box3().setFromObject(boardObj), s=bb.getSize(new THREE.Vector3());
+      var ax = s.x<s.y&&s.x<s.z?'x':(s.y<s.z?'y':'z'); normal.set(ax==='x'?1:0,ax==='y'?1:0,ax==='z'?1:0);
+      boardMid=bb.getCenter(new THREE.Vector3()).dot(normal); }
+    root.children.forEach(function(o){
+      if(o===boardObj) return;
+      var c=new THREE.Box3().setFromObject(o).getCenter(new THREE.Vector3());
+      var side=c.dot(normal)-boardMid>=0?1:-1;
+      var rel=c.clone().sub(center); rel.addScaledVector(normal,-rel.dot(normal));
+      parts.push({obj:o,home:o.position.clone(),side:side,rel:rel,name:o.name});
+    });
+    camera.near=radius/50; camera.far=radius*20; camera.updateProjectionMatrix();
+    camera.position.copy(center).add(new THREE.Vector3(1.2,1.6,1.4).normalize().multiplyScalar(radius*2.6));
+    camera.up.copy(normal); controls.target.copy(center); controls.update();
+    document.getElementById('loading').remove();
+  },function(e){document.getElementById('loading').textContent='could not parse the model';});}).catch(function(){document.getElementById('loading').textContent='could not load board.json';});
+
+  // tap a part to name it
+  var ray=new THREE.Raycaster(), ptr=new THREE.Vector2(), down=null;
+  renderer.domElement.addEventListener('pointerdown',function(e){down=[e.clientX,e.clientY];});
+  renderer.domElement.addEventListener('pointerup',function(e){
+    if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>6) return;
+    var r=renderer.domElement.getBoundingClientRect();
+    ptr.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+    ray.setFromCamera(ptr,camera);
+    var hit=ray.intersectObjects(parts.map(function(p){return p.obj;}),true)[0];
+    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',J2:'battery plug (JST-PH)',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
+    var n=''; if(hit){var o=hit.object; while(o&&o.parent&&o.parent!==scene&&!labels[o.name]) o=o.parent; n=labels[o.name]||o.name;}
+    nameEl.textContent=n;
+  });
+
+  slider.addEventListener('input',function(){ auto=false; autoBtn.setAttribute('aria-pressed','false'); applyExplode(slider.value/100); });
+  autoBtn.addEventListener('click',function(){ auto=!auto; autoBtn.setAttribute('aria-pressed',String(auto)); t0=performance.now(); });
+  spinBtn.addEventListener('click',function(){ controls.autoRotate=!controls.autoRotate; spinBtn.setAttribute('aria-pressed',String(controls.autoRotate)); });
+  document.getElementById('front').addEventListener('click',function(){view(1);});
+  document.getElementById('back').addEventListener('click',function(){view(-1);});
+  if(reduce) controls.autoRotate=false;
+
+  (function loop(){
+    requestAnimationFrame(loop);
+    if(auto){ var k=(1-Math.cos((performance.now()-t0)/1400))/2; slider.value=Math.round(k*100); applyExplode(k); }
+    controls.update(); renderer.render(scene,camera);
+  })();
+})();
+</script>
