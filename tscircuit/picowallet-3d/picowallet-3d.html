@@ -1,4 +1,4 @@
-<title>picowallet v0.7 in 3D</title>
+<title>picowallet v0.7c in 3D</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap">
 <style>
 :root{--bg:#F3F5F2;--ink:#14201B;--mute:#5F6E66;--mask:#1F5F46;--copper:#B87333;--line:#D4DBD6;--panel:#FFFFFF;--stage:#E4E9E5}
@@ -34,7 +34,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 @media (prefers-reduced-motion: reduce){#stage{scroll-behavior:auto}}
 </style>
 <main>
-<header><h1>picowallet v0.7 in 3D</h1><p class="sub">Drag to rotate, pinch or scroll to zoom. Slide to pop the parts off the board. Grey slab is a bare 2" 320×240 panel lying flat on the front. Battery is on the back beside the Pico. 82 × 44 mm. Zero soldering: JLCPCB places every part, the panel's ribbon slides into a latch, the battery clicks in.</p></header>
+<header><h1>picowallet v0.7c in 3D</h1><p class="sub">Drag to rotate, pinch or scroll to zoom. Slide to pop the parts off the board. Grey slab is a bare 2" 320×240 panel lying flat on the front. Battery is on the back beside the Pico. 82 × 44 mm. Zero soldering: JLCPCB places every part, the panel's ribbon slides into a latch, the battery clicks in.</p></header>
 
 <div id="stage"><div id="loading">loading the model (10 MB)…</div><div id="tip">drag · scroll · tap a part</div><div id="name"></div></div>
 <div class="bar">
@@ -46,8 +46,8 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 </div>
 
 <section><h2>What changed</h2><div class="note"><ul>
-<li>v0.7: bare panel. HS20HS072RX (LCSC C5329582, $3.77): 2" glass, 320 × 240, ST7789 driver, 51.8 × 36.2 × 2 mm, 12-wire ribbon. It lies flat on the front. The ribbon folds under the panel's left edge into a 0.5 mm latch connector (LCSC C2856829, double-sided contacts, 2 mm tall). JLCPCB solders the connector. Slide the ribbon in, flip the latch.</li>
-<li>Panel wiring: CS DC SCK MOSI RST on the same GPIOs as today. Backlight is 4 white LEDs at 80 mA, so it gets its own driver: 22 Ω from VSYS and a 2N7002 switched by GP13, same pin the firmware already PWMs.</li>
+<li>v0.7: bare panel. HS20HS072RX (LCSC C5329582, $3.77): 2" glass, 320 × 240, ST7789 driver, 51.8 × 36.2 × 2 mm, 12-wire ribbon. It lies flat on the front. The ribbon folds under the panel's left edge and runs 20 mm in to a 1 mm-tall 0.5 mm latch (LCSC C466532, double-sided contacts). JLCPCB solders the connector. Slide the ribbon in, flip the latch.</li>
+<li>Panel wiring: CS DC SCK MOSI RST on the same GPIOs as today. Backlight is 4 white LEDs at 80 mA, so it gets its own driver: 27 Ω from VSYS and a 2N7002 switched by GP13, same pin the firmware already PWMs.</li>
 <li>Back: Pico 2 W with USB out the left edge, and the 402030 LiPo standing beside it on the right with its JST plug. Front, outside the panel: joystick left, A over B right, ATECC top-left, charger bottom-right, power switch and PWR/CHG lights on the bottom edge.</li>
 <li>v0.5: power switch flipped so its knob hangs past the bottom edge. Two lights beside it: green PWR (on whenever the board has power) and red CHG (on while the battery charges, driven by the charger chip). Board: 82 × 44 mm. About 8 mm thick: 2 mm panel on the front, 4 mm Pico and battery on the back. Routed, no shorts, placement clean.</li>
 </ul></div></section>
@@ -75,7 +75,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
 <li><b>Ribbon pin order is the new top risk.</b> Which end is pin 1 after the fold is a guess until a panel is in hand. The panel's pinout is symmetric enough that a reversed ribbon puts 3.3 V on two signal lines and signals on the backlight: nothing burns, the screen just stays dark until the connector is flipped in v1. The latch connector's mouth direction is also assumed.</li>
 <li><b>Power switch: checked by geometry.</b> Pad 2 sits between pads 1 and 3, the common on every SPDT slide switch of this type, and pad 2 is the one wired to the battery. The LCSC datasheet PDF would not download, so this is by convention and geometry, not a drawing.</li>
 <li><b>WiFi.</b> The Pico's antenna is at its right end, under the B button and the battery plug. Expect some range loss, not a dead radio.</li>
-<li><b>No battery protection on the board.</b> Buy LiPos with a built-in protection board. Charge current set to about 235 mA (5.1k PROG resistor), right for a 200 mAh cell.</li>
+<li><b>No battery protection on the board.</b> Buy LiPos with a built-in protection board. Charge current set to about 195 mA (6.2k PROG resistor), 1C for the 200 mAh cell.</li>
 <li><b>Thickness.</b> About 20 mm: screen stack 14 mm on the front, Pico 4 mm on the back. The battery adds nothing.</li>
 <li><b>Firmware change needed.</b> The panel is 320 × 240, not 240 × 240, and this ST7789 variant may need a different init sequence. Expect a day of driver work when the boards arrive.</li>
 <li><b>Panel is bare glass.</b> No bezel, no protection. The case has to hold it and cover its edges. Handle it by the metal frame, never the ribbon.</li>
@@ -152,7 +152,7 @@ ul{margin:0;padding-left:20px} li{margin:6px 0}
     ptr.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
     ray.setFromCamera(ptr,camera);
     var hit=ray.intersectObjects(parts.map(function(p){return p.obj;}),true)[0];
-    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',LED1:'PWR light (green)',LED2:'CHG light (red)',R4:'1k LED resistor',R5:'1k LED resistor',BT1:'LiPo 402030 under the screen, drawn only',J2:'battery plug (JST-PH)',J3:'ribbon latch (FPC 12-pin)',DISP1:'bare 2" panel',Q1:'backlight switch (2N7002)',R6:'22 Ω backlight',R7:'10k gate pulldown',C4:'100 nF panel',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
+    var labels={U1:'U1 Raspberry Pi Pico 2 W',U2:'U2 ATECC608B secure element',U3:'U3 TP4056 LiPo charger',DISP1:'1.3" ST7789 screen module',SW5:'joystick',SW1:'button A',SW2:'button B',SW6:'power switch',LED1:'PWR light (green)',LED2:'CHG light (red)',R4:'1k LED resistor',R5:'1k LED resistor',BT1:'LiPo 402030 under the screen, drawn only',J2:'battery plug (JST-PH)',J3:'ribbon latch (1 mm FPC 12-pin)',DISP1:'bare 2" panel',Q1:'backlight switch (2N7002)',R6:'27 Ω backlight',R7:'10k gate pulldown',C4:'100 nF panel',D1:'Schottky diode',R1:'4.7k pull-up',R2:'4.7k pull-up',R3:'2k charge-current set',C1:'100 nF',C2:'10 µF',C3:'10 µF'};
     var n=''; if(hit){var o=hit.object; while(o&&o.parent&&o.parent!==scene&&!labels[o.name]) o=o.parent; n=labels[o.name]||o.name;}
     nameEl.textContent=n;
   });
