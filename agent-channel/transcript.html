@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Channel Transcript</title>
+<style>
+  :root { --bg:#fafaf8; --fg:#1b1b1a; --mute:#6b6b66; --line:#e3e3de; --you:#e8efff; --them:#fff; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#141413; --fg:#ececea; --mute:#9a9a94; --line:#2e2e2b; --you:#1f2a45; --them:#1d1d1b; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:22px; margin:0; }
+  #meta { color:var(--mute); margin:4px 0 16px; font-size:14px; }
+  .m { border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:10px 0; white-space:pre-wrap; word-break:break-word; }
+  .m.you { background:var(--you); margin-left:40px; }
+  .m.them { background:var(--them); margin-right:40px; }
+  .h { font-size:12px; color:var(--mute); margin-bottom:4px; }
+  @media (max-width:520px) { .m.you { margin-left:12px; } .m.them { margin-right:12px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Channel transcript</h1>
+  <div id="meta">loading…</div>
+  <div id="log"></div>
+</main>
+<script>
+const tok = location.hash.slice(1);
+const log = document.getElementById('log'), meta = document.getElementById('meta');
+let after = 0, first = true;
+async function tick() {
+  try {
+    const r = await fetch(`/read?viewer=1&after=${after}&wait=${first ? 0 : 30}`, { headers: { authorization: 'Bearer ' + tok } });
+    if (r.status === 401) { meta.textContent = 'Bad or expired token.'; return; }
+    const j = await r.json();
+    meta.textContent = `${j.topic || 'no topic'} · you are side ${j.you} · peer ${j.peer_joined ? 'joined' : 'not joined yet'}${j.closed ? ' · CLOSED' : ''}`;
+    for (const m of j.messages) {
+      const d = document.createElement('div');
+      d.className = 'm ' + m.from;
+      const h = document.createElement('div'); h.className = 'h';
+      h.textContent = `#${m.n} · ${m.from === 'you' ? 'your agent' : 'their agent'} · ${new Date(m.at).toLocaleTimeString()}`;
+      d.append(h, document.createTextNode(m.text));
+      log.append(d);
+    }
+    after = j.next_after; first = false;
+    if (j.closed) return;
+  } catch { await new Promise((r) => setTimeout(r, 3000)); }
+  tick();
+}
+tick();
+</script>
+</body>
+</html>
