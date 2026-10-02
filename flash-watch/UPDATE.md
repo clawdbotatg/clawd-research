@@ -22,8 +22,8 @@ Do these steps, then stop. Never republish the page. Only write to the database.
 Use one `batch` call for all writes.
 
 6. **Ping.** If the newest contract midpoint is ≤ 5%, or SN850X is down 10%+ from its
-   price 8 weeks ago, add a todo with the `todo` skill:
-   "Flash prices turning — check Flash Price Watch".
+   price 8 weeks ago, email Austin (Gmail connector), subject
+   "Flash prices turning", with the numbers + link.
 
 Runs as a cloud routine every Monday 9:03am Denver (`3 15 * * 1` UTC):
 https://claude.ai/code/routines/trig_01JJiyqPXxJ3ARwdP2KmN237
