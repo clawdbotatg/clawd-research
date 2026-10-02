@@ -1,0 +1,260 @@
+[
+ {
+  "op": "set",
+  "collection": "stocks",
+  "doc_id": "MU",
+  "file_path": "/Users/austingriffith/clawd/clawd-harness/projects/clawd-research/flash-watch/seed/stock_MU.json"
+ },
+ {
+  "op": "set",
+  "collection": "stocks",
+  "doc_id": "SNDK",
+  "file_path": "/Users/austingriffith/clawd/clawd-harness/projects/clawd-research/flash-watch/seed/stock_SNDK.json"
+ },
+ {
+  "op": "set",
+  "collection": "stocks",
+  "doc_id": "LRCX",
+  "file_path": "/Users/austingriffith/clawd/clawd-harness/projects/clawd-research/flash-watch/seed/stock_LRCX.json"
+ },
+ {
+  "op": "set",
+  "collection": "stocks",
+  "doc_id": "SAMSUNG",
+  "file_path": "/Users/austingriffith/clawd/clawd-harness/projects/clawd-research/flash-watch/seed/stock_SAMSUNG.json"
+ },
+ {
+  "op": "set",
+  "collection": "stocks",
+  "doc_id": "HYNIX",
+  "file_path": "/Users/austingriffith/clawd/clawd-harness/projects/clawd-research/flash-watch/seed/stock_HYNIX.json"
+ },
+ {
+  "op": "set",
+  "collection": "stocks",
+  "doc_id": "KIOXIA",
+  "file_path": "/Users/austingriffith/clawd/clawd-harness/projects/clawd-research/flash-watch/seed/stock_KIOXIA.json"
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "sn850x_2025-03-06",
+  "data": {
+   "item": "sn850x",
+   "date": "2025-03-06",
+   "usd": 512,
+   "note": "Amazon low (camelcamelcamel)"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "sn850x_2025-10-10",
+  "data": {
+   "item": "sn850x",
+   "date": "2025-10-10",
+   "usd": 528,
+   "note": "3rd-party new"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "sn850x_2026-01-20",
+  "data": {
+   "item": "sn850x",
+   "date": "2026-01-20",
+   "usd": 1535,
+   "note": "Amazon"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "sn850x_2026-09-11",
+  "data": {
+   "item": "sn850x",
+   "date": "2026-09-11",
+   "usd": 1630,
+   "note": "Walmart"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "sn850x_2026-10-02",
+  "data": {
+   "item": "sn850x",
+   "date": "2026-10-02",
+   "usd": 1750,
+   "note": "Amazon (cheapestssd)"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "pro9100_2025-09-02",
+  "data": {
+   "item": "pro9100",
+   "date": "2025-09-02",
+   "usd": 1050,
+   "note": "list price at launch"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "pro9100_2025-11-20",
+  "data": {
+   "item": "pro9100",
+   "date": "2025-11-20",
+   "usd": 750,
+   "note": "Amazon low"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "pro9100_2026-04-02",
+  "data": {
+   "item": "pro9100",
+   "date": "2026-04-02",
+   "usd": 1611,
+   "note": "Amazon"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "pro9100_2026-08-08",
+  "data": {
+   "item": "pro9100",
+   "date": "2026-08-08",
+   "usd": 2592,
+   "note": "Amazon high"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "pro9100_2026-09-22",
+  "data": {
+   "item": "pro9100",
+   "date": "2026-09-22",
+   "usd": 2350,
+   "note": "3rd-party new"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "pro9100_2026-10-02",
+  "data": {
+   "item": "pro9100",
+   "date": "2026-10-02",
+   "usd": 2288,
+   "note": "Amazon (cheapestssd)"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "two4tb_2026-09-15",
+  "data": {
+   "item": "two4tb",
+   "date": "2026-09-15",
+   "usd": 945,
+   "note": "2x Lexar NQ780 4TB"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "prices",
+  "doc_id": "two4tb_2026-10-02",
+  "data": {
+   "item": "two4tb",
+   "date": "2026-10-02",
+   "usd": 1040,
+   "note": "2x Silicon Power UD90 4TB"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "contract",
+  "doc_id": "2025Q4",
+  "data": {
+   "order": "2025Q4",
+   "q": "4Q25",
+   "lo": 5,
+   "hi": 10,
+   "pub": "forecast Sep 2025"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "contract",
+  "doc_id": "2026Q1",
+  "data": {
+   "order": "2026Q1",
+   "q": "1Q26",
+   "lo": 55,
+   "hi": 60,
+   "pub": "raised forecast Feb 2026"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "contract",
+  "doc_id": "2026Q2",
+  "data": {
+   "order": "2026Q2",
+   "q": "2Q26",
+   "lo": 70,
+   "hi": 75,
+   "pub": "TrendForce survey"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "contract",
+  "doc_id": "2026Q3",
+  "data": {
+   "order": "2026Q3",
+   "q": "3Q26",
+   "lo": 10,
+   "hi": 15,
+   "pub": "forecast Aug 2026"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "contract",
+  "doc_id": "2026Q4",
+  "data": {
+   "order": "2026Q4",
+   "q": "4Q26",
+   "lo": 15,
+   "hi": 20,
+   "pub": "Sep 30, 2026"
+  }
+ },
+ {
+  "op": "set",
+  "collection": "spot",
+  "doc_id": "2026-09-21",
+  "data": {
+   "date": "2026-09-21",
+   "tlc512": 19.883,
+   "tlc256": 17.885
+  }
+ },
+ {
+  "op": "set",
+  "collection": "meta",
+  "doc_id": "status",
+  "data": {
+   "updated": "2026-10-02",
+   "note": "Oct 2: 4Q26 forecast +15\u201320%, a bit faster than 3Q26. Enterprise SSDs +23\u201328%; consumer buyers holding back. Store prices near their August peak."
+  }
+ }
+]

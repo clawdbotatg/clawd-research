@@ -1,0 +1,236 @@
+<title>Flash Price Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F1F3F0; --panel:#FFFFFF; --ink:#18202B; --muted:#5D6573; --line:#D9DDD6; --grid:#E7EAE4;
+  --accent:#2F5D8A; --up:#B23A2E; --down:#2E7D4F; --flat:#A87410;
+  --s1:#2F5D8A; --s2:#B23A2E; --s3:#6B8E23; --s4:#8A4FA0; --s5:#C27C0E; --s6:#1F8A8A;
+  --display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#11151B; --panel:#191E26; --ink:#E5E8EC; --muted:#99A1AE; --line:#2B323D; --grid:#222831;
+    --accent:#7FAAD6; --up:#E3715F; --down:#5DBB84; --flat:#D9A441;
+    --s1:#7FAAD6; --s2:#E3715F; --s3:#A6C85A; --s4:#C08BD6; --s5:#E5A944; --s6:#4FC1C1;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#11151B; --panel:#191E26; --ink:#E5E8EC; --muted:#99A1AE; --line:#2B323D; --grid:#222831;
+  --accent:#7FAAD6; --up:#E3715F; --down:#5DBB84; --flat:#D9A441;
+  --s1:#7FAAD6; --s2:#E3715F; --s3:#A6C85A; --s4:#C08BD6; --s5:#E5A944; --s6:#4FC1C1;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 16px 48px}
+h1{font-family:var(--display);font-weight:700;font-size:34px;line-height:1.05;margin:0;letter-spacing:.2px}
+h2{font-family:var(--display);font-weight:600;font-size:21px;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0}
+header{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.updated{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.verdict{display:flex;flex-wrap:wrap;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px;margin-bottom:16px}
+.pill{font-family:var(--display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.8px;padding:4px 12px;border-radius:4px;color:#fff;background:var(--flat)}
+.pill.up{background:var(--up)} .pill.down{background:var(--down)}
+:root[data-theme="dark"] .pill{color:#11151B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pill{color:#11151B}}
+.verdict p{margin:0;flex:1 1 280px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat .lab{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.stat .num{font-family:var(--display);font-weight:700;font-size:32px;font-variant-numeric:tabular-nums}
+.stat .det{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:12px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card .why{font-size:13px;color:var(--muted);margin:0}
+.chart{width:100%;overflow-x:auto}
+.chart svg{display:block;width:100%;height:auto;min-width:320px}
+.chart text{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+.chart .lbl{font-family:var(--body);font-size:11.5px;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:3px;border-radius:2px;display:inline-block}
+.empty{color:var(--muted);font-size:13px;padding:24px 0;text-align:center}
+.foot{margin-top:20px;font-size:13px;color:var(--muted);display:grid;gap:6px}
+.foot a{color:var(--accent)}
+.note{margin-top:4px;font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Flash Price Watch</h1>
+      <p class="sub">Are 8TB SSD prices coming back down yet?</p>
+    </div>
+    <div class="updated" id="updated">Loading…</div>
+  </header>
+
+  <section class="verdict" aria-live="polite">
+    <span class="pill" id="pill">…</span>
+    <p id="verdictText">Loading data…</p>
+  </section>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>8TB drive prices</h2>
+      <p class="why">What you pay on Amazon. Moves last.</p>
+      <div class="legend" id="lgDrives"></div>
+      <div class="chart" id="chDrives"></div>
+    </section>
+    <section class="card">
+      <h2>Chip contract prices, change per quarter</h2>
+      <p class="why">TrendForce forecast for NAND. The first bar at zero or below is the turn.</p>
+      <div class="chart" id="chContract"></div>
+    </section>
+    <section class="card">
+      <h2>Chip spot prices</h2>
+      <p class="why">NAND wafer spot, USD per wafer-equivalent unit (DRAMeXchange). Moves first.</p>
+      <div class="legend" id="lgSpot"></div>
+      <div class="chart" id="chSpot"></div>
+    </section>
+    <section class="card">
+      <h2>Memory stocks</h2>
+      <p class="why">Growth since Jan 2025 (1× = no change), log scale. These usually peak before prices do.</p>
+      <div class="legend" id="lgStocks"></div>
+      <div class="chart" id="chStocks"></div>
+    </section>
+  </div>
+
+  <div class="foot">
+    <div id="noteLine"></div>
+    <div>Sources: <a href="https://camelcamelcamel.com/product/B0D9WT512W">camelcamelcamel</a> · <a href="https://cheapestssd.com/8tb-ssd/">cheapestssd</a> · <a href="https://www.dramexchange.com/">DRAMeXchange</a> · <a href="https://www.trendforce.com/presscenter/news">TrendForce press</a> · Yahoo Finance. Updated weekly.</div>
+  </div>
+</div>
+
+<script>
+const ITEMS={
+  sn850x:{name:"WD SN850X 8TB",c:"--s1"},
+  pro9100:{name:"Samsung 9100 Pro 8TB",c:"--s2"},
+  two4tb:{name:"Two 4TB drives",c:"--s3"}
+};
+const SPOT={tlc512:{name:"512Gb TLC wafer",c:"--s1"},tlc256:{name:"256Gb TLC wafer",c:"--s2"}};
+const STOCKC=["--s1","--s2","--s3","--s4","--s5","--s6"];
+const state={prices:[],contract:[],spot:[],stocks:[],meta:null};
+const $=id=>document.getElementById(id);
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const usd=n=>"$"+Math.round(n).toLocaleString("en-US");
+const t=d=>Date.parse(d+"T00:00:00Z");
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtD=ms=>{const d=new Date(ms);return MON[d.getUTCMonth()]+" "+String(d.getUTCFullYear()).slice(2)};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function legend(el,list){
+  el.innerHTML=list.map(s=>`<span><i style="background:var(${s.c})"></i>${esc(s.name)}</span>`).join("");
+}
+
+// Line chart: series [{name,c,pts:[{x:ms,y}]}]
+function lineChart(el,series,{log=false,yfmt=v=>v,W=560,H=260}={}){
+  series=series.filter(s=>s.pts.length);
+  if(!series.length){el.innerHTML='<div class="empty">No data yet. Fills in weekly.</div>';return}
+  const L=52,R=14,T=12,B=26,pw=W-L-R,ph=H-T-B;
+  const xs=series.flatMap(s=>s.pts.map(p=>p.x)),ys=series.flatMap(s=>s.pts.map(p=>p.y));
+  let x0=Math.min(...xs),x1=Math.max(...xs);if(x1===x0){x0-=864e5*30;x1+=864e5*30}
+  let y0=Math.min(...ys),y1=Math.max(...ys);
+  const f=log?Math.log10:v=>v;
+  if(!log){const pad=(y1-y0)*.08||y1*.1||1;y0=Math.max(0,y0-pad);y1+=pad}else{y0/=1.15;y1*=1.15}
+  const X=x=>L+(x-x0)/(x1-x0)*pw,Y=y=>T+ph-(f(y)-f(y0))/(f(y1)-f(y0))*ph;
+  let ticks=[];
+  if(log){for(const m of [0.5,1,2,5,10,20,50,100])if(m>=y0&&m<=y1)ticks.push(m)}
+  else{const step=nice((y1-y0)/4);for(let v=Math.ceil(y0/step)*step;v<=y1;v+=step)ticks.push(v)}
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  for(const v of ticks)s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${css("--grid")}"/><text x="${L-6}" y="${Y(v)+3.5}" text-anchor="end">${yfmt(v)}</text>`;
+  // x ticks: quarter starts
+  const d0=new Date(x0);let q=Date.UTC(d0.getUTCFullYear(),Math.floor(d0.getUTCMonth()/3)*3+3,1);
+  const qs=[];for(;q<=x1;){qs.push(q);const d=new Date(q);q=Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+3,1)}
+  const every=Math.ceil(qs.length/6);
+  qs.forEach((q,i)=>{if(i%every)return;s+=`<line x1="${X(q)}" x2="${X(q)}" y1="${T}" y2="${T+ph}" stroke="${css("--grid")}"/><text x="${X(q)}" y="${H-8}" text-anchor="middle">${fmtD(q)}</text>`});
+  for(const se of series){
+    const col=css(se.c),p=se.pts.slice().sort((a,b)=>a.x-b.x);
+    if(p.length>1)s+=`<polyline fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" points="${p.map(q=>X(q.x).toFixed(1)+","+Y(q.y).toFixed(1)).join(" ")}"/>`;
+    if(p.length<40)for(const q of p)s+=`<circle cx="${X(q.x)}" cy="${Y(q.y)}" r="2.6" fill="${col}"><title>${esc(se.name)} ${new Date(q.x).toISOString().slice(0,10)}: ${yfmt(q.y)}</title></circle>`;
+    const e=p[p.length-1];s+=`<circle cx="${X(e.x)}" cy="${Y(e.y)}" r="4.5" fill="${col}" stroke="${css("--panel")}" stroke-width="2"/>`;
+  }
+  el.innerHTML=s+"</svg>";
+}
+function nice(r){const e=Math.pow(10,Math.floor(Math.log10(r))),f=r/e;return (f<1.5?1:f<3?2:f<7?5:10)*e}
+
+function barChart(el,rows){
+  if(!rows.length){el.innerHTML='<div class="empty">No data yet.</div>';return}
+  const W=560,H=260,L=40,R=10,T=18,B=34,pw=W-L-R,ph=H-T-B;
+  const vals=rows.flatMap(r=>[r.lo,r.hi]);let y1=Math.max(10,...vals)*1.12,y0=Math.min(0,...vals);if(y0<0)y0*=1.2;
+  const Y=v=>T+ph-(v-y0)/(y1-y0)*ph,bw=pw/rows.length;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  const step=nice((y1-y0)/4);
+  for(let v=Math.ceil(y0/step)*step;v<=y1;v+=step)s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${css("--grid")}"/><text x="${L-6}" y="${Y(v)+3.5}" text-anchor="end">${v>0?"+":""}${v}%</text>`;
+  s+=`<line x1="${L}" x2="${W-R}" y1="${Y(0)}" y2="${Y(0)}" stroke="${css("--muted")}"/>`;
+  rows.forEach((r,i)=>{
+    const mid=(r.lo+r.hi)/2,col=css(mid>5?"--up":mid< -5?"--down":"--flat");
+    const x=L+i*bw+bw*.18,w=bw*.64,top=Y(Math.max(0,r.hi)),bot=Y(Math.min(0,r.lo));
+    s+=`<rect x="${x}" y="${Math.min(Y(Math.max(0,mid)),Y(0))}" width="${w}" height="${Math.abs(Y(mid)-Y(0))}" fill="${col}" opacity=".85"><title>${esc(r.q)}: ${r.lo}% to ${r.hi}%</title></rect>`;
+    s+=`<line x1="${x+w/2}" x2="${x+w/2}" y1="${Y(r.hi)}" y2="${Y(r.lo)}" stroke="${css("--ink")}" stroke-width="1.5"/>`;
+    s+=`<text x="${x+w/2}" y="${Y(Math.max(r.hi,0))-5}" text-anchor="middle" class="lbl" style="fill:${css("--ink")}">${r.lo>=0?"+":""}${r.lo}–${r.hi}%</text>`;
+    s+=`<text x="${x+w/2}" y="${H-12}" text-anchor="middle">${esc(r.q)}</text>`;
+  });
+  el.innerHTML=s+"</svg>";
+}
+
+function series(item){return state.prices.filter(p=>p.item===item).map(p=>({x:t(p.date),y:p.usd,date:p.date})).sort((a,b)=>a.x-b.x)}
+function atOrBefore(pts,ms){let r=null;for(const p of pts)if(p.x<=ms)r=p;return r}
+
+function render(){
+  const sn=series("sn850x"),pro=series("pro9100"),two=series("two4tb");
+  const con=state.contract.slice().sort((a,b)=>a.order.localeCompare(b.order));
+  // verdict
+  const last=con[con.length-1],prev=con[con.length-2];
+  let cls="",word="…",txt="";
+  if(last){
+    const mid=(last.lo+last.hi)/2,pmid=prev?(prev.lo+prev.hi)/2:null;
+    if(mid>5){cls="up";word="Still rising";txt=`Chip prices still going up: TrendForce says +${last.lo}–${last.hi}% in ${last.q}.`+(pmid!=null?(mid<pmid?" Slower than before.":mid>pmid?" Faster than last quarter.":""):"")}
+    else if(mid<-5){cls="down";word="Falling";txt=`Chip prices falling: TrendForce says ${last.lo}–${last.hi}% in ${last.q}. Store prices should follow in a few months.`}
+    else{cls="";word="Flattening";txt=`Chip prices about flat (${last.lo}–${last.hi}% in ${last.q}). The turn may be close.`}
+    const now=sn[sn.length-1],ago=now&&atOrBefore(sn,now.x-864e5*56);
+    if(now&&ago&&ago!==now){const ch=(now.y/ago.y-1)*100;txt+=` SN850X 8TB ${ch>=0?"up":"down"} ${Math.abs(ch).toFixed(0)}% over the last 8 weeks.`}
+  }
+  const pill=$("pill");pill.textContent=word;pill.className="pill "+cls;$("verdictText").textContent=txt||"Waiting for data.";
+  // stats
+  const st=[];
+  const snNow=sn[sn.length-1],snOld=atOrBefore(sn,t("2025-07-01"))||sn[0];
+  if(snNow)st.push({lab:"WD SN850X 8TB now",num:usd(snNow.y),det:snOld&&snOld!==snNow?`${(snNow.y/snOld.y).toFixed(1)}× mid-2025 (${usd(snOld.y)})`:snNow.date});
+  const proNow=pro[pro.length-1];if(proNow){const lo=Math.min(...pro.map(p=>p.y));st.push({lab:"Samsung 9100 Pro 8TB now",num:usd(proNow.y),det:`low was ${usd(lo)}`})}
+  const twoNow=two[two.length-1];if(twoNow)st.push({lab:"Two 4TB drives now",num:usd(twoNow.y),det:snNow?`${Math.round((1-twoNow.y/snNow.y)*100)}% less than one 8TB`:""});
+  if(last)st.push({lab:`Next chip price change (${last.q})`,num:`+${last.lo}–${last.hi}%`.replace("+-","−"),det:`forecast ${last.pub||""}`});
+  $("stats").innerHTML=st.map(s=>`<div class="stat"><span class="lab">${esc(s.lab)}</span><span class="num">${esc(s.num)}</span><span class="det">${esc(s.det)}</span></div>`).join("");
+  // charts
+  const drv=Object.entries(ITEMS).map(([k,v])=>({name:v.name,c:v.c,pts:series(k)}));
+  legend($("lgDrives"),drv.filter(s=>s.pts.length));lineChart($("chDrives"),drv,{yfmt:usd});
+  barChart($("chContract"),con);
+  const sp=Object.entries(SPOT).map(([k,v])=>({name:v.name,c:v.c,pts:state.spot.filter(r=>r[k]!=null).map(r=>({x:t(r.date),y:r[k]}))}));
+  legend($("lgSpot"),sp.filter(s=>s.pts.length));lineChart($("chSpot"),sp,{yfmt:v=>"$"+v.toFixed(v<10?1:0)});
+  if(sp.every(s=>s.pts.length<2))$("chSpot").insertAdjacentHTML("beforeend",'<div class="note">Tracking started Sep 2026. A line appears after the next weekly update.</div>');
+  const base=t("2025-01-01");
+  const stk=state.stocks.slice().sort((a,b)=>a.ticker.localeCompare(b.ticker)).map((s,i)=>{
+    const pts=(s.pts||[]).map(p=>({x:t(p.d),y:p.c})).sort((a,b)=>a.x-b.x).filter(p=>p.x>=base);
+    const b0=pts[0]?.y;return{name:`${s.name} ${b0?Math.round(pts[pts.length-1].y/b0)+"×":""}`,c:STOCKC[i%6],pts:b0?pts.map(p=>({x:p.x,y:p.y/b0})):[]};
+  });
+  legend($("lgStocks"),stk.filter(s=>s.pts.length));lineChart($("chStocks"),stk,{log:true,yfmt:v=>v+"×"});
+  const m=state.meta;
+  $("updated").textContent=m?.updated?"Updated "+m.updated:"Not updated yet";
+  $("noteLine").textContent=m?.note||"";
+}
+
+(async()=>{
+  render();
+  const db=await window.claude?.use?.("db");
+  if(!db){$("verdictText").textContent="Sign in to claude.ai to see the data.";$("updated").textContent="";return}
+  const sub=(name,map)=>db.collection(name).onSnapshot(s=>{state[name]=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>console.warn(name,e));
+  ["prices","contract","spot","stocks"].forEach(n=>sub(n));
+  db.doc("meta/status").onSnapshot(d=>{state.meta=d.exists?d.data():null;render()},e=>console.warn("meta",e));
+})();
+window.matchMedia?.("(prefers-color-scheme: dark)").addEventListener?.("change",render);
+new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+</script>
