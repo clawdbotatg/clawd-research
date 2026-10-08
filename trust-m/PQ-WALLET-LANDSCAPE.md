@@ -255,7 +255,7 @@ step(x, k, i, j)     = keccak(x || pub_seed || k || i || j)
 ```
 
 - One DeriveKey per key. Signing at index k also needs pkHash(k+1), so two DeriveKeys per signature. Cache pkHash(k+1) (it's public) to make it one.
-- DeriveKey takes ~50–135 ms ([SPECS.md](SPECS.md)). Using a persistent secret counts as a security event, so sustained use is about 1 per 5 s ([Infineon KB](https://community.infineon.com/t5/Knowledge-Base-Articles/OPTIGA-Trust-M-Security-monitor/ta-p/359081)). Fine for a wallet.
+- DeriveKey takes **~1.8 s measured on our V1 chip** (datasheet suggests ~50–135 ms; see [V1-DERIVEKEY-TEST.md](V1-DERIVEKEY-TEST.md)). Each one adds 1 to the Security Event Counter (measured). Using a persistent secret counts as a security event, so sustained use is about 1 per 5 s ([Infineon KB](https://community.infineon.com/t5/Knowledge-Base-Articles/OPTIGA-Trust-M-Security-monitor/ta-p/359081)). Fine for a wallet.
 - **Put chain and account into the derivation.** See 5.5.
 - Add a per-account public seed to every hash step (WOTS+ style tweak) to kill multi-target attacks across users.
 
