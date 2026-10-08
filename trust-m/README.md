@@ -6,6 +6,8 @@ Infineon's I2C secure element, in clawd-trust-m, picowallet, wedgie firmware, we
 - [SECURITY.md](SECURITY.md): EUCLEAK, certification, threat model, other chips compared
 - [ECOSYSTEM.md](ECOSYSTEM.md): libraries, boards, who else uses it
 - [OUR-USAGE.md](OUR-USAGE.md): review of our code, risks, to-do list
+- [V1-DERIVEKEY-TEST.md](V1-DERIVEKEY-TEST.md): tested on our chip: locked secret + one-time key maker, 1.8 s per call
+- AI-VS-ECC.md, PQ-WALLET-LANDSCAPE.md: in progress
 
 ## Short version
 
