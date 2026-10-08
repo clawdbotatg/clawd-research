@@ -16,3 +16,12 @@ Infineon's I2C secure element, in clawd-trust-m, picowallet, wedgie firmware, we
 - **EUCLEAK** reaches Trust M ECDSA: physical access, EM probe, ~40 signatures, ~€10k gear. No field fix. Require a button/PIN per signature.
 - Throttle: ~1 private-key op per 5 s sustained after ~130 in a burst.
 - Our biggest risks: every key is "execute: always" (anyone on the bus can sign), no Shielded Connection, picowallet + wedgie-safe both use slot E0F1, picowallet's lock code would freeze the open rule forever.
+
+## Tested 2026-10-08 on a V1 chip (wedgie, CA 101)
+
+V1 can hold a secret it won't reveal and turn it into one-time keys:
+- Data object type PRESSEC (E8=21), use rule D3=ALW, then read rule D1=NEV.
+- Read now fails (0x07). DeriveKey (0x34, TLS1.2 PRF SHA-256, export tag 07) still works.
+- Output matched host TLS-PRF exactly, for two different indexes.
+- Gotcha: without D3 set, DeriveKey fails with 0x07 (default use rule is never).
+- Slot used: F1DA, restored to zero after (now has explicit D3=FF).
