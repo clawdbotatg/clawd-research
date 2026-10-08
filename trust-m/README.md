@@ -9,6 +9,7 @@ Infineon's I2C secure element, in clawd-trust-m, picowallet, wedgie firmware, we
 - [V1-DERIVEKEY-TEST.md](V1-DERIVEKEY-TEST.md): tested on our chip: locked secret + one-time key maker, 1.8 s per call
 - [AI-VS-ECC.md](AI-VS-ECC.md): the AI-breaks-ECDSA scare (Drake, Green, Vitalik, skeptics); no actual attack exists
 - [PQ-WALLET-LANDSCAPE.md](PQ-WALLET-LANDSCAPE.md): Ethereum PQ status, schemes, gas, recovery
+- [SLOTS-AND-ROLLING.md](SLOTS-AND-ROLLING.md): slot sizes, write limits, rolling P-256 vs WOTS
 - [PQ-WALLET-DESIGN.md](PQ-WALLET-DESIGN.md): **the plan**: Trust M V1 + Pico + WOTS Safe owner
 
 ## Short version
