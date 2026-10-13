@@ -62,3 +62,16 @@ self-dealing volume), Heurist Mesh, the402.ai, Fetch.ai Agentverse (mostly dorma
 - Pivoted: Questflow, Theoriq, Payman.
 - Not a listing surface: Crossmint, Sentient, Giza, Almanak, Wayfinder, Talus, Morpheus, Bittensor, Solodit, DefiLlama, Composio, LangChain Hub, OpenZeppelin forum.
 - Bad value: Futurepedia ($497), aiagentstore ($50, stale traffic), Google Cloud Marketplace/AP2 (enterprise), thirdweb/PayAI/Daydreams discovery (need their facilitator), Remix plugins (PRs don't merge).
+
+## Status (2026-10-13)
+
+Done:
+- Metadata fixed on both sites (leftclaw `c33f9ef`, onedollaraudit `ccc1bff`): live prices, `/.well-known/x402`, `agent.json`.
+- 402index: 6 leftclaw services live (domain verified). onedollaraudit pending manual review (apex redirects to www, so domain verify fails).
+- x402-list: leftclaw submitted, 8 endpoints, pending review. onedollaraudit: one submission per email per 7 days, submit on/after 2026-10-20.
+- x402scan: both sites registered (10 + 2 resources). Facilitator PR: Merit-Systems/x402scan#1286.
+- PRs: pashov/ai-web3-security#46, saeidshirazi/Awesome-Smart-Contract-Security#35, Merit-Systems/awesome-agentic-commerce#792, shanzson/…Auditor-Tools#15. bkrem/awesome-solidity skipped (needs open-source repo, 10★).
+- Skills: `npx skills add clawdbotatg/leftclaw-services` (skills/ dir in that repo).
+- Agent402: no signup; it sources from Bazaar/x402scan.
+
+Open: ERC-8004 setAgentURI tx (Austin), ClawHub (logged in as austintgriffith, not clawdbotatg), Coinbase CDP key for Bazaar, Circle form, Base form, Virtuals, Daski.
