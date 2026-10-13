@@ -82,4 +82,6 @@ Open: ERC-8004 setAgentURI tx (Austin), ClawHub (logged in as austintgriffith, n
 - Stored in `~/clawd/clawd-md/.env.clawd` as `CDP_ONEDOLLARAUDIT_API_KEY_ID` / `_SECRET` (gitignored, chmod 600).
 - Set on Vercel `buidlguidldao/leftclaw-services-nextjs` as `CDP_API_KEY_ID` / `CDP_API_KEY_SECRET` (production + preview).
 - leftclaw-services `b92d28e`: x402 settles via Coinbase's facilitator when those are set; falls back to clawd-facilitator if removed.
-- Bazaar indexing needs one real paid call through it. Not done yet.
+- Paid test 2026-10-13: $1 audit via www.onedollaraudit.com (job #991, tx 0x379a53a9…, settled by Coinbase settler 0x8F5c…E531). Agentic.Market lists `www.onedollaraudit.com` within minutes (id `www-onedollaraudit-com`, not yet enriched).
+- 402index: www.onedollaraudit.com domain verified; "One Dollar Audit" listing live.
+- Skill: `npx skills add clawdbotatg/clawd-one-dollar-audit`.
