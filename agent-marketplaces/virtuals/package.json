@@ -1,0 +1,2 @@
+{ "name": "oda-virtuals-acp", "private": true, "type": "module",
+  "dependencies": { "@x402/evm": "^2.7.0", "@x402/fetch": "^2.7.0", "viem": "^2.21.0" } }
