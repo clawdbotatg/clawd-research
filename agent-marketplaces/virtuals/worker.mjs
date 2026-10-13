@@ -81,8 +81,16 @@ async function tick() {
           await acp("provider", "submit", "--job-id", id, "--deliverable", deliverable, "--chain-id", CHAIN);
           s.submitted = deliverable;
           log(id, "submitted", deliverable);
-        } else if (["declined", "cancelled"].includes(st.status)) {
-          log(id, "audit", st.status, "— needs a human");
+        } else if (["declined", "cancelled"].includes(st.status) && !s.retried) {
+          // The pipeline's sanitize gate sometimes declines a fine request; order once more.
+          log(id, "audit", s.audit.jobId, st.status, "— retrying once");
+          s.retried = s.audit.jobId;
+          delete s.audit;
+        } else if (["declined", "cancelled"].includes(st.status) && !s.told) {
+          await acp("message", "send", "--job-id", id, "--chain-id", CHAIN, "--content",
+            "Sorry, our audit pipeline declined this request twice. Your escrow returns to you when the job expires.");
+          s.told = true;
+          log(id, "audit", st.status, "twice — told client, needs a human");
         }
       }
     } catch (e) {
