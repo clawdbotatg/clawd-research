@@ -75,3 +75,11 @@ Done:
 - Agent402: no signup; it sources from Bazaar/x402scan.
 
 Open: ERC-8004 setAgentURI tx (Austin), ClawHub (logged in as austintgriffith, not clawdbotatg), Coinbase CDP key for Bazaar, Circle form, Base form, Virtuals, Daski.
+
+## Coinbase CDP key (2026-10-13)
+
+- Key `onedollaraudit-x402` (id `9226ec81…`), CDP Project 1, view-only, any IP, Ed25519.
+- Stored in `~/clawd/clawd-md/.env.clawd` as `CDP_ONEDOLLARAUDIT_API_KEY_ID` / `_SECRET` (gitignored, chmod 600).
+- Set on Vercel `buidlguidldao/leftclaw-services-nextjs` as `CDP_API_KEY_ID` / `CDP_API_KEY_SECRET` (production + preview).
+- leftclaw-services `b92d28e`: x402 settles via Coinbase's facilitator when those are set; falls back to clawd-facilitator if removed.
+- Bazaar indexing needs one real paid call through it. Not done yet.
