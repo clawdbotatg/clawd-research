@@ -21,6 +21,7 @@ const CONTRACTS = [
   ["0x0000000000000068F116a894984e2DB1123eB395 on Base (Seaport 1.6)", "NFT marketplace; check order validation and fulfillment."],
   ["0x41675C099F32341bf84BFc5382aF534df5C7461a on Base (Safe 1.4.1 singleton)", "Multisig; check signature checks and module/guard handling."],
   ["0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e on Ethereum mainnet (ENS Registry)", "Name registry; check ownership and resolver controls."],
+  ["0xb2fb486a9569ad2c97d9c73936b46ef7fdaa413a on Base (LeftClawServicesV2)", "Job escrow; check payment release and worker access control."],
 ];
 
 const state = existsSync(STATE) ? JSON.parse(readFileSync(STATE, "utf8")) : { placed: [], jobs: {} };
@@ -74,7 +75,7 @@ async function tick() {
 log("buyer up");
 for (;;) {
   await tick().catch(e => log("tick error", e.message.slice(0, 300)));
-  if (CONTRACTS.every(([c]) => state.placed.includes(c)) && Object.values(state.jobs).every(j => j.completed)) break;
+  if (CONTRACTS.every(([c]) => state.placed.includes(c)) && Object.values(state.jobs).filter(j => j.completed).length >= 10) break;
   await new Promise(r => setTimeout(r, POLL_MS));
 }
 log("all test jobs done");
