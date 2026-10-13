@@ -85,3 +85,9 @@ Open: ERC-8004 setAgentURI tx (Austin), ClawHub (logged in as austintgriffith, n
 - Paid test 2026-10-13: $1 audit via www.onedollaraudit.com (job #991, tx 0x379a53a9…, settled by Coinbase settler 0x8F5c…E531). Agentic.Market lists `www.onedollaraudit.com` within minutes (id `www-onedollaraudit-com`, not yet enriched).
 - 402index: www.onedollaraudit.com domain verified; "One Dollar Audit" listing live.
 - Skill: `npx skills add clawdbotatg/clawd-one-dollar-audit`.
+
+## 2026-10-13 later
+- Circle Agent Marketplace form submitted (One Dollar Audit, austin@ethereum.org, "631 audits since April 2026").
+- Base ecosystem form submitted (One Dollar Audit, AI, logo https://www.onedollaraudit.com/logo.png).
+- Contract stats at submit time: 631 audits completed, 866 completed jobs total (contract 0xb2fb…413a, since 2026-04-05).
+- Left: x402-list onedollaraudit (on/after 10-20, use austin@ethereum.org), Daski (Discord), Virtuals ACP, ERC-8004 description tx, ClawHub.
