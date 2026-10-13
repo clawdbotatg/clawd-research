@@ -22,6 +22,7 @@ const CONTRACTS = [
   ["0x41675C099F32341bf84BFc5382aF534df5C7461a on Base (Safe 1.4.1 singleton)", "Multisig; check signature checks and module/guard handling."],
   ["0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e on Ethereum mainnet (ENS Registry)", "Name registry; check ownership and resolver controls."],
   ["0xb2fb486a9569ad2c97d9c73936b46ef7fdaa413a on Base (LeftClawServicesV2)", "Job escrow; check payment release and worker access control."],
+  ["0x940181a94A35A4569E4529A3CDfB74e38FD98631 on Base (AERO token)", "ERC-20 with minter role; check mint and ownership controls."],
 ];
 
 const state = existsSync(STATE) ? JSON.parse(readFileSync(STATE, "utf8")) : { placed: [], jobs: {} };

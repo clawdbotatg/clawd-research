@@ -17,3 +17,6 @@ Worker pays $1 per audit from the researcher wallet `0x1d26…cbce` via onedolla
 
 ## TODO
 Worker runs on Austin's laptop (nohup). For real buyers it must move to an always-on box.
+
+## Finding (2026-10-13): famous contracts get declined
+Audits for Uniswap V3 Factory (Base 0x3312…FDfD, jobs 997/998) and Seaport 1.6 (1000/1001) were declined twice each, before any worker accepted them. `/api/job/sanitize` says `safe:true` for all of them now. The local auditors on atg.local are paused, so another box declined them — cause unknown. Possible race: `scripts/leftclaw/sanitize-check.sh` exits 1 while sanitize is still `pending`, and the auditor prompt says to decline on failure. Real customers asking for big protocols may hit this.
