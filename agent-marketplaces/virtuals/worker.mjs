@@ -76,7 +76,8 @@ async function tick() {
       } else if (j.jobStatus === "FUNDED" && s.audit && !s.submitted) {
         const st = await (await fetch(s.audit.statusUrl)).json();
         if (st.status === "complete") {
-          const deliverable = st.reportHtmlUrl || st.reportUrl || s.audit.jobUrl;
+          // onedollaraudit.com report page first — keep the deliverable on-brand.
+          const deliverable = s.audit.jobUrl || st.reportHtmlUrl || st.reportUrl;
           await acp("provider", "submit", "--job-id", id, "--deliverable", deliverable, "--chain-id", CHAIN);
           s.submitted = deliverable;
           log(id, "submitted", deliverable);
