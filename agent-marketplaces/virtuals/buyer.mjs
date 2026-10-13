@@ -67,9 +67,9 @@ async function tick() {
       log(id, "error", e.message.slice(0, 300));
     }
   }
-  // Keep at most 3 jobs in flight so the audit pipeline isn't flooded.
+  // Keep at most 5 jobs in flight (declined ones sit open until they expire) so the audit pipeline isn't flooded.
   const inFlight = mine.filter(j => !["COMPLETED", "REJECTED", "EXPIRED"].includes(j.jobStatus)).length;
-  if (inFlight < 3) await placeNext().catch(e => log("place error", e.message.slice(0, 300)));
+  if (inFlight < 5) await placeNext().catch(e => log("place error", e.message.slice(0, 300)));
   save();
 }
 
