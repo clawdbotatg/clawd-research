@@ -121,7 +121,7 @@ export default () => (
     <trace from="J1.V3V3" to="R1.pin2" maxLength="60mm" pcbPathRelativeTo="J1.V3V3" pcbPath={[...V3, { x: -5.2, y: 16.2 }, { x: -5.2, y: 18.5 }]} />
     <trace from="J1.V3V3" to="C3.pin1" maxLength="60mm" pcbPathRelativeTo="J1.V3V3" pcbPath={[...V3, { x: 0.5, y: 16.2 }]} />
     <trace from="J1.V3V3" to="C2.pin1" maxLength="60mm" pcbPathRelativeTo="J1.V3V3" pcbPath={[...V3, { x: 1.4, y: 16.2 }, { x: 1.4, y: 9.3 }, { x: -3.91, y: 9.3 }]} />
-    <trace from="J1.V3V3" to="J2.pin2" maxLength="60mm" pcbPathRelativeTo="J1.V3V3" pcbPath={[...V3, { x: 1.4, y: 16.2 }, { x: 1.4, y: -20.0 }, { x: 0.5, y: -21.4 }]} />
+    <trace from="J1.V3V3" to="J2.pin2" maxLength="60mm" pcbPathRelativeTo="J1.V3V3" pcbPath={[...V3, { x: 1.4, y: 16.2 }, { x: 1.4, y: -15.0 }, { x: -0.5, y: -15.0 }]} />
     <trace from="U1.VCC1" to="C1.pin1" maxLength="3mm" pcbPathRelativeTo="U1.VCC1" pcbPath={[u(-5.49, 14.9)]} />
     <trace from="U1.VCC2" to="C2.pin1" maxLength="3mm" pcbPathRelativeTo="U1.VCC2" pcbPath={[u(-3.6, 10.7), u(-3.91, 10.3)]} />
     <trace from="U1.VCC3" to="C3.pin1" maxLength="3mm" pcbPathRelativeTo="U1.VCC3" pcbPath={[u(-0.5, 14.71)]} />
@@ -130,13 +130,13 @@ export default () => (
     <trace from="U1.GND3" to="C3.pin2" maxLength="3mm" pcbPathRelativeTo="U1.GND3" pcbPath={[u(-0.5, 14.0)]} />
     <trace from="C1.pin2" to="net.GND" maxLength="10mm" />
 
-    {/* STEMMA QT / Qwiic: 1 GND, 2 V+, 3 SDA, 4 SCL. Opening faces the non-USB end. Breakouts carry their
+    {/* STEMMA QT / Qwiic: 1 GND, 2 V+, 3 SDA, 4 SCL. Signal pads inboard, opening flush toward the non-USB end (as on Adafruit's boards). Breakouts carry their
         own pull-ups. SDA/SCL drop to the bottom beside their header pins and come back up under the plug. */}
-    <SM04B_SRSS_TB_LF__SN_ name="J2" pcbX={0} pcbY={-21} pcbRotation={180} />
+    <SM04B_SRSS_TB_LF__SN_ name="J2" pcbX={0} pcbY={-21} />
     <trace from="J1.GP4" to="J2.pin3" pcbPathRelativeTo="J1.GP4"
-      pcbPath={[via(-7.75, 10.7, "bottom"), { x: -7.2, y: 10.15 }, { x: -7.2, y: -20.6 }, via(-0.5, -20.6, "top")]} />
+      pcbPath={[via(-7.75, 10.7, "bottom"), { x: -7.2, y: 10.15 }, { x: -7.2, y: -17.6 }, via(0.5, -17.6, "top")]} />
     <trace from="J1.GP5" to="J2.pin4" pcbPathRelativeTo="J1.GP5"
-      pcbPath={[via(-7.75, 8.2, "bottom"), { x: -7.75, y: -21.4 }, via(-1.5, -21.4, "top")]} />
+      pcbPath={[via(-7.75, 8.2, "bottom"), { x: -7.75, y: -21.0 }, { x: 1.5, y: -21.0 }, via(1.5, -20.5, "top")]} />
     <trace from="J2.pin1" to="net.GND" />
     <trace from="J1.GND1" to="net.GND" />
     <trace from="J1.GND8" to="net.GND" />
