@@ -123,7 +123,10 @@ const MASK_MAT = new THREE.MeshBasicMaterial({
 });
 const PIECE_MAT = new THREE.MeshStandardMaterial({ color: 0xf6f4f0, roughness: 0.5 });
 // open-topped pit: walls + floor, seen from inside
-const PIT_MAT = new THREE.MeshStandardMaterial({ color: 0xb0a99b, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide });
+const PIT_MAT = [
+  new THREE.MeshStandardMaterial({ color: 0xd8d2c6, roughness: 1, side: THREE.BackSide }),                                // bottom
+  new THREE.MeshStandardMaterial({ color: 0xc2bbad, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide }), // walls
+];
 
 const capH = (() => { const b = new THREE.ShapeGeometry(FONT.generateShapes('0', 1)); b.computeBoundingBox(); return b.boundingBox.max.y; })();
 const GLYPH = {};
@@ -261,8 +264,8 @@ function updateLane(L, t, Fc) {
 }
 
 // ---- camera ----
-const target = new THREE.Vector3(0.6, 0, -0.4);
-camera.position.set(-4.0, 7.6, 6.4).add(target);
+const target = new THREE.Vector3(0.9, 0, -0.2);
+camera.position.set(-3.1, 6.2, 5.0).add(target);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.copy(target);
 controls.enableDamping = true;
