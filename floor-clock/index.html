@@ -1,18 +1,15 @@
 <title>Floor Clock</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-  :root { --bg: #bdb6a8; --ink: #5e584e; color-scheme: light; }
+  :root { --bg: #bfb9a9; --ink: #5e584e; color-scheme: light; }
   html, body { height: 100%; }
   body { background: var(--bg); overflow: hidden; }
   canvas { display: block; position: fixed; inset: 0; width: 100vw; height: 100vh; touch-action: none; }
-  .vignette { position: fixed; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(60,52,40,.28) 100%); }
   .credit { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     font: 500 11px/1.3 ui-monospace, Menlo, monospace; letter-spacing: .06em; color: var(--ink); opacity: .7; }
   .credit a { color: inherit; }
 </style>
-<div class="vignette"></div>
-<div class="credit">after <a href="https://x.com/kitasenjudesign/status/2114308460456329379" target="_blank" rel="noopener">@kitasenjudesign</a> &middot; drag to look</div>
+<div class="credit" id="credit">after <a href="https://x.com/kitasenjudesign/status/2114308460456329379" target="_blank" rel="noopener">@kitasenjudesign</a> &middot; drag to look</div>
 
 <script type="importmap">
 { "imports": {
@@ -26,14 +23,20 @@ import { Font } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const FONT = new Font({"cssFontWeight":"bold","ascender":1216,"underlinePosition":-100,"cssFontStyle":"normal","boundingBox":{"yMin":-333,"xMin":-162,"yMax":1216,"xMax":1681},"resolution":1000,"descender":-334,"familyName":"Helvetiker","lineHeight":1549,"underlineThickness":50,"glyphs":{"2":{"x_min":64,"x_max":764,"ha":828,"o":"m 764 685 q 675 452 764 541 q 484 325 637 415 q 307 168 357 250 l 754 168 l 754 0 l 64 0 q 193 301 64 175 q 433 480 202 311 q 564 673 564 576 q 519 780 564 737 q 416 824 475 824 q 318 780 358 824 q 262 633 270 730 l 80 633 q 184 903 80 807 q 415 988 276 988 q 654 907 552 988 q 764 685 764 819 "},"0":{"x_min":51,"x_max":779,"ha":828,"o":"m 415 -26 q 142 129 242 -26 q 51 476 51 271 q 141 825 51 683 q 415 984 242 984 q 687 825 585 984 q 779 476 779 682 q 688 131 779 271 q 415 -26 587 -26 m 415 137 q 529 242 485 137 q 568 477 568 338 q 530 713 568 619 q 415 821 488 821 q 303 718 344 821 q 262 477 262 616 q 301 237 262 337 q 415 137 341 137 "},"8":{"x_min":57,"x_max":770,"ha":828,"o":"m 625 516 q 733 416 697 477 q 770 284 770 355 q 675 69 770 161 q 415 -29 574 -29 q 145 65 244 -29 q 57 273 57 150 q 93 413 57 350 q 204 516 130 477 q 112 609 142 556 q 83 718 83 662 q 177 905 83 824 q 414 986 272 986 q 650 904 555 986 q 745 715 745 822 q 716 608 745 658 q 625 516 688 558 m 414 590 q 516 624 479 590 q 553 706 553 659 q 516 791 553 755 q 414 828 480 828 q 311 792 348 828 q 275 706 275 757 q 310 624 275 658 q 414 590 345 590 m 413 135 q 527 179 487 135 q 564 279 564 218 q 525 386 564 341 q 411 436 482 436 q 298 387 341 436 q 261 282 261 344 q 300 178 261 222 q 413 135 340 135 "},"5":{"x_min":59,"x_max":767,"ha":828,"o":"m 767 319 q 644 59 767 158 q 382 -29 533 -29 q 158 43 247 -29 q 59 264 59 123 l 252 264 q 295 165 252 201 q 400 129 339 129 q 512 172 466 129 q 564 308 564 220 q 514 437 564 387 q 398 488 464 488 q 329 472 361 488 q 271 420 297 456 l 93 428 l 157 958 l 722 958 l 722 790 l 295 790 l 271 593 q 348 635 306 621 q 431 649 389 649 q 663 551 560 649 q 767 319 767 453 "},"7":{"x_min":65.28125,"x_max":762.5,"ha":828,"o":"m 762 808 q 521 435 604 626 q 409 0 438 244 l 205 0 q 313 422 227 234 q 548 789 387 583 l 65 789 l 65 958 l 762 958 l 762 808 "},"1":{"x_min":197.609375,"x_max":628,"ha":828,"o":"m 628 0 l 434 0 l 434 674 l 197 674 l 197 810 q 373 837 318 810 q 468 984 450 876 l 628 984 l 628 0 "},"6":{"x_min":57,"x_max":771,"ha":828,"o":"m 744 734 l 544 734 q 500 802 533 776 q 425 828 466 828 q 315 769 359 828 q 264 571 264 701 q 451 638 343 638 q 691 537 602 638 q 771 315 771 449 q 683 79 771 176 q 420 -29 586 -29 q 134 123 227 -29 q 57 455 57 250 q 184 865 57 721 q 452 988 293 988 q 657 916 570 988 q 744 734 744 845 m 426 128 q 538 178 498 128 q 578 300 578 229 q 538 422 578 372 q 415 479 493 479 q 303 430 342 479 q 264 313 264 381 q 308 184 264 240 q 426 128 352 128 "},"3":{"x_min":61,"x_max":767,"ha":828,"o":"m 767 290 q 653 51 767 143 q 402 -32 548 -32 q 168 48 262 -32 q 61 300 61 140 l 250 300 q 298 173 250 219 q 405 132 343 132 q 514 169 471 132 q 563 282 563 211 q 491 405 563 369 q 343 432 439 432 l 343 568 q 472 592 425 568 q 534 701 534 626 q 493 793 534 758 q 398 829 453 829 q 306 789 344 829 q 268 669 268 749 l 80 669 q 182 909 80 823 q 410 986 274 986 q 633 916 540 986 q 735 719 735 840 q 703 608 735 656 q 615 522 672 561 q 727 427 687 486 q 767 290 767 369 "},"9":{"x_min":58,"x_max":769,"ha":828,"o":"m 769 492 q 646 90 769 232 q 384 -33 539 -33 q 187 35 271 -33 q 83 224 98 107 l 282 224 q 323 154 286 182 q 404 127 359 127 q 513 182 471 127 q 563 384 563 248 q 475 335 532 355 q 372 315 418 315 q 137 416 224 315 q 58 642 58 507 q 144 877 58 781 q 407 984 239 984 q 694 827 602 984 q 769 492 769 699 m 416 476 q 525 521 488 476 q 563 632 563 566 q 521 764 563 709 q 403 826 474 826 q 297 773 337 826 q 258 649 258 720 q 295 530 258 577 q 416 476 339 476 "},"4":{"x_min":53,"x_max":775.21875,"ha":828,"o":"m 775 213 l 660 213 l 660 0 l 470 0 l 470 213 l 53 213 l 53 384 l 416 958 l 660 958 l 660 370 l 775 370 l 775 213 m 474 364 l 474 786 l 204 363 l 474 364 "}}});
+const FONT = new Font({"cssFontWeight":"normal","ascender":1189,"underlinePosition":-100,"cssFontStyle":"normal","boundingBox":{"yMin":-334,"xMin":-111,"yMax":1189,"xMax":1672},"resolution":1000,"descender":-334,"familyName":"Helvetiker","lineHeight":1522,"underlineThickness":50,"glyphs":{"2":{"x_min":59,"x_max":731,"ha":792,"o":"m 731 0 l 59 0 q 197 314 59 188 q 457 487 199 315 q 598 691 598 580 q 543 819 598 772 q 411 867 488 867 q 272 811 328 867 q 209 630 209 747 l 81 630 q 182 901 81 805 q 408 986 271 986 q 629 909 536 986 q 731 694 731 826 q 613 449 731 541 q 378 316 495 383 q 201 122 235 234 l 731 122 l 731 0 "},"0":{"x_min":73,"x_max":715,"ha":792,"o":"m 394 -29 q 153 129 242 -29 q 73 479 73 272 q 152 829 73 687 q 394 989 241 989 q 634 829 545 989 q 715 479 715 684 q 635 129 715 270 q 394 -29 546 -29 m 394 89 q 546 211 489 89 q 598 479 598 322 q 548 748 598 640 q 394 871 491 871 q 241 748 298 871 q 190 479 190 637 q 239 211 190 319 q 394 89 296 89 "},"8":{"x_min":55,"x_max":736,"ha":792,"o":"m 571 527 q 694 424 652 491 q 736 280 736 358 q 648 71 736 158 q 395 -26 551 -26 q 142 69 238 -26 q 55 279 55 157 q 96 425 55 359 q 220 527 138 491 q 120 615 153 562 q 88 726 88 668 q 171 904 88 827 q 395 986 261 986 q 618 905 529 986 q 702 727 702 830 q 670 616 702 667 q 571 527 638 565 m 394 565 q 519 610 475 565 q 563 717 563 655 q 521 823 563 781 q 392 872 474 872 q 265 824 312 872 q 224 720 224 783 q 265 613 224 656 q 394 565 312 565 m 395 91 q 545 150 488 91 q 597 280 597 204 q 546 408 597 355 q 395 465 492 465 q 244 408 299 465 q 194 280 194 356 q 244 150 194 203 q 395 91 299 91 "},"5":{"x_min":54.171875,"x_max":738,"ha":792,"o":"m 738 314 q 626 60 738 153 q 382 -23 526 -23 q 155 47 248 -23 q 54 256 54 125 l 183 256 q 259 132 204 174 q 382 91 314 91 q 533 149 471 91 q 602 314 602 213 q 538 469 602 411 q 386 528 475 528 q 284 506 332 528 q 197 439 237 484 l 81 439 l 159 958 l 684 958 l 684 840 l 254 840 l 214 579 q 306 627 258 612 q 407 643 354 643 q 636 552 540 643 q 738 314 738 457 "},"7":{"x_min":58.71875,"x_max":730.953125,"ha":792,"o":"m 730 839 q 469 448 560 641 q 335 0 378 255 l 192 0 q 328 441 235 252 q 593 830 421 630 l 58 830 l 58 958 l 730 958 l 730 839 "},"1":{"x_min":215.671875,"x_max":574,"ha":792,"o":"m 574 0 l 442 0 l 442 697 l 215 697 l 215 796 q 386 833 330 796 q 475 986 447 875 l 574 986 l 574 0 "},"6":{"x_min":53,"x_max":739,"ha":792,"o":"m 739 312 q 633 62 739 162 q 400 -31 534 -31 q 162 78 257 -31 q 53 439 53 206 q 178 859 53 712 q 441 986 284 986 q 643 912 559 986 q 732 713 732 833 l 601 713 q 544 830 594 786 q 426 875 494 875 q 268 793 331 875 q 193 517 193 697 q 301 597 240 570 q 427 624 362 624 q 643 540 552 624 q 739 312 739 451 m 603 298 q 540 461 603 400 q 404 516 484 516 q 268 461 323 516 q 207 300 207 401 q 269 137 207 198 q 405 83 325 83 q 541 137 486 83 q 603 298 603 197 "},"3":{"x_min":54,"x_max":737,"ha":792,"o":"m 737 284 q 635 55 737 141 q 399 -25 541 -25 q 156 52 248 -25 q 54 308 54 140 l 185 308 q 245 147 185 202 q 395 96 302 96 q 539 140 484 96 q 602 280 602 190 q 510 429 602 390 q 324 454 451 454 l 324 565 q 487 584 441 565 q 565 719 565 617 q 515 835 565 791 q 395 879 466 879 q 255 824 307 879 q 203 661 203 769 l 78 661 q 166 909 78 822 q 387 992 250 992 q 603 921 513 992 q 701 723 701 844 q 669 607 701 656 q 578 524 637 558 q 696 434 655 499 q 737 284 737 369 "},"9":{"x_min":53,"x_max":739,"ha":792,"o":"m 739 524 q 619 94 739 241 q 362 -32 516 -32 q 150 47 242 -32 q 59 244 59 126 l 191 244 q 246 129 191 176 q 373 82 301 82 q 526 161 466 82 q 597 440 597 255 q 363 334 501 334 q 130 432 216 334 q 53 650 53 521 q 134 880 53 786 q 383 986 226 986 q 659 841 566 986 q 739 524 739 719 m 388 449 q 535 514 480 449 q 585 658 585 573 q 535 805 585 744 q 388 873 480 873 q 242 809 294 873 q 191 658 191 745 q 239 514 191 572 q 388 449 292 449 "},"4":{"x_min":48,"x_max":742.453125,"ha":792,"o":"m 742 243 l 602 243 l 602 0 l 476 0 l 476 243 l 48 243 l 48 368 l 476 958 l 602 958 l 602 354 l 742 354 l 742 243 m 476 354 l 476 792 l 162 354 l 476 354 "}}});
 
-// ---- sizes (world units) ----
-const PITCH = 0.74;     // digit spacing inside a unit
-const GAP = 0.55;       // extra space between hh / mm / ss
-const STEP = 1.2;       // spacing along a strip
-const RAISE = 0.36;     // current digit height above floor
-const PIT = 0.42;       // depth of the holes
+// ?at=19:45:40.3 starts the clock at that time; ?still freezes the camera (for frame comparisons)
+const params = new URLSearchParams(location.search);
+const STILL = params.has('still');
+if (STILL) document.getElementById('credit').hidden = true;
+
+// ---- sizes (world units; one floor tile = one second = 1) ----
+const TILE = 1;
+const CAP = 0.78;       // digit height on the floor
+const PITCH = 0.42;
+const NARROW = 0.75;    // the original's digits are narrower than this font's
+const RAISE = 0.14;     // digit thickness
+const PIT = 0.42;       // hole depth
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ---- renderer / scene ----
@@ -42,25 +45,25 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
+renderer.toneMapping = THREE.NoToneMapping;
 document.body.prepend(renderer.domElement);
 
 const scene = new THREE.Scene();
-const BG = new THREE.Color('#bdb6a8');
+const BG = new THREE.Color('#bfb9a9');
 scene.background = BG;
-scene.fog = new THREE.Fog(BG, 16, 42);
+scene.fog = new THREE.Fog(BG, 34, 60);
 
-const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(8.4, innerWidth / innerHeight, 1, 200);
 
-scene.add(new THREE.HemisphereLight(0xfffaf0, 0x7d766a, 1.35));
-const sun = new THREE.DirectionalLight(0xfff6e8, 2.4);
+const hemi = new THREE.HemisphereLight(0xffffff, 0x9a9488, 1.9);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffffff, 1.3);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -11, right: 11, top: 11, bottom: -11, near: 1, far: 40 });
+Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 40 });
 sun.shadow.bias = -0.0004;
-sun.shadow.normalBias = 0.02;
-sun.shadow.radius = 4;
+sun.shadow.normalBias = 0.01;
+sun.shadow.radius = 5;
 scene.add(sun, sun.target);
 
 // ---- concrete floor ----
@@ -68,8 +71,7 @@ function concreteTexture() {
   const N = 1024, c = document.createElement('canvas');
   c.width = c.height = N;
   const g = c.getContext('2d');
-  g.fillStyle = '#c3bcae'; g.fillRect(0, 0, N, N);
-  // soft blotches, drawn wrapped so the tile repeats cleanly
+  g.fillStyle = '#c6bfac'; g.fillRect(0, 0, N, N);
   const blot = (x, y, r, a, col) => {
     for (const dx of [-N, 0, N]) for (const dy of [-N, 0, N]) {
       const gr = g.createRadialGradient(x + dx, y + dy, 0, x + dx, y + dy, r);
@@ -79,16 +81,20 @@ function concreteTexture() {
   };
   let s = 7;
   const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
-  for (let i = 0; i < 40; i++) blot(rnd() * N, rnd() * N, 60 + rnd() * 220, 0.05 + rnd() * 0.12, rnd() < 0.7 ? '110,102,88' : '235,230,220');
-  // speckle
+  for (let i = 0; i < 26; i++) blot(rnd() * N, rnd() * N, 120 + rnd() * 260, 0.06 + rnd() * 0.12, rnd() < 0.75 ? '120,112,96' : '235,230,220');
   const img = g.getImageData(0, 0, N, N), d = img.data;
   for (let i = 0; i < d.length; i += 4) {
-    const n = (rnd() - 0.5) * 22 + (rnd() < 0.004 ? -45 : 0);
+    const n = (rnd() - 0.5) * 10;
     d[i] += n; d[i + 1] += n; d[i + 2] += n;
   }
   g.putImageData(img, 0, 0);
+  // pores
+  for (let i = 0; i < 1400; i++) {
+    g.fillStyle = `rgba(120,108,88,${0.3 + rnd() * 0.4})`;
+    g.beginPath(); g.arc(rnd() * N, rnd() * N, 0.8 + rnd() * 1.4, 0, 7); g.fill();
+  }
   // seams: 4x4 tiles per texture
-  g.strokeStyle = 'rgba(70,64,54,.75)'; g.lineWidth = 2.2;
+  g.strokeStyle = 'rgba(92,80,58,.95)'; g.lineWidth = 3.6;
   for (let i = 0; i <= 4; i++) {
     const p = i * N / 4;
     g.beginPath(); g.moveTo(p, 0); g.lineTo(p, N); g.stroke();
@@ -101,7 +107,7 @@ function concreteTexture() {
   return t;
 }
 const floorTex = concreteTexture();
-const FLOOR = 200, TILE = 2.6;
+const FLOOR = 120;
 floorTex.repeat.set(FLOOR / (TILE * 4), FLOOR / (TILE * 4));
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(FLOOR, FLOOR),
@@ -121,56 +127,60 @@ const MASK_MAT = new THREE.MeshBasicMaterial({
   colorWrite: false, depthWrite: false, depthTest: false,
   stencilWrite: true, stencilRef: 1, stencilFunc: THREE.AlwaysStencilFunc, stencilZPass: THREE.ReplaceStencilOp,
 });
-const PIECE_MAT = new THREE.MeshStandardMaterial({ color: 0xf6f4f0, roughness: 0.5 });
-// open-topped pit: walls + floor, seen from inside
+const PIECE_MAT = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x3a3a3a, roughness: 0.8 });
+// open-topped hole: floor + walls, seen from inside
 const PIT_MAT = [
-  new THREE.MeshStandardMaterial({ color: 0xd8d2c6, roughness: 1, side: THREE.BackSide }),                                // bottom
-  new THREE.MeshStandardMaterial({ color: 0xc2bbad, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide }), // walls
+  new THREE.MeshStandardMaterial({ color: 0x8f887a, roughness: 1, side: THREE.BackSide }),
+  new THREE.MeshStandardMaterial({ color: 0x8c8577, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide }),
 ];
 
-const capH = (() => { const b = new THREE.ShapeGeometry(FONT.generateShapes('0', 1)); b.computeBoundingBox(); return b.boundingBox.max.y; })();
+const SIZE = CAP / (() => { const b = new THREE.ShapeGeometry(FONT.generateShapes('0', 1)); b.computeBoundingBox(); return b.boundingBox.max.y - b.boundingBox.min.y; })();
+const capH = CAP;
 const GLYPH = {};
 for (let n = 0; n < 10; n++) {
   const ch = String(n);
-  const shapes = FONT.generateShapes(ch, 1);
+  const shapes = FONT.generateShapes(ch, SIZE);
   const mask = new THREE.ShapeGeometry(shapes, 6);
   mask.computeBoundingBox();
-  const cx = (mask.boundingBox.min.x + mask.boundingBox.max.x) / 2, cy = capH / 2;
+  const cx = FONT.data.glyphs[ch].ha / FONT.data.resolution * SIZE / 2, cy = capH / 2; // centre of the digit's advance, like set type
   mask.translate(-cx, -cy, 0);
 
   const piece = new TextGeometry(ch, {
-    font: FONT, size: 1, height: RAISE, depth: RAISE, curveSegments: 8,
-    bevelEnabled: true, bevelThickness: 0.035, bevelSize: 0.03, bevelOffset: -0.03, bevelSegments: 3,
+    font: FONT, size: SIZE, height: RAISE, depth: RAISE, curveSegments: 8,
+    bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.008, bevelOffset: -0.008, bevelSegments: 2,
   });
   piece.computeBoundingBox();
   piece.translate(-cx, -cy, -piece.boundingBox.max.z); // top face at z = 0
 
   const pit = new THREE.ExtrudeGeometry(shapes, { depth: PIT, bevelEnabled: false, curveSegments: 8 });
   pit.translate(-cx, -cy, -PIT);
+  for (const g of [mask, piece, pit]) g.scale(NARROW, 1, 1);
   GLYPH[n] = { mask, piece, pit };
 }
 
 // ---- the clock ----
-// The clock stays put while the floor slides back under it, one slot per second.
-// Every value has a hole cut in the floor at the spot the clock will be over when
-// that value ends. When a value ends, its digit drops into that hole and rides away
-// with the floor; the next digit flies in from behind and catches up to the clock.
+// The clock stays put while the floor slides back under it, one tile per second.
+// Each new digit appears a few tiles back, slides forward and catches up to the clock.
+// The digit it replaces lets go at that moment: it rides away with the floor and
+// sinks into the hole that was under it, so the past reads like a ruler: 48 9 50 1 2 …
 const tz = () => new Date().getTimezoneOffset() * 60;
 const LANES = [
   { P: 3600, value: k => k % 24 },
   { P: 60, value: k => k % 60 },
   { P: 1, value: k => k % 60 },
 ];
-const LANE_W = 2 * PITCH + GAP;
-const FLY = 0.55, FLY_DIST = 3.6 * STEP;              // catch-up slide
-const LEAD = 0.3, DROP = 0.4;                          // old digit drops just before the tick…
-const BACK = 0.8;                                      // …into a hole that has slid most of a slot behind
-const Z_BACK = 26, Z_FRONT = 14;                        // slots kept in the scene (world units)
+const FLY = 0.45, FLY_DIST = 3.1 * TILE; // catch-up slide, speeding up as it lands
+const SINK = 0.3;                        // old digit sinks into its hole…
+const BACK = 0.62;                       // …which has slid this far behind the clock when it lets go
+let CLOCK_Z = 4.43; 
+let ROW_DX = 0, ROW_DZ = -0.145;              // the raised row sits slightly off the lane line in the original
+                    // where the clock sits on the floor
+const Z_BACK = 12, Z_FRONT = 12;         // floor kept in the scene (world units)
 
 const clock = new THREE.Group();
 scene.add(clock);
 LANES.forEach((L, i) => {
-  L.x = (i - 1) * LANE_W;
+  L.x = [-0.4612, 0.5376, 1.4537][i] * TILE; // lane centres, fitted to the original
   L.tens = k => Math.floor(L.value(k) / 10);
   L.tensEnds = k => L.tens(k + 1) !== L.tens(k); // tens digit leaves with this value
   L.objs = new Map();
@@ -197,50 +207,51 @@ function makePiece(d, x) {
   g.add(m);
   g.mat = m.material;
   g.off = x;
-  g.seed = Math.random() * 100;
+  g.seed = (d * 7.31 + x * 13.7) % 100;
   return g;
 }
 
 const ease3 = u => 1 - (1 - u) ** 3;
+const smooth = u => u * u * (3 - 2 * u);
 const bumps = (f, s) => 0.5 * Math.sin(f * 2.3 + s) + 0.3 * Math.sin(f * 5.1 + s * 1.7) + 0.2 * Math.sin(f * 11.3 + s * 2.9);
-// where a digit is at time t: flying in, sitting in the clock, or dropped into its hole
-function pieceState(t, Fc, arrive, dropAt, Fh) {
+// where a digit is at time t: sliding in, riding with the clock, or let go and sinking
+function pieceState(t, arrive, leave) {
   if (t < arrive - FLY) return null;
   if (t < arrive) {
     const u = (t - (arrive - FLY)) / FLY;
-    return { z: -FLY_DIST * (1 - ease3(u)), y: RAISE, op: Math.min(1, u * 2.5), wob: 1 };
+    return { z: CLOCK_Z - FLY_DIST * (1 - u * u), y: RAISE, op: Math.min(1, u * 1.6), wob: 1, row: 1 };
   }
-  if (t < dropAt) return { z: 0, y: RAISE, op: 1, wob: 1 };
-  const w = Math.min(1, (t - dropAt) / DROP);
-  return { z: (Fh - Fc) * STEP * (w * w * (3 - 2 * w)), y: RAISE * (1 - w * w), op: 1, wob: 1 - w };
+  if (t < leave) return { z: CLOCK_Z, y: RAISE, op: 1, wob: 1, row: 1 };
+  // let go: ride away with the floor and settle into the hole a little further back
+  const w = Math.min(1, (t - leave) / SINK);
+  return { z: CLOCK_Z - (t - leave) * TILE - BACK * TILE * smooth(w), y: RAISE * (1 - smooth(w)), op: 1, wob: 1 - w, row: 1 - smooth(w) };
 }
 
 function updateLane(L, t, Fc) {
   const P = L.P, kc = Math.floor(t / P);
-  const Fh = k => (k + 1) * P - LEAD - 1 - BACK;    // floor spot of value k's hole
+  const Fh = k => (k + 1) * P - 1 - BACK; // floor spot of value k's hole
   const want = new Map();
-  const put = (key, make, x, z, y, op, wob = 0) => {
+  const put = (key, make, z, y, op, wob = 0, row = 0) => {
     let o = L.objs.get(key);
     if (!o) { o = make(); clock.add(o); L.objs.set(key, o); }
-    o.position.set(L.x + (o.off || 0), y, z);
+    o.position.set(L.x + (o.off || 0) + ROW_DX * row, y, z + ROW_DZ * row);
     if (o.mat) {
       o.mat.opacity = op; o.mat.transparent = op < 1;
       // rough floor: the digit rocks with the bumps passing under it
-      const f = (Fc + z / STEP) * 2.2, s = o.seed;
-      const ax = 0.045 * wob * bumps(f, s), az = 0.045 * wob * bumps(f, s + 31), ay = 0.03 * wob * bumps(f * 0.7, s + 57);
+      const f = (Fc + (z - CLOCK_Z) / TILE) * 2.2, s = o.seed;
+      const ax = 0.03 * wob * bumps(f, s), az = 0.03 * wob * bumps(f, s + 31), ay = 0.02 * wob * bumps(f * 0.7, s + 57);
       o.rotation.set(-Math.PI / 2 + ax, az, ay);
-      o.position.y += wob * (0.008 * (bumps(f * 1.6, s + 83) + 1) + 0.35 * (Math.abs(ax) + Math.abs(az)));
+      o.position.y += wob * (0.004 * (bumps(f * 1.6, s + 83) + 1) + 0.25 * (Math.abs(ax) + Math.abs(az)));
     }
     want.set(key, o);
   };
 
-  // holes (and the digits that fell into them) near the clock
-  const kLo = Math.ceil((Fc - Z_BACK / STEP + LEAD + 1 + BACK) / P - 1);
-  const kHi = Math.floor((Fc + Z_FRONT / STEP + LEAD + 1 + BACK) / P - 1);
+  const kLo = Math.ceil((Fc - Z_BACK / TILE + 1 + BACK) / P - 1);
+  const kHi = Math.floor((Fc + Z_FRONT / TILE + 1 + BACK) / P - 1);
   const ks = new Set();
   for (let k = kLo; k <= kHi; k++) {
     ks.add(k);
-    put('h' + k, () => makeHole(L, k), 0, (Fh(k) - Fc) * STEP, 0, 1);
+    put('h' + k, () => makeHole(L, k), CLOCK_Z + (Fh(k) - Fc) * TILE, 0, 1);
   }
   for (let k = kc - 1; k <= kc + 1; k++) ks.add(k);
   // the tens digit on show belongs to the last value of its run
@@ -248,13 +259,13 @@ function updateLane(L, t, Fc) {
   ks.add(end); ks.add(end + 1);
 
   for (const k of ks) {
-    const dropAt = (k + 1) * P - LEAD;
-    const s = pieceState(t, Fc, k * P, dropAt, Fh(k));
-    if (s) put('o' + k, () => makePiece(L.value(k) % 10, PITCH / 2), 0, s.z, s.y, s.op, s.wob);
+    const leave = (k + 1) * P;
+    const s = pieceState(t, k * P, leave);
+    if (s) put('o' + k, () => makePiece(L.value(k) % 10, PITCH / 2), s.z, s.y, s.op, s.wob, s.row);
     if (L.tensEnds(k)) {
       let start = k; while (!L.tensEnds(start - 1)) start--;
-      const st = pieceState(t, Fc, start * P, dropAt, Fh(k));
-      if (st) put('t' + k, () => makePiece(L.tens(k), -PITCH / 2), 0, st.z, st.y, st.op, st.wob);
+      const st = pieceState(t, start * P, leave);
+      if (st) put('t' + k, () => makePiece(L.tens(k), -PITCH / 2), st.z, st.y, st.op, st.wob, st.row);
     }
   }
   for (const [key, o] of L.objs) {
@@ -263,52 +274,93 @@ function updateLane(L, t, Fc) {
   }
 }
 
-// ---- camera ----
-const target = new THREE.Vector3(0.9, 0, -0.2);
-camera.position.set(-3.1, 6.2, 5.0).add(target);
+// ---- camera (fitted to the original: long lens, slight roll) ----
+// fitted by matching edge maps against frames of the original
+const target = new THREE.Vector3(0.576, 0, 4.15);
+let ROLL = -0.3258;
+camera.position.set(-5.4855, 10.5445, 21.6485);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.copy(target);
 controls.enableDamping = true;
 controls.enablePan = false;
-controls.minDistance = 5;
-controls.maxDistance = 22;
+controls.minDistance = 12;
+controls.maxDistance = 40;
 controls.maxPolarAngle = 1.2;
+controls.enabled = !STILL;
 controls.update();
 let lastTouch = -1e9;
 controls.addEventListener('start', () => (lastTouch = performance.now()));
 controls.addEventListener('end', () => (lastTouch = performance.now()));
 
+let FOV = 7.4525;
 function fitFov() {
   camera.aspect = innerWidth / innerHeight;
   // keep the whole readout on narrow screens
-  camera.fov = camera.aspect < 1 ? 32 / Math.max(camera.aspect, 0.5) ** 0.85 : 32;
+  camera.fov = camera.aspect < 1 ? FOV / Math.max(camera.aspect, 0.5) ** 0.85 : FOV;
   camera.updateProjectionMatrix();
 }
 fitFov();
 addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); fitFov(); });
 
-// ---- loop ----
-const swayBase = camera.position.clone().sub(target);
+// ---- time ----
+const realNow = () => Date.now() / 1000 - tz();   // local seconds since epoch
+let offset = 0;
+const at = params.get('at');
+if (at) {
+  const [h, m, s] = at.split(':').map(Number);
+  const day = Math.floor(realNow() / 86400) * 86400;
+  offset = day + h * 3600 + m * 60 + s - realNow();
+}
 
-function frame(now) {
-  const t = Date.now() / 1000 - tz();
+function draw(t) {
   const Fc = t - 1; // floor spot under the clock, in seconds
-  floor.position.z = -((Fc * STEP) % (TILE * 4));
+  const fz = CLOCK_Z - BACK + 0.5 - Fc; // tile seams sit half a tile from each hole
+  floor.position.z = fz - Math.floor(fz / 4) * 4;
   for (const L of LANES) updateLane(L, t, Fc);
+  sun.position.copy(target).add(new THREE.Vector3(-5, 12, -4));
+  sun.target.position.copy(target);
+  camera.rotateZ(ROLL);
+  renderer.render(scene, camera);
+  camera.rotateZ(-ROLL);
+}
 
-  // slow drift when nobody is dragging
-  if (!reduced && now - lastTouch > 4000) {
-    const t = now / 1000;
-    const want = swayBase.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.sin(t * 0.07) * 0.22).add(target);
-    want.y += Math.sin(t * 0.11) * 0.5;
+// for frame-by-frame checks: render one frame at a time of day, in seconds
+let frozen = false;
+window.clockAt = sod => {
+  frozen = true;
+  const day = Math.floor(realNow() / 86400) * 86400;
+  draw(day + sod);
+  return renderer.domElement;
+};
+window.setParams = p => {
+  if (p.cam) camera.position.set(...p.cam);
+  if (p.tgt) { target.set(...p.tgt); controls.target.copy(target); }
+  if (p.fov) { FOV = p.fov; fitFov(); }
+  if (p.roll != null) ROLL = p.roll;
+  if (p.lanes) LANES.forEach((L, i) => (L.x = p.lanes[i]));
+  if (p.clockZ != null) CLOCK_Z = p.clockZ;
+  if (p.row) [ROW_DX, ROW_DZ] = p.row;
+  camera.up.set(0, 1, 0); camera.lookAt(target);
+};
+window.setCam = (pos, tgt, fov) => {
+  target.set(...tgt); controls.target.copy(target);
+  camera.position.set(...pos).add(target);
+  if (fov) { FOV = fov; fitFov(); }
+  camera.lookAt(target);
+};
+
+const swayBase = camera.position.clone().sub(target);
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (frozen) return;
+  if (!STILL && !reduced && now - lastTouch > 4000) {
+    const s = now / 1000;
+    const want = swayBase.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.sin(s * 0.07) * 0.18).add(target);
+    want.y += Math.sin(s * 0.11) * 0.4;
     camera.position.lerp(want, 0.004);
   }
   controls.update();
-
-  sun.position.copy(target).add(new THREE.Vector3(-7, 11, -5));
-  sun.target.position.copy(target);
-  renderer.render(scene, camera);
-  requestAnimationFrame(frame);
+  draw(realNow() + offset);
 }
 requestAnimationFrame(frame);
 </script>

@@ -1,0 +1,41 @@
+<!doctype html><meta charset="utf-8">
+<style>body{margin:0;background:#222;color:#fff;font:14px monospace}#row{display:flex;gap:4px}video,iframe{width:740px;height:446px;border:0;display:block;flex:none}</style>
+<div id="row"><video id="v" src="src.mp4" muted playsinline preload="auto"></video><iframe id="f" src="index.html?still"></iframe></div>
+<canvas id="sheet" style="display:block"></canvas>
+<script>
+// video time v -> clock time of day (19:45:41 lands at v = 0.7)
+// the video's seconds run 0.5% fast: one tick every 0.9945 s, 19:45:41 lands at 0.62
+window.clockTime = v => 19*3600 + 45*60 + 41 + (v - 0.62) / 0.9945;
+const v = document.getElementById('v'), f = document.getElementById('f');
+const seek = t => new Promise(r => { v.addEventListener('seeked', () => requestAnimationFrame(() => r()), { once: true }); v.currentTime = t; });
+// sheet of rows: [video | mine] at each time
+window.sheet = async (times, w = 740) => {
+  const h = Math.round(w * 446 / 740), c = document.getElementById('sheet');
+  c.width = w * 3 + 8; c.height = times.length * (h + 4);
+  const g = c.getContext('2d'); g.fillStyle = '#222'; g.fillRect(0, 0, c.width, c.height);
+  for (let i = 0; i < times.length; i++) {
+    await seek(times[i]);
+    g.drawImage(v, 0, i * (h + 4), w, h);
+    const cv = f.contentWindow.clockAt(clockTime(times[i]));
+    g.drawImage(cv, w + 4, i * (h + 4), w, h);
+    g.drawImage(v, 2 * w + 8, i * (h + 4), w, h);
+    g.globalAlpha = 0.5; g.drawImage(cv, 2 * w + 8, i * (h + 4), w, h); g.globalAlpha = 1;
+    g.fillStyle = 'red'; g.font = '20px monospace'; g.fillText(times[i].toFixed(2), 8, i * (h + 4) + 24);
+  }
+  document.getElementById('row').style.display = 'none';
+  window.scrollTo(0, 0);
+  return [c.width, c.height];
+};
+
+// one big overlay of a single time
+window.over = async (t, w = 1400, alpha = 0.5) => {
+  const h = Math.round(w * 446 / 740), c = document.getElementById('sheet');
+  c.width = w; c.height = h; const g = c.getContext('2d');
+  await seek(t); g.drawImage(v, 0, 0, w, h);
+  const cv = f.contentWindow.clockAt(clockTime(t));
+  g.globalAlpha = alpha; g.drawImage(cv, 0, 0, w, h); g.globalAlpha = 1;
+  document.getElementById('row').style.display = 'none'; window.scrollTo(0, 0);
+};
+</script>
+
+<script src="tune.js"></script>
