@@ -108,17 +108,56 @@ function concreteTexture() {
   return t;
 }
 const floorTex = concreteTexture();
-const FLOOR = 120;
+// ---- rolling mode: the floor is a drum turning under the clock ----
+// Everything is laid out flat as before; the vertex shader wraps it around a cylinder
+// whose axis runs along the readout (x) and whose top sits under the clock.
+const ROLLING = false;
+const DRUM_C = 48;                                   // circumference in tiles (a multiple of 4 keeps the texture seamless)
+const BEND = { uBendR: { value: DRUM_C / (2 * Math.PI) }, uBendZ0: { value: 0 } };
+const BEND_HEAD = `
+uniform float uBendR; uniform float uBendZ0;
+vec3 bendP(vec3 p) { float th = (p.z - uBendZ0) / uBendR, r = uBendR + p.y;
+  return vec3(p.x, r * cos(th) - uBendR, uBendZ0 + r * sin(th)); }
+vec3 bendN(vec3 p, vec3 n) { float th = (p.z - uBendZ0) / uBendR, c = cos(th), s = sin(th);
+  return vec3(n.x, n.y * c - n.z * s, n.y * s + n.z * c); }
+`;
+function bendable(mat) {
+  if (!ROLLING) return mat;
+  mat.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, BEND);
+    sh.vertexShader = BEND_HEAD + sh.vertexShader
+      .replace('#include <defaultnormal_vertex>', `
+        vec3 bwp = (modelMatrix * vec4(position, 1.0)).xyz;
+        vec3 transformedNormal = mat3(viewMatrix) * bendN(bwp, normalize(mat3(modelMatrix) * objectNormal));
+        #ifdef FLIP_SIDED
+          transformedNormal = -transformedNormal;
+        #endif`)
+      .replace('#include <project_vertex>', `
+        vec4 bmv = modelMatrix * vec4(transformed, 1.0);
+        bmv.xyz = bendP(bmv.xyz);
+        vec4 mvPosition = viewMatrix * bmv;
+        gl_Position = projectionMatrix * mvPosition;`)
+      .replace('#include <worldpos_vertex>', `
+        vec4 worldPosition = modelMatrix * vec4(transformed, 1.0);
+        worldPosition.xyz = bendP(worldPosition.xyz);`);
+  };
+  mat.customProgramCacheKey = () => 'bend';
+  return mat;
+}
+const BEND_DEPTH = bendable(new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking }));
+const bendShadow = m => { if (ROLLING) m.customDepthMaterial = BEND_DEPTH; return m; };
+
+const FLOOR = 120, FLOOR_L = ROLLING ? DRUM_C + 8 : FLOOR;
 let SEAM = 1;                            // floor tile size (holes are one second = 1 apart)
-const setSeam = s => { SEAM = s; floorTex.repeat.set(FLOOR / (SEAM * 4), FLOOR / (SEAM * 4)); };
+const setSeam = s => { SEAM = s; floorTex.repeat.set(FLOOR / (SEAM * 4), FLOOR_L / (SEAM * 4)); };
 setSeam(SEAM);
 const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(FLOOR, FLOOR),
-  new THREE.MeshStandardMaterial({
+  new THREE.PlaneGeometry(FLOOR, FLOOR_L, 1, ROLLING ? 480 : 1),
+  bendable(new THREE.MeshStandardMaterial({
     map: floorTex, roughness: 0.95,
     // floor is skipped wherever a hole mask wrote 1 into the stencil
     stencilWrite: true, stencilRef: 1, stencilFunc: THREE.NotEqualStencilFunc,
-  })
+  }))
 );
 floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
@@ -126,10 +165,10 @@ floor.renderOrder = -1;
 scene.add(floor);
 
 // ---- digit geometry (cached per glyph) ----
-const MASK_MAT = new THREE.MeshBasicMaterial({
+const MASK_MAT = bendable(new THREE.MeshBasicMaterial({
   colorWrite: false, depthWrite: false, depthTest: false,
   stencilWrite: true, stencilRef: 1, stencilFunc: THREE.AlwaysStencilFunc, stencilZPass: THREE.ReplaceStencilOp,
-});
+}));
 const PIECE_MAT = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x3a3a3a, roughness: 0.8, vertexColors: true });
 // tops stay white; sides are grey and darken toward the floor, like the original
 const SIDE_TOP = 0.84, SIDE_BOTTOM = 0.42;
@@ -144,8 +183,8 @@ function shadeSides(geo) {
 }
 // open-topped hole: floor + walls, seen from inside
 const PIT_MAT = [
-  new THREE.MeshStandardMaterial({ color: 0xaaa597, roughness: 1, side: THREE.BackSide }),                                // bottom
-  new THREE.MeshStandardMaterial({ color: 0x8c877b, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide }), // walls
+  bendable(new THREE.MeshStandardMaterial({ color: 0xaaa597, roughness: 1, side: THREE.BackSide })),                                // bottom
+  bendable(new THREE.MeshStandardMaterial({ color: 0x8c877b, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide })), // walls
 ];
 
 const GLYPH = {};
@@ -194,7 +233,9 @@ const DROP = 0.15;                       // …straight down, the moment its hol
 let CLOCK_Z = 4.2325;
 let FLOOR_OFF = -0.0575;                      // tile seams relative to the holes
                     // where the clock sits on the floor
-const Z_BACK = 12, Z_FRONT = 12;         // floor kept in the scene (world units)
+let Z_BACK = 12, Z_FRONT = 12;         // floor kept in the scene (world units)
+// on the drum, keep to the side the camera can see: hole masks ignore depth, so one on the far side would cut through the near side
+if (ROLLING) { Z_BACK = BEND.uBendR.value * 1.15; Z_FRONT = BEND.uBendR.value * 1.9; }
 
 const clock = new THREE.Group();
 scene.add(clock);
@@ -211,7 +252,7 @@ function makeHole(L, k) {
   const g = flat();
   const add = (d, x) => {
     const m = new THREE.Mesh(GLYPH[d].mask, MASK_MAT); m.renderOrder = -2; m.position.x = x;
-    const p = new THREE.Mesh(GLYPH[d].pit, PIT_MAT); p.receiveShadow = p.castShadow = true; p.position.x = x;
+    const p = bendShadow(new THREE.Mesh(GLYPH[d].pit, PIT_MAT)); p.receiveShadow = p.castShadow = true; p.position.x = x;
     g.add(m, p);
   };
   add(L.value(k) % 10, PITCH / 2);
@@ -221,7 +262,7 @@ function makeHole(L, k) {
 
 function makePiece(d, x) {
   const g = flat();
-  const m = new THREE.Mesh(GLYPH[d].piece, PIECE_MAT.clone());
+  const m = bendShadow(new THREE.Mesh(GLYPH[d].piece, bendable(PIECE_MAT.clone())));
   m.castShadow = m.receiveShadow = true;
   g.add(m);
   g.mat = m.material;
@@ -252,6 +293,7 @@ function updateLane(L, t, Fc) {
   const Fh = k => (k + 1) * P - 1 - LEAD; // floor spot of value k's hole: under the clock when k drops
   const want = new Map();
   const put = (key, make, z, y, op, wob = 0) => {
+    if (ROLLING && (z - CLOCK_Z < -Z_BACK || z - CLOCK_Z > Z_FRONT)) return; // off the visible arc of the drum
     let o = L.objs.get(key);
     if (!o) { o = make(); clock.add(o); L.objs.set(key, o); }
     o.position.set(L.x + (o.off || 0), y, z);
@@ -337,6 +379,7 @@ function draw(t) {
   const fz = CLOCK_Z - LEAD + 0.5 * SEAM - Fc + FLOOR_OFF; // tile seams sit half a tile from each hole
   floor.position.z = fz - Math.floor(fz / (4 * SEAM)) * 4 * SEAM;
   for (const L of LANES) updateLane(L, t, Fc);
+  BEND.uBendZ0.value = CLOCK_Z;
   sun.position.copy(target).add(new THREE.Vector3(-4, 12, 3));
   sun.target.position.copy(target);
   camera.rotateZ(ROLL);
@@ -369,6 +412,7 @@ window.setParams = p => {
   }
   camera.up.set(0, 1, 0); camera.lookAt(target);
 };
+window.__three = { scene, renderer, camera };
 window.__dbg = () => ({ pos: camera.position.toArray(), quat: camera.quaternion.toArray(), fov: camera.fov, aspect: camera.aspect, size: [renderer.domElement.width, renderer.domElement.height], CAP, NARROW, PITCH, ROLL });
 setParams({}); // aim the camera now, not on the first animation frame
 window.setCam = (pos, tgt, fov) => {
