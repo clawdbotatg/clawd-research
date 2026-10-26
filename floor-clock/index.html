@@ -170,10 +170,9 @@ const LANES = [
   { P: 1, value: k => k % 60 },
 ];
 const FLY = 0.45, FLY_DIST = 3.1 * TILE; // catch-up slide, speeding up as it lands
-const SINK = 0.3;                        // old digit sinks into its hole…
-const BACK = 0.62;                       // …which has slid this far behind the clock when it lets go
-let CLOCK_Z = 4.43; 
-let ROW_DX = 0, ROW_DZ = -0.145;              // the raised row sits slightly off the lane line in the original
+const LEAD = 0.33;                       // the old digit drops this long before the new one lands…
+const DROP = 0.15;                       // …straight down, the moment its hole is right under it
+let CLOCK_Z = 4.285;
                     // where the clock sits on the floor
 const Z_BACK = 12, Z_FRONT = 12;         // floor kept in the scene (world units)
 
@@ -219,22 +218,23 @@ function pieceState(t, arrive, leave) {
   if (t < arrive - FLY) return null;
   if (t < arrive) {
     const u = (t - (arrive - FLY)) / FLY;
-    return { z: CLOCK_Z - FLY_DIST * (1 - u * u), y: RAISE, op: Math.min(1, u * 1.6), wob: 1, row: 1 };
+    return { z: CLOCK_Z - FLY_DIST * (1 - u * u), y: RAISE, op: Math.min(1, u * 1.6), wob: 1 };
   }
-  if (t < leave) return { z: CLOCK_Z, y: RAISE, op: 1, wob: 1, row: 1 };
-  // let go: ride away with the floor and settle into the hole a little further back
-  const w = Math.min(1, (t - leave) / SINK);
-  return { z: CLOCK_Z - (t - leave) * TILE - BACK * TILE * smooth(w), y: RAISE * (1 - smooth(w)), op: 1, wob: 1 - w, row: 1 - smooth(w) };
+  const drop = leave - LEAD;
+  if (t < drop) return { z: CLOCK_Z, y: RAISE, op: 1, wob: 1 };
+  // its hole is right under it: fall straight in, then ride away with the floor
+  const w = Math.min(1, (t - drop) / DROP);
+  return { z: CLOCK_Z - (t - drop) * TILE, y: RAISE * (1 - w * w), op: 1, wob: 1 - w };
 }
 
 function updateLane(L, t, Fc) {
   const P = L.P, kc = Math.floor(t / P);
-  const Fh = k => (k + 1) * P - 1 - BACK; // floor spot of value k's hole
+  const Fh = k => (k + 1) * P - 1 - LEAD; // floor spot of value k's hole: under the clock when k drops
   const want = new Map();
-  const put = (key, make, z, y, op, wob = 0, row = 0) => {
+  const put = (key, make, z, y, op, wob = 0) => {
     let o = L.objs.get(key);
     if (!o) { o = make(); clock.add(o); L.objs.set(key, o); }
-    o.position.set(L.x + (o.off || 0) + ROW_DX * row, y, z + ROW_DZ * row);
+    o.position.set(L.x + (o.off || 0), y, z);
     if (o.mat) {
       o.mat.opacity = op; o.mat.transparent = op < 1;
       // rough floor: the digit rocks with the bumps passing under it
@@ -246,8 +246,8 @@ function updateLane(L, t, Fc) {
     want.set(key, o);
   };
 
-  const kLo = Math.ceil((Fc - Z_BACK / TILE + 1 + BACK) / P - 1);
-  const kHi = Math.floor((Fc + Z_FRONT / TILE + 1 + BACK) / P - 1);
+  const kLo = Math.ceil((Fc - Z_BACK / TILE + 1 + LEAD) / P - 1);
+  const kHi = Math.floor((Fc + Z_FRONT / TILE + 1 + LEAD) / P - 1);
   const ks = new Set();
   for (let k = kLo; k <= kHi; k++) {
     ks.add(k);
@@ -261,11 +261,11 @@ function updateLane(L, t, Fc) {
   for (const k of ks) {
     const leave = (k + 1) * P;
     const s = pieceState(t, k * P, leave);
-    if (s) put('o' + k, () => makePiece(L.value(k) % 10, PITCH / 2), s.z, s.y, s.op, s.wob, s.row);
+    if (s) put('o' + k, () => makePiece(L.value(k) % 10, PITCH / 2), s.z, s.y, s.op, s.wob);
     if (L.tensEnds(k)) {
       let start = k; while (!L.tensEnds(start - 1)) start--;
       const st = pieceState(t, start * P, leave);
-      if (st) put('t' + k, () => makePiece(L.tens(k), -PITCH / 2), st.z, st.y, st.op, st.wob, st.row);
+      if (st) put('t' + k, () => makePiece(L.tens(k), -PITCH / 2), st.z, st.y, st.op, st.wob);
     }
   }
   for (const [key, o] of L.objs) {
@@ -314,7 +314,7 @@ if (at) {
 
 function draw(t) {
   const Fc = t - 1; // floor spot under the clock, in seconds
-  const fz = CLOCK_Z - BACK + 0.5 - Fc; // tile seams sit half a tile from each hole
+  const fz = CLOCK_Z - LEAD + 0.5 - Fc; // tile seams sit half a tile from each hole
   floor.position.z = fz - Math.floor(fz / 4) * 4;
   for (const L of LANES) updateLane(L, t, Fc);
   sun.position.copy(target).add(new THREE.Vector3(-5, 12, -4));
@@ -339,7 +339,6 @@ window.setParams = p => {
   if (p.roll != null) ROLL = p.roll;
   if (p.lanes) LANES.forEach((L, i) => (L.x = p.lanes[i]));
   if (p.clockZ != null) CLOCK_Z = p.clockZ;
-  if (p.row) [ROW_DX, ROW_DZ] = p.row;
   camera.up.set(0, 1, 0); camera.lookAt(target);
 };
 window.setCam = (pos, tgt, fov) => {

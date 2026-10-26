@@ -4,8 +4,8 @@
 <canvas id="sheet" style="display:block"></canvas>
 <script>
 // video time v -> clock time of day (19:45:41 lands at v = 0.7)
-// the video's seconds run 0.5% fast: one tick every 0.9945 s, 19:45:41 lands at 0.62
-window.clockTime = v => 19*3600 + 45*60 + 41 + (v - 0.62) / 0.9945;
+// the video's seconds run 0.5% fast: one tick every 0.9945 s, 19:45:41 lands at 0.58
+window.clockTime = v => 19*3600 + 45*60 + 41 + (v - 0.58) / 0.9945;
 const v = document.getElementById('v'), f = document.getElementById('f');
 const seek = t => new Promise(r => { v.addEventListener('seeked', () => requestAnimationFrame(() => r()), { once: true }); v.currentTime = t; });
 // sheet of rows: [video | mine] at each time
