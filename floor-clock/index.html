@@ -33,9 +33,7 @@ const PITCH = 0.74;     // digit spacing inside a unit
 const GAP = 0.55;       // extra space between hh / mm / ss
 const STEP = 1.2;       // spacing along a strip
 const RAISE = 0.36;     // current digit height above floor
-const PIT = 0.34;       // how deep future digits sit
-const BODY = RAISE + PIT + 0.1;
-const WINDOW = 16;      // slots drawn each side of the current one
+const PIT = 0.42;       // depth of the holes
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ---- renderer / scene ----
@@ -123,11 +121,9 @@ const MASK_MAT = new THREE.MeshBasicMaterial({
   colorWrite: false, depthWrite: false, depthTest: false,
   stencilWrite: true, stencilRef: 1, stencilFunc: THREE.AlwaysStencilFunc, stencilZPass: THREE.ReplaceStencilOp,
 });
-const PISTON_MAT = new THREE.MeshStandardMaterial({ color: 0xf6f4f0, roughness: 0.5 });
-const WALL_MAT = [
-  new THREE.MeshBasicMaterial({ visible: false }),
-  new THREE.MeshStandardMaterial({ color: 0x9a9385, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide }),
-];
+const PIECE_MAT = new THREE.MeshStandardMaterial({ color: 0xf6f4f0, roughness: 0.5 });
+// open-topped pit: walls + floor, seen from inside
+const PIT_MAT = new THREE.MeshStandardMaterial({ color: 0xb0a99b, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide });
 
 const capH = (() => { const b = new THREE.ShapeGeometry(FONT.generateShapes('0', 1)); b.computeBoundingBox(); return b.boundingBox.max.y; })();
 const GLYPH = {};
@@ -139,79 +135,130 @@ for (let n = 0; n < 10; n++) {
   const cx = (mask.boundingBox.min.x + mask.boundingBox.max.x) / 2, cy = capH / 2;
   mask.translate(-cx, -cy, 0);
 
-  const piston = new TextGeometry(ch, {
-    font: FONT, size: 1, height: BODY, depth: BODY, curveSegments: 8,
+  const piece = new TextGeometry(ch, {
+    font: FONT, size: 1, height: RAISE, depth: RAISE, curveSegments: 8,
     bevelEnabled: true, bevelThickness: 0.035, bevelSize: 0.03, bevelOffset: -0.03, bevelSegments: 3,
   });
-  piston.computeBoundingBox();
-  piston.translate(-cx, -cy, -piston.boundingBox.max.z); // top face at z = 0
+  piece.computeBoundingBox();
+  piece.translate(-cx, -cy, -piece.boundingBox.max.z); // top face at z = 0
 
-  const wall = new THREE.ExtrudeGeometry(shapes, { depth: BODY + 0.2, bevelEnabled: false, curveSegments: 8 });
-  wall.translate(-cx, -cy, -(BODY + 0.2));
-  GLYPH[n] = { mask, piston, wall };
+  const pit = new THREE.ExtrudeGeometry(shapes, { depth: PIT, bevelEnabled: false, curveSegments: 8 });
+  pit.translate(-cx, -cy, -PIT);
+  GLYPH[n] = { mask, piece, pit };
 }
 
-// ---- lanes: one per unit (hh / mm / ss), a row of past / current / future values ----
-// Each slot shows its ones digit. The tens digit only appears on the raised current
-// value and on every tenth value, so the lane reads like a ruler: 48 9 50 1 2 …
+// ---- the clock ----
+// The clock stays put while the floor slides back under it, one slot per second.
+// Every value has a hole cut in the floor at the spot the clock will be over when
+// that value ends. When a value ends, its digit drops into that hole and rides away
+// with the floor; the next digit flies in from behind and catches up to the clock.
 const tz = () => new Date().getTimezoneOffset() * 60;
 const LANES = [
-  { step: T => Math.floor(T / 3600), value: k => k % 24 },
-  { step: T => Math.floor(T / 60), value: k => k % 60 },
-  { step: T => T, value: k => k % 60 },
+  { P: 3600, value: k => k % 24 },
+  { P: 60, value: k => k % 60 },
+  { P: 1, value: k => k % 60 },
 ];
 const LANE_W = 2 * PITCH + GAP;
+const FLY = 0.55, FLY_DIST = 3.6 * STEP;              // catch-up slide
+const LEAD = 0.3, DROP = 0.4;                          // old digit drops just before the tick…
+const BACK = 0.8;                                      // …into a hole that has slid most of a slot behind
+const Z_BACK = 26, Z_FRONT = 14;                        // slots kept in the scene (world units)
 
 const clock = new THREE.Group();
 scene.add(clock);
-
-function makePart(d, x) {
-  const g = new THREE.Group();
-  g.position.x = x;
-  const mask = new THREE.Mesh(GLYPH[d].mask, MASK_MAT);
-  mask.renderOrder = -2;
-  const wall = new THREE.Mesh(GLYPH[d].wall, WALL_MAT);
-  wall.castShadow = wall.receiveShadow = true;
-  const piston = new THREE.Mesh(GLYPH[d].piston, PISTON_MAT);
-  piston.castShadow = piston.receiveShadow = true;
-  g.add(mask, wall, piston);
-  return { g, piston, h: -PIT, v: 0, s: 1, sv: 0 };
-}
-
-function makeSlot(value) {
-  const g = new THREE.Group();
-  g.rotation.x = -Math.PI / 2; // glyph plane -> floor, glyph +z -> world up
-  const ones = makePart(value % 10, PITCH / 2);
-  const tens = makePart(Math.floor(value / 10), -PITCH / 2);
-  g.add(ones.g, tens.g);
-  return { g, ones, tens, decade: value % 10 === 0 };
-}
-
-const nowT = () => Math.floor(Date.now() / 1000) - tz();
-const T0 = nowT();
 LANES.forEach((L, i) => {
   L.x = (i - 1) * LANE_W;
-  L.slots = new Map();
-  L.cur = L.step(T0);
-  L.pos = L.cur;
-  L.vel = 0;
+  L.tens = k => Math.floor(L.value(k) / 10);
+  L.tensEnds = k => L.tens(k + 1) !== L.tens(k); // tens digit leaves with this value
+  L.objs = new Map();
 });
 
-function syncLane(L) {
-  for (const [k, slot] of L.slots) {
-    if (Math.abs(k - L.cur) > WINDOW) { clock.remove(slot.g); L.slots.delete(k); }
+const flat = () => { const g = new THREE.Group(); g.rotation.x = -Math.PI / 2; return g; };
+
+function makeHole(L, k) {
+  const g = flat();
+  const add = (d, x) => {
+    const m = new THREE.Mesh(GLYPH[d].mask, MASK_MAT); m.renderOrder = -2; m.position.x = x;
+    const p = new THREE.Mesh(GLYPH[d].pit, PIT_MAT); p.receiveShadow = p.castShadow = true; p.position.x = x;
+    g.add(m, p);
+  };
+  add(L.value(k) % 10, PITCH / 2);
+  if (L.tensEnds(k)) add(L.tens(k), -PITCH / 2);
+  return g;
+}
+
+function makePiece(d, x) {
+  const g = flat();
+  const m = new THREE.Mesh(GLYPH[d].piece, PIECE_MAT.clone());
+  m.castShadow = m.receiveShadow = true;
+  g.add(m);
+  g.mat = m.material;
+  g.off = x;
+  g.seed = Math.random() * 100;
+  return g;
+}
+
+const ease3 = u => 1 - (1 - u) ** 3;
+const bumps = (f, s) => 0.5 * Math.sin(f * 2.3 + s) + 0.3 * Math.sin(f * 5.1 + s * 1.7) + 0.2 * Math.sin(f * 11.3 + s * 2.9);
+// where a digit is at time t: flying in, sitting in the clock, or dropped into its hole
+function pieceState(t, Fc, arrive, dropAt, Fh) {
+  if (t < arrive - FLY) return null;
+  if (t < arrive) {
+    const u = (t - (arrive - FLY)) / FLY;
+    return { z: -FLY_DIST * (1 - ease3(u)), y: RAISE, op: Math.min(1, u * 2.5), wob: 1 };
   }
-  for (let k = L.cur - WINDOW; k <= L.cur + WINDOW; k++) {
-    if (L.slots.has(k)) continue;
-    const slot = makeSlot(L.value(k));
-    const rest = k < L.cur ? 0 : -PIT; // the current one rises out of its pit on load
-    slot.ones.h = slot.tens.h = rest;
-    slot.tens.s = slot.decade || k === L.cur ? 1 : 0;
-    L.slots.set(k, slot);
-    clock.add(slot.g);
+  if (t < dropAt) return { z: 0, y: RAISE, op: 1, wob: 1 };
+  const w = Math.min(1, (t - dropAt) / DROP);
+  return { z: (Fh - Fc) * STEP * (w * w * (3 - 2 * w)), y: RAISE * (1 - w * w), op: 1, wob: 1 - w };
+}
+
+function updateLane(L, t, Fc) {
+  const P = L.P, kc = Math.floor(t / P);
+  const Fh = k => (k + 1) * P - LEAD - 1 - BACK;    // floor spot of value k's hole
+  const want = new Map();
+  const put = (key, make, x, z, y, op, wob = 0) => {
+    let o = L.objs.get(key);
+    if (!o) { o = make(); clock.add(o); L.objs.set(key, o); }
+    o.position.set(L.x + (o.off || 0), y, z);
+    if (o.mat) {
+      o.mat.opacity = op; o.mat.transparent = op < 1;
+      // rough floor: the digit rocks with the bumps passing under it
+      const f = (Fc + z / STEP) * 2.2, s = o.seed;
+      const ax = 0.045 * wob * bumps(f, s), az = 0.045 * wob * bumps(f, s + 31), ay = 0.03 * wob * bumps(f * 0.7, s + 57);
+      o.rotation.set(-Math.PI / 2 + ax, az, ay);
+      o.position.y += wob * (0.008 * (bumps(f * 1.6, s + 83) + 1) + 0.35 * (Math.abs(ax) + Math.abs(az)));
+    }
+    want.set(key, o);
+  };
+
+  // holes (and the digits that fell into them) near the clock
+  const kLo = Math.ceil((Fc - Z_BACK / STEP + LEAD + 1 + BACK) / P - 1);
+  const kHi = Math.floor((Fc + Z_FRONT / STEP + LEAD + 1 + BACK) / P - 1);
+  const ks = new Set();
+  for (let k = kLo; k <= kHi; k++) {
+    ks.add(k);
+    put('h' + k, () => makeHole(L, k), 0, (Fh(k) - Fc) * STEP, 0, 1);
+  }
+  for (let k = kc - 1; k <= kc + 1; k++) ks.add(k);
+  // the tens digit on show belongs to the last value of its run
+  let end = kc; while (!L.tensEnds(end)) end++;
+  ks.add(end); ks.add(end + 1);
+
+  for (const k of ks) {
+    const dropAt = (k + 1) * P - LEAD;
+    const s = pieceState(t, Fc, k * P, dropAt, Fh(k));
+    if (s) put('o' + k, () => makePiece(L.value(k) % 10, PITCH / 2), 0, s.z, s.y, s.op, s.wob);
+    if (L.tensEnds(k)) {
+      let start = k; while (!L.tensEnds(start - 1)) start--;
+      const st = pieceState(t, Fc, start * P, dropAt, Fh(k));
+      if (st) put('t' + k, () => makePiece(L.tens(k), -PITCH / 2), 0, st.z, st.y, st.op, st.wob);
+    }
+  }
+  for (const [key, o] of L.objs) {
+    if (want.has(key)) continue;
+    clock.remove(o); o.mat?.dispose(); L.objs.delete(key);
   }
 }
-LANES.forEach(syncLane);
 
 // ---- camera ----
 const target = new THREE.Vector3(0.6, 0, -0.4);
@@ -238,39 +285,13 @@ fitFov();
 addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); fitFov(); });
 
 // ---- loop ----
-const spring = (x, v, to, k, c, dt) => { const a = -k * (x - to) - c * v; v += a * dt; return [x + v * dt, v]; };
-let last = performance.now();
 const swayBase = camera.position.clone().sub(target);
 
 function frame(now) {
-  const dt = Math.min((now - last) / 1000, 1 / 30);
-  last = now;
-  const T = nowT();
-
-  for (const L of LANES) {
-    const k = L.step(T);
-    if (k !== L.cur) { L.cur = k; syncLane(L); }
-    if (reduced) { L.pos = L.cur; L.vel = 0; }
-    else [L.pos, L.vel] = spring(L.pos, L.vel, L.cur, 70, 15, dt);
-    for (const [k, slot] of L.slots) {
-      const live = k === L.cur;
-      const rest = live ? RAISE : k < L.cur ? 0 : -PIT;
-      const parts = [[slot.ones, rest, 1], [slot.tens, rest, live || slot.decade ? 1 : 0]];
-      for (const [p, to, show] of parts) {
-        if (reduced) { p.h = to; p.s = show; }
-        else {
-          [p.h, p.v] = spring(p.h, p.v, to, 210, 13, dt);
-          // a tens digit that is no longer needed closes up: hole and piston shrink away
-          [p.s, p.sv] = spring(p.s, p.sv, show, 120, 16, dt);
-        }
-        const s = Math.max(p.s, 0);
-        p.g.visible = s > 0.01;
-        p.g.scale.set(s, s, 1);
-        p.piston.position.z = p.h;
-      }
-      slot.g.position.set(L.x, 0, (k - L.pos) * STEP);
-    }
-  }
+  const t = Date.now() / 1000 - tz();
+  const Fc = t - 1; // floor spot under the clock, in seconds
+  floor.position.z = -((Fc * STEP) % (TILE * 4));
+  for (const L of LANES) updateLane(L, t, Fc);
 
   // slow drift when nobody is dragging
   if (!reduced && now - lastTouch > 4000) {
