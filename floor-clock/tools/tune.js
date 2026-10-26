@@ -26,7 +26,7 @@ window.tune = async (times, P, steps, rounds = 3) => {
   const fw = document.getElementById('f').contentWindow;
   const refs = [];
   for (const t of times) { await seek(t); refs.push(edges(v)); }
-  const toParams = p => ({ cam: [p[0], p[1], p[2]], tgt: [p[3], 0, p[4]], fov: p[5], roll: p[6], lanes: [p[7], p[8], p[9]], clockZ: p[10], row: [p[11] || 0, p[12] || 0] });
+  const toParams = p => ({ cam: [p[0], p[1], p[2]], tgt: [p[3], 0, p[4]], fov: p[5], roll: p[6], lanes: [p[7], p[8], p[9]], clockZ: p[10], cap: p[11], narrow: p[12], pitch: p[13], floorOff: p[14], seam: p[15], lead: p[16] });
   const score = p => {
     fw.setParams(toParams(p)); let s = 0;
     times.forEach((t, k) => { const E = edges(fw.clockAt(clockTime(t))); const R = refs[k]; for (let i = 0; i < E.length; i++) { const d = E[i] - R[i]; s += d * d; } });
