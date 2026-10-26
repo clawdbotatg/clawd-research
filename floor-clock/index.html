@@ -1,0 +1,290 @@
+<title>Floor Clock</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  :root { --bg: #bdb6a8; --ink: #5e584e; color-scheme: light; }
+  html, body { height: 100%; }
+  body { background: var(--bg); overflow: hidden; }
+  canvas { display: block; position: fixed; inset: 0; width: 100vw; height: 100vh; touch-action: none; }
+  .vignette { position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(60,52,40,.28) 100%); }
+  .credit { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    font: 500 11px/1.3 ui-monospace, Menlo, monospace; letter-spacing: .06em; color: var(--ink); opacity: .7; }
+  .credit a { color: inherit; }
+</style>
+<div class="vignette"></div>
+<div class="credit">after <a href="https://x.com/kitasenjudesign/status/2114308460456329379" target="_blank" rel="noopener">@kitasenjudesign</a> &middot; drag to look</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { Font } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const FONT = new Font({"cssFontWeight":"bold","ascender":1216,"underlinePosition":-100,"cssFontStyle":"normal","boundingBox":{"yMin":-333,"xMin":-162,"yMax":1216,"xMax":1681},"resolution":1000,"descender":-334,"familyName":"Helvetiker","lineHeight":1549,"underlineThickness":50,"glyphs":{"2":{"x_min":64,"x_max":764,"ha":828,"o":"m 764 685 q 675 452 764 541 q 484 325 637 415 q 307 168 357 250 l 754 168 l 754 0 l 64 0 q 193 301 64 175 q 433 480 202 311 q 564 673 564 576 q 519 780 564 737 q 416 824 475 824 q 318 780 358 824 q 262 633 270 730 l 80 633 q 184 903 80 807 q 415 988 276 988 q 654 907 552 988 q 764 685 764 819 "},"0":{"x_min":51,"x_max":779,"ha":828,"o":"m 415 -26 q 142 129 242 -26 q 51 476 51 271 q 141 825 51 683 q 415 984 242 984 q 687 825 585 984 q 779 476 779 682 q 688 131 779 271 q 415 -26 587 -26 m 415 137 q 529 242 485 137 q 568 477 568 338 q 530 713 568 619 q 415 821 488 821 q 303 718 344 821 q 262 477 262 616 q 301 237 262 337 q 415 137 341 137 "},"8":{"x_min":57,"x_max":770,"ha":828,"o":"m 625 516 q 733 416 697 477 q 770 284 770 355 q 675 69 770 161 q 415 -29 574 -29 q 145 65 244 -29 q 57 273 57 150 q 93 413 57 350 q 204 516 130 477 q 112 609 142 556 q 83 718 83 662 q 177 905 83 824 q 414 986 272 986 q 650 904 555 986 q 745 715 745 822 q 716 608 745 658 q 625 516 688 558 m 414 590 q 516 624 479 590 q 553 706 553 659 q 516 791 553 755 q 414 828 480 828 q 311 792 348 828 q 275 706 275 757 q 310 624 275 658 q 414 590 345 590 m 413 135 q 527 179 487 135 q 564 279 564 218 q 525 386 564 341 q 411 436 482 436 q 298 387 341 436 q 261 282 261 344 q 300 178 261 222 q 413 135 340 135 "},"5":{"x_min":59,"x_max":767,"ha":828,"o":"m 767 319 q 644 59 767 158 q 382 -29 533 -29 q 158 43 247 -29 q 59 264 59 123 l 252 264 q 295 165 252 201 q 400 129 339 129 q 512 172 466 129 q 564 308 564 220 q 514 437 564 387 q 398 488 464 488 q 329 472 361 488 q 271 420 297 456 l 93 428 l 157 958 l 722 958 l 722 790 l 295 790 l 271 593 q 348 635 306 621 q 431 649 389 649 q 663 551 560 649 q 767 319 767 453 "},"7":{"x_min":65.28125,"x_max":762.5,"ha":828,"o":"m 762 808 q 521 435 604 626 q 409 0 438 244 l 205 0 q 313 422 227 234 q 548 789 387 583 l 65 789 l 65 958 l 762 958 l 762 808 "},"1":{"x_min":197.609375,"x_max":628,"ha":828,"o":"m 628 0 l 434 0 l 434 674 l 197 674 l 197 810 q 373 837 318 810 q 468 984 450 876 l 628 984 l 628 0 "},"6":{"x_min":57,"x_max":771,"ha":828,"o":"m 744 734 l 544 734 q 500 802 533 776 q 425 828 466 828 q 315 769 359 828 q 264 571 264 701 q 451 638 343 638 q 691 537 602 638 q 771 315 771 449 q 683 79 771 176 q 420 -29 586 -29 q 134 123 227 -29 q 57 455 57 250 q 184 865 57 721 q 452 988 293 988 q 657 916 570 988 q 744 734 744 845 m 426 128 q 538 178 498 128 q 578 300 578 229 q 538 422 578 372 q 415 479 493 479 q 303 430 342 479 q 264 313 264 381 q 308 184 264 240 q 426 128 352 128 "},"3":{"x_min":61,"x_max":767,"ha":828,"o":"m 767 290 q 653 51 767 143 q 402 -32 548 -32 q 168 48 262 -32 q 61 300 61 140 l 250 300 q 298 173 250 219 q 405 132 343 132 q 514 169 471 132 q 563 282 563 211 q 491 405 563 369 q 343 432 439 432 l 343 568 q 472 592 425 568 q 534 701 534 626 q 493 793 534 758 q 398 829 453 829 q 306 789 344 829 q 268 669 268 749 l 80 669 q 182 909 80 823 q 410 986 274 986 q 633 916 540 986 q 735 719 735 840 q 703 608 735 656 q 615 522 672 561 q 727 427 687 486 q 767 290 767 369 "},"9":{"x_min":58,"x_max":769,"ha":828,"o":"m 769 492 q 646 90 769 232 q 384 -33 539 -33 q 187 35 271 -33 q 83 224 98 107 l 282 224 q 323 154 286 182 q 404 127 359 127 q 513 182 471 127 q 563 384 563 248 q 475 335 532 355 q 372 315 418 315 q 137 416 224 315 q 58 642 58 507 q 144 877 58 781 q 407 984 239 984 q 694 827 602 984 q 769 492 769 699 m 416 476 q 525 521 488 476 q 563 632 563 566 q 521 764 563 709 q 403 826 474 826 q 297 773 337 826 q 258 649 258 720 q 295 530 258 577 q 416 476 339 476 "},"4":{"x_min":53,"x_max":775.21875,"ha":828,"o":"m 775 213 l 660 213 l 660 0 l 470 0 l 470 213 l 53 213 l 53 384 l 416 958 l 660 958 l 660 370 l 775 370 l 775 213 m 474 364 l 474 786 l 204 363 l 474 364 "}}});
+
+// ---- sizes (world units) ----
+const PITCH = 0.74;     // digit spacing inside a unit
+const GAP = 0.55;       // extra space between hh / mm / ss
+const STEP = 1.2;       // spacing along a strip
+const RAISE = 0.36;     // current digit height above floor
+const PIT = 0.34;       // how deep future digits sit
+const BODY = RAISE + PIT + 0.1;
+const WINDOW = 16;      // slots drawn each side of the current one
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---- renderer / scene ----
+const renderer = new THREE.WebGLRenderer({ antialias: true, stencil: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const BG = new THREE.Color('#bdb6a8');
+scene.background = BG;
+scene.fog = new THREE.Fog(BG, 16, 42);
+
+const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 100);
+
+scene.add(new THREE.HemisphereLight(0xfffaf0, 0x7d766a, 1.35));
+const sun = new THREE.DirectionalLight(0xfff6e8, 2.4);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -11, right: 11, top: 11, bottom: -11, near: 1, far: 40 });
+sun.shadow.bias = -0.0004;
+sun.shadow.normalBias = 0.02;
+sun.shadow.radius = 4;
+scene.add(sun, sun.target);
+
+// ---- concrete floor ----
+function concreteTexture() {
+  const N = 1024, c = document.createElement('canvas');
+  c.width = c.height = N;
+  const g = c.getContext('2d');
+  g.fillStyle = '#c3bcae'; g.fillRect(0, 0, N, N);
+  // soft blotches, drawn wrapped so the tile repeats cleanly
+  const blot = (x, y, r, a, col) => {
+    for (const dx of [-N, 0, N]) for (const dy of [-N, 0, N]) {
+      const gr = g.createRadialGradient(x + dx, y + dy, 0, x + dx, y + dy, r);
+      gr.addColorStop(0, `rgba(${col},${a})`); gr.addColorStop(1, `rgba(${col},0)`);
+      g.fillStyle = gr; g.fillRect(x + dx - r, y + dy - r, r * 2, r * 2);
+    }
+  };
+  let s = 7;
+  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 40; i++) blot(rnd() * N, rnd() * N, 60 + rnd() * 220, 0.05 + rnd() * 0.12, rnd() < 0.7 ? '110,102,88' : '235,230,220');
+  // speckle
+  const img = g.getImageData(0, 0, N, N), d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const n = (rnd() - 0.5) * 22 + (rnd() < 0.004 ? -45 : 0);
+    d[i] += n; d[i + 1] += n; d[i + 2] += n;
+  }
+  g.putImageData(img, 0, 0);
+  // seams: 4x4 tiles per texture
+  g.strokeStyle = 'rgba(70,64,54,.75)'; g.lineWidth = 2.2;
+  for (let i = 0; i <= 4; i++) {
+    const p = i * N / 4;
+    g.beginPath(); g.moveTo(p, 0); g.lineTo(p, N); g.stroke();
+    g.beginPath(); g.moveTo(0, p); g.lineTo(N, p); g.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+const floorTex = concreteTexture();
+const FLOOR = 200, TILE = 2.6;
+floorTex.repeat.set(FLOOR / (TILE * 4), FLOOR / (TILE * 4));
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(FLOOR, FLOOR),
+  new THREE.MeshStandardMaterial({
+    map: floorTex, roughness: 0.95,
+    // floor is skipped wherever a hole mask wrote 1 into the stencil
+    stencilWrite: true, stencilRef: 1, stencilFunc: THREE.NotEqualStencilFunc,
+  })
+);
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+floor.renderOrder = -1;
+scene.add(floor);
+
+// ---- digit geometry (cached per glyph) ----
+const MASK_MAT = new THREE.MeshBasicMaterial({
+  colorWrite: false, depthWrite: false, depthTest: false,
+  stencilWrite: true, stencilRef: 1, stencilFunc: THREE.AlwaysStencilFunc, stencilZPass: THREE.ReplaceStencilOp,
+});
+const PISTON_MAT = new THREE.MeshStandardMaterial({ color: 0xf6f4f0, roughness: 0.5 });
+const WALL_MAT = [
+  new THREE.MeshBasicMaterial({ visible: false }),
+  new THREE.MeshStandardMaterial({ color: 0x9a9385, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide }),
+];
+
+const capH = (() => { const b = new THREE.ShapeGeometry(FONT.generateShapes('0', 1)); b.computeBoundingBox(); return b.boundingBox.max.y; })();
+const GLYPH = {};
+for (let n = 0; n < 10; n++) {
+  const ch = String(n);
+  const shapes = FONT.generateShapes(ch, 1);
+  const mask = new THREE.ShapeGeometry(shapes, 6);
+  mask.computeBoundingBox();
+  const cx = (mask.boundingBox.min.x + mask.boundingBox.max.x) / 2, cy = capH / 2;
+  mask.translate(-cx, -cy, 0);
+
+  const piston = new TextGeometry(ch, {
+    font: FONT, size: 1, height: BODY, depth: BODY, curveSegments: 8,
+    bevelEnabled: true, bevelThickness: 0.035, bevelSize: 0.03, bevelOffset: -0.03, bevelSegments: 3,
+  });
+  piston.computeBoundingBox();
+  piston.translate(-cx, -cy, -piston.boundingBox.max.z); // top face at z = 0
+
+  const wall = new THREE.ExtrudeGeometry(shapes, { depth: BODY + 0.2, bevelEnabled: false, curveSegments: 8 });
+  wall.translate(-cx, -cy, -(BODY + 0.2));
+  GLYPH[n] = { mask, piston, wall };
+}
+
+// ---- lanes: one per unit (hh / mm / ss), a row of past / current / future values ----
+// Each slot shows its ones digit. The tens digit only appears on the raised current
+// value and on every tenth value, so the lane reads like a ruler: 48 9 50 1 2 …
+const tz = () => new Date().getTimezoneOffset() * 60;
+const LANES = [
+  { step: T => Math.floor(T / 3600), value: k => k % 24 },
+  { step: T => Math.floor(T / 60), value: k => k % 60 },
+  { step: T => T, value: k => k % 60 },
+];
+const LANE_W = 2 * PITCH + GAP;
+
+const clock = new THREE.Group();
+scene.add(clock);
+
+function makePart(d, x) {
+  const g = new THREE.Group();
+  g.position.x = x;
+  const mask = new THREE.Mesh(GLYPH[d].mask, MASK_MAT);
+  mask.renderOrder = -2;
+  const wall = new THREE.Mesh(GLYPH[d].wall, WALL_MAT);
+  wall.castShadow = wall.receiveShadow = true;
+  const piston = new THREE.Mesh(GLYPH[d].piston, PISTON_MAT);
+  piston.castShadow = piston.receiveShadow = true;
+  g.add(mask, wall, piston);
+  return { g, piston, h: -PIT, v: 0, s: 1, sv: 0 };
+}
+
+function makeSlot(value) {
+  const g = new THREE.Group();
+  g.rotation.x = -Math.PI / 2; // glyph plane -> floor, glyph +z -> world up
+  const ones = makePart(value % 10, PITCH / 2);
+  const tens = makePart(Math.floor(value / 10), -PITCH / 2);
+  g.add(ones.g, tens.g);
+  return { g, ones, tens, decade: value % 10 === 0 };
+}
+
+const nowT = () => Math.floor(Date.now() / 1000) - tz();
+const T0 = nowT();
+LANES.forEach((L, i) => {
+  L.x = (i - 1) * LANE_W;
+  L.slots = new Map();
+  L.cur = L.step(T0);
+  L.pos = L.cur;
+  L.vel = 0;
+});
+
+function syncLane(L) {
+  for (const [k, slot] of L.slots) {
+    if (Math.abs(k - L.cur) > WINDOW) { clock.remove(slot.g); L.slots.delete(k); }
+  }
+  for (let k = L.cur - WINDOW; k <= L.cur + WINDOW; k++) {
+    if (L.slots.has(k)) continue;
+    const slot = makeSlot(L.value(k));
+    const rest = k < L.cur ? 0 : -PIT; // the current one rises out of its pit on load
+    slot.ones.h = slot.tens.h = rest;
+    slot.tens.s = slot.decade || k === L.cur ? 1 : 0;
+    L.slots.set(k, slot);
+    clock.add(slot.g);
+  }
+}
+LANES.forEach(syncLane);
+
+// ---- camera ----
+const target = new THREE.Vector3(0.6, 0, -0.4);
+camera.position.set(-4.0, 7.6, 6.4).add(target);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.copy(target);
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 5;
+controls.maxDistance = 22;
+controls.maxPolarAngle = 1.2;
+controls.update();
+let lastTouch = -1e9;
+controls.addEventListener('start', () => (lastTouch = performance.now()));
+controls.addEventListener('end', () => (lastTouch = performance.now()));
+
+function fitFov() {
+  camera.aspect = innerWidth / innerHeight;
+  // keep the whole readout on narrow screens
+  camera.fov = camera.aspect < 1 ? 32 / Math.max(camera.aspect, 0.5) ** 0.85 : 32;
+  camera.updateProjectionMatrix();
+}
+fitFov();
+addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); fitFov(); });
+
+// ---- loop ----
+const spring = (x, v, to, k, c, dt) => { const a = -k * (x - to) - c * v; v += a * dt; return [x + v * dt, v]; };
+let last = performance.now();
+const swayBase = camera.position.clone().sub(target);
+
+function frame(now) {
+  const dt = Math.min((now - last) / 1000, 1 / 30);
+  last = now;
+  const T = nowT();
+
+  for (const L of LANES) {
+    const k = L.step(T);
+    if (k !== L.cur) { L.cur = k; syncLane(L); }
+    if (reduced) { L.pos = L.cur; L.vel = 0; }
+    else [L.pos, L.vel] = spring(L.pos, L.vel, L.cur, 70, 15, dt);
+    for (const [k, slot] of L.slots) {
+      const live = k === L.cur;
+      const rest = live ? RAISE : k < L.cur ? 0 : -PIT;
+      const parts = [[slot.ones, rest, 1], [slot.tens, rest, live || slot.decade ? 1 : 0]];
+      for (const [p, to, show] of parts) {
+        if (reduced) { p.h = to; p.s = show; }
+        else {
+          [p.h, p.v] = spring(p.h, p.v, to, 210, 13, dt);
+          // a tens digit that is no longer needed closes up: hole and piston shrink away
+          [p.s, p.sv] = spring(p.s, p.sv, show, 120, 16, dt);
+        }
+        const s = Math.max(p.s, 0);
+        p.g.visible = s > 0.01;
+        p.g.scale.set(s, s, 1);
+        p.piston.position.z = p.h;
+      }
+      slot.g.position.set(L.x, 0, (k - L.pos) * STEP);
+    }
+  }
+
+  // slow drift when nobody is dragging
+  if (!reduced && now - lastTouch > 4000) {
+    const t = now / 1000;
+    const want = swayBase.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.sin(t * 0.07) * 0.22).add(target);
+    want.y += Math.sin(t * 0.11) * 0.5;
+    camera.position.lerp(want, 0.004);
+  }
+  controls.update();
+
+  sun.position.copy(target).add(new THREE.Vector3(-7, 11, -5));
+  sun.target.position.copy(target);
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
