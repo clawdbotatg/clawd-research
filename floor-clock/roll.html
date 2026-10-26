@@ -154,7 +154,7 @@ setSeam(SEAM);
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(FLOOR, FLOOR_L, 1, ROLLING ? 480 : 1),
   bendable(new THREE.MeshStandardMaterial({
-    map: floorTex, roughness: 0.95,
+    map: floorTex, roughness: 0.95, color: ROLLING ? 0x4a4744 : 0xffffff,
     // floor is skipped wherever a hole mask wrote 1 into the stencil
     stencilWrite: true, stencilRef: 1, stencilFunc: THREE.NotEqualStencilFunc,
   }))
@@ -183,8 +183,8 @@ function shadeSides(geo) {
 }
 // open-topped hole: floor + walls, seen from inside
 const PIT_MAT = [
-  bendable(new THREE.MeshStandardMaterial({ color: 0xaaa597, roughness: 1, side: THREE.BackSide })),                                // bottom
-  bendable(new THREE.MeshStandardMaterial({ color: 0x8c877b, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide })), // walls
+  bendable(new THREE.MeshStandardMaterial({ color: ROLLING ? 0x3a3733 : 0xaaa597, roughness: 1, side: THREE.BackSide })),                                // bottom
+  bendable(new THREE.MeshStandardMaterial({ color: ROLLING ? 0x24221f : 0x8c877b, roughness: 1, side: THREE.BackSide, shadowSide: THREE.DoubleSide })), // walls
 ];
 
 const GLYPH = {};
@@ -414,6 +414,18 @@ window.setParams = p => {
 };
 window.__three = { scene, renderer, camera };
 window.__dbg = () => ({ pos: camera.position.toArray(), quat: camera.quaternion.toArray(), fov: camera.fov, aspect: camera.aspect, size: [renderer.domElement.width, renderer.domElement.height], CAP, NARROW, PITCH, ROLL });
+// the drum: black room, dark drum, camera square in front so the time reads upright
+if (ROLLING) {
+  scene.background = new THREE.Color(0x000000);
+  scene.fog = new THREE.Fog(0x000000, 17, 30);
+  document.documentElement.style.setProperty('--bg', '#000');
+  document.documentElement.style.setProperty('--ink', '#8a857a');
+  target.set(0.53, 0, CLOCK_Z);
+  camera.position.set(0.53, 11.5, CLOCK_Z + 11);
+  controls.target.copy(target);
+  ROLL = 0; FOV = 19; fitFov();
+  target.z = CLOCK_Z - 0.6; controls.target.copy(target); // aim a touch behind the clock so the drum's edge shows
+}
 setParams({}); // aim the camera now, not on the first animation frame
 window.setCam = (pos, tgt, fov) => {
   target.set(...tgt); controls.target.copy(target);
