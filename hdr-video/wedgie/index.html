@@ -1,0 +1,194 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>wedgie hdr</title>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>html,body{margin:0;background:#000}</style></head>
+<body><script type="module">
+// Renders the wedgie flying at the camera in float HDR, encodes each frame to HLG / BT.2020
+// in a shader, and POSTs 16-bit RGB to /frame. Time is i/FPS, not wall clock.
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+const q = new URLSearchParams(location.search);
+const W = +(q.get("w") || 1920), H = +(q.get("h") || 1080), FPS = +(q.get("fps") || 60), SECS = +(q.get("secs") || 7);
+const ONLY = q.get("frame");   // render one frame for previews
+
+const COLORS = { lid: 0xf3f2ee, base: 0x1c1c1e, A: 0x278c3c, B: 0x6c6d71, X: 0x6c6d71, Y: 0xb3302a, joystick: 0x75767a };
+const KEYS = ["A", "B", "X", "Y"];
+const ACTIVE = 23.4;
+
+const [meta, bin] = await Promise.all([fetch("/wd/3d/wedgie.json").then(r => r.json()), fetch("/wd/3d/wedgie.bin").then(r => r.arrayBuffer())]);
+function geo(p) {
+  const qv = new Uint16Array(bin, p.pos, p.verts * 3), pos = new Float32Array(p.verts * 3);
+  for (let i = 0; i < pos.length; i++) { const a = i % 3; pos[i] = p.lo[a] + (qv[i] / 65535) * (p.hi[a] - p.lo[a]); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setIndex(new THREE.BufferAttribute(p.wide ? new Uint32Array(bin, p.idx, p.tris * 3) : new Uint16Array(bin, p.idx, p.tris * 3), 1));
+  return toCreasedNormals(g, (35 * Math.PI) / 180);
+}
+
+const renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+renderer.toneMapping = THREE.NoToneMapping;
+document.body.appendChild(renderer.domElement);
+document.title = "gl:" + renderer.getContext().getParameter(renderer.getContext().VERSION);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.45;
+const camera = new THREE.PerspectiveCamera(22, W / H, 5, 20000);
+
+// backdrop: a dark radial glow, well under SDR white
+const bg = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial({
+  depthWrite: false, toneMapped: false, uniforms: { t: { value: 0 } },
+  vertexShader: `varying vec2 v; void main(){ v=uv; gl_Position=vec4(position.xy*2.,0.9999,1.); }`,
+  fragmentShader: `varying vec2 v; uniform float t;
+    void main(){ vec2 p=(v-.5)*vec2(${(W / H).toFixed(4)},1.); float r=length(p);
+      vec3 c=mix(vec3(.05,.06,.12),vec3(.004,.004,.01),smoothstep(0.,.9,r));
+      c+=vec3(.10,.04,.16)*exp(-r*r*6.)*(.6+.4*sin(t*1.3));
+      gl_FragColor=vec4(c,1.); }`,
+}));
+bg.frustumCulled = false; bg.renderOrder = -1;
+scene.add(bg);
+
+// warp streaks: HDR-bright dots rushing past, faster while the wedgie flies
+const NS = 900, sp = new Float32Array(NS * 3), sseed = [];
+for (let i = 0; i < NS; i++) { const a = Math.random() * Math.PI * 2, r = 30 + Math.random() * 900; sseed.push([Math.cos(a) * r, Math.sin(a) * r, -Math.random() * 12000]); }
+const sg = new THREE.BufferGeometry(); sg.setAttribute("position", new THREE.BufferAttribute(sp, 3));
+const smat = new THREE.PointsMaterial({ color: new THREE.Color(2.2, 2.4, 3.0), size: 2.2, sizeAttenuation: false, toneMapped: false, transparent: true, opacity: 1 });
+const stars = new THREE.Points(sg, smat); stars.frustumCulled = false; scene.add(stars);
+
+const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(-35, 45, 160); scene.add(key);
+const rim = new THREE.DirectionalLight(0xb8d4ff, 2.4); rim.position.set(120, 80, -60); scene.add(rim);
+const rim2 = new THREE.DirectionalLight(0xffc9a8, 1.2); rim2.position.set(-140, -60, -20); scene.add(rim2);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x404050, 0.35));
+
+const fly = new THREE.Group(), tilt = new THREE.Group(), dev = new THREE.Group(), inner = new THREE.Group();
+dev.rotation.z = Math.PI / 2; dev.position.set(0, 0, 8); inner.position.set(-13.22, -26, 0);
+fly.add(tilt); tilt.add(dev); dev.add(inner); scene.add(fly);
+for (const p of meta.parts) {
+  if (p.name === "hat" || p.name === "pico") continue;
+  const k = KEYS.includes(p.name);
+  inner.add(new THREE.Mesh(geo(p), new THREE.MeshPhysicalMaterial({
+    color: COLORS[p.name] ?? 0xcccccc, roughness: p.name === "base" ? 0.5 : k ? 0.8 : 0.35, specularIntensity: k ? 0.3 : 1,
+    clearcoat: k ? 0 : 0.6, clearcoatRoughness: 0.15, envMapIntensity: k ? 0.5 : 1.0 })));
+}
+const core = new THREE.Mesh(new THREE.BoxGeometry(28, 54, 14), new THREE.MeshStandardMaterial({ color: 0x0a0a0b, roughness: 1 }));
+core.position.set(13.2, 26, -9); inner.add(core);
+const G = meta.glass;
+const glass = new THREE.Mesh(new THREE.PlaneGeometry(G.w, G.h), new THREE.MeshPhysicalMaterial({ color: 0x08080a, roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.03 }));
+glass.position.set(G.cx, G.cy, G.z + 0.02); inner.add(glass);
+const screenMat = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false });
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(ACTIVE, ACTIVE), screenMat);
+screen.position.set(G.cx, G.cy, G.z + 0.05); screen.rotation.z = -Math.PI / 2; inner.add(screen);
+const loader = new THREE.TextureLoader();
+const pics = await Promise.all(["launcher", "wallet-home", "frog", "launcher"].map(n => loader.loadAsync(`/wd/screens/${n}.png`)));
+for (const t of pics) { t.colorSpace = THREE.SRGBColorSpace; t.magFilter = THREE.NearestFilter; t.anisotropy = 8; }
+
+// post: bloom on HDR values only, then HLG encode into a float target we read back
+const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType, samples: 4 }));
+composer.renderToScreen = false;
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(W, H), 0.35, 0.35, 1.6);
+composer.addPass(bloom);
+const out = new THREE.WebGLRenderTarget(W, H, { type: THREE.FloatType });
+const hlg = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
+  uniforms: { src: { value: null }, flash: { value: 0 }, fade: { value: 1 }, prev: { value: 0 } },
+  vertexShader: `varying vec2 v; void main(){ v=uv; gl_Position=vec4(position.xy,0.,1.); }`,
+  fragmentShader: `varying vec2 v; uniform sampler2D src; uniform float flash, fade, prev;
+    // scene-linear BT.709 -> BT.2020, SDR white (1.0) -> HLG 0.75, peak ~3.8x SDR white
+    const mat3 M = mat3(0.6274,0.0691,0.0164, 0.3293,0.9195,0.0880, 0.0433,0.0114,0.8956);
+    float oetf(float e){ e=max(e,0.); return e<=1./12. ? sqrt(3.*e) : 0.17883277*log(12.*e-0.28466892)+0.55991073; }
+    float knee(float e){ return e<0.8 ? e : 0.8+0.2*(1.-exp(-(e-0.8)/0.2)); }
+    void main(){ vec3 c=texture2D(src,v).rgb + vec3(flash);
+      if (prev > 0.5) { vec3 d=clamp(c*fade*0.5,0.,1.); gl_FragColor=vec4(pow(d,vec3(1./2.2)),1.); return; }  // SDR look at half exposure
+      c = M*c*0.265*fade;
+      gl_FragColor=vec4(oetf(knee(c.r)),oetf(knee(c.g)),oetf(knee(c.b)),1.); }`,
+}));
+const oscene = new THREE.Scene(); oscene.add(hlg); const ocam = new THREE.Camera();
+
+// ---- the move ---------------------------------------------------------------------------------
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const LAND = 2.4, LUNGE = 5.3, HIT = 6.15, CAMZ = 230;
+function pose(t) {
+  camera.position.set(0, 0, CAMZ); camera.lookAt(0, 0, 0);
+  let z, x, y, rx, ry, rz, flash = 0, scr = 1.2, speed;
+  if (t < LAND) {
+    const p = clamp(t / LAND), e = Math.pow(p, 2.6);            // slow far away, then rushes in
+    z = -4000 + e * (4000 + 60);                                 // overshoots 60 toward you
+    const arc = 1 - e;
+    x = -260 * arc * Math.sin(p * 2.2); y = 180 * arc * Math.cos(p * 1.6);
+    const spin = Math.pow(1 - p, 1.6);
+    rx = spin * Math.PI * 5; ry = spin * Math.PI * 3; rz = spin * Math.PI * 1.5;
+    speed = 0.3 + 3.2 * p * p * p; scr = 0.8;
+  } else {
+    const w = t - LAND;
+    z = 60 * Math.exp(-7 * w) * Math.cos(11 * w);               // spring back to rest
+    x = 0; y = 0;
+    rx = -0.05 + 0.06 * Math.exp(-5 * w) * Math.sin(13 * w) + 0.03 * Math.sin(t * 0.9);
+    ry = 0.10 * Math.sin(t * 0.7) * (1 - Math.exp(-2 * w));
+    rz = 0.06 * Math.exp(-6 * w) * Math.sin(15 * w);
+    flash = 2.4 * Math.exp(-w * 9);                              // the slam: a blink past white
+    scr = 1.2 + 1.6 * clamp(w / 0.6);                             // screen powers up past SDR white
+    speed = 0.3 * Math.exp(-3 * w) + 0.05;
+    if (t > LUNGE) {                                             // then it comes for you
+      const u = clamp((t - LUNGE) / (HIT - LUNGE)), e = u * u * u;
+      z += e * 205; ry *= 1 - e; rx *= 1 - e;
+      scr += 1.5 * e; speed += 2.5 * e;
+      x = -e * 7; y = e * 4;
+    }
+    if (t > HIT) flash = 6 * Math.exp(-(t - HIT) * 2.6);       // full-frame white-out
+    // camera shake after the slam
+    const s = 1.6 * Math.exp(-w * 8);
+    camera.position.x += s * Math.sin(w * 63); camera.position.y += s * Math.cos(w * 51);
+  }
+  fly.position.set(x, y, z); tilt.rotation.set(rx, ry, rz);
+  screenMat.color.setScalar(scr);
+  screenMat.map = pics[t < LAND ? 0 : Math.min(pics.length - 1, Math.floor((t - LAND) / 0.95))];
+  return { flash, speed };
+}
+let starZ = 0;
+function frame(i) {
+  const t = i / FPS;
+  const { flash, speed } = pose(t);
+  starZ += speed * 60;
+  for (let k = 0; k < NS; k++) { const s = sseed[k]; sp[k * 3] = s[0]; sp[k * 3 + 1] = s[1]; sp[k * 3 + 2] = ((s[2] + starZ) % 12000 + 12000) % 12000 - 12000 + 200; }
+  sg.attributes.position.needsUpdate = true;
+  smat.size = 1.5 + speed * 1.6;
+  bg.material.uniforms.t.value = t;
+  composer.render();
+  hlg.material.uniforms.src.value = composer.readBuffer.texture;
+  hlg.material.uniforms.flash.value = flash;
+  hlg.material.uniforms.fade.value = clamp(t / 0.25) * clamp((SECS - t) / 0.35);
+  renderer.setRenderTarget(out); renderer.render(oscene, ocam); renderer.setRenderTarget(null);
+  if (ONLY !== null) { hlg.material.uniforms.prev.value = 1; renderer.render(oscene, ocam); hlg.material.uniforms.prev.value = 0; }
+}
+const buf = new Float32Array(W * H * 4), px = new Uint16Array(W * H * 3);
+function grab() {
+  renderer.readRenderTargetPixels(out, 0, 0, W, H, buf);
+  for (let yy = 0; yy < H; yy++) {                    // GL rows are bottom-up
+    const src = (H - 1 - yy) * W * 4, dst = yy * W * 3;
+    for (let x = 0; x < W; x++) { const s = src + x * 4, d = dst + x * 3;
+      px[d] = buf[s] * 65535; px[d + 1] = buf[s + 1] * 65535; px[d + 2] = buf[s + 2] * 65535; }
+  }
+  return px;
+}
+window.renderAll = async () => {
+  const N = FPS * SECS;
+  for (let i = 0; i < N; i++) {
+    frame(i);
+    await fetch("/frame", { method: "POST", body: grab() });
+    if (i % 30 === 0) console.log("frame", i, "/", N);
+  }
+  await fetch("/done", { method: "POST" });
+  return N;
+};
+window.renderOne = (i) => { frame(i); return true; };
+window.ready = true;
+if (ONLY !== null) { for (let i = 0; i <= +ONLY; i++) pose(i / FPS); frame(+ONLY); }
+</script></body></html>
