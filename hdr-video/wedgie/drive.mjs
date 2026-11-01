@@ -9,13 +9,13 @@ p.on("console", (m) => console.log("page:", m.text()));
 p.on("pageerror", (e) => console.log("ERR:", e.message));
 if (mode === "preview") {
   for (const f of arg.split(",")) {
-    await p.goto(`http://127.0.0.1:8931/?frame=${f}`); await p.waitForFunction("window.ready", null, { timeout: 60000 });
+    await p.goto(`http://127.0.0.1:8931/${process.env.PAGE || ""}?frame=${f}`); await p.waitForFunction("window.ready", null, { timeout: 60000 });
     await p.waitForTimeout(300);
     await p.screenshot({ path: `${process.env.PREV || "."}/prev_${f}.png` });
     console.log("preview", f, await p.title());
   }
 } else {
-  await p.goto("http://127.0.0.1:8931/"); await p.waitForFunction("window.ready", null, { timeout: 60000 });
+  await p.goto(`http://127.0.0.1:8931/${process.env.PAGE || ""}`); await p.waitForFunction("window.ready", null, { timeout: 60000 });
   console.log(await p.title());
   const t0 = Date.now(); const n = await p.evaluate(() => window.renderAll());
   console.log("rendered", n, "frames in", (Date.now() - t0) / 1000, "s");

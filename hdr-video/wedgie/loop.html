@@ -1,0 +1,194 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>wedgie hdr loop</title>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>html,body{margin:0;background:#000}</style></head>
+<body><script type="module">
+// v2: just the wedgie. Undies on screen -> whips at your face -> rips back with a flip -> whips in
+// again showing a Safe tx, presses sign -> rips back flipping to the undies. Seamless loop: every
+// motion is a function of (t mod LOOP). Float HDR -> HLG/BT.2020 in a shader -> POST rgb48 to /frame.
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+const q = new URLSearchParams(location.search);
+const W = +(q.get("w") || 1920), H = +(q.get("h") || 1080), FPS = +(q.get("fps") || 60), LOOP = +(q.get("secs") || 6);
+const ONLY = q.get("frame");
+
+const COLORS = { lid: 0xf3f2ee, base: 0x1c1c1e, A: 0x278c3c, B: 0x6c6d71, X: 0x6c6d71, Y: 0xb3302a, joystick: 0x75767a };
+const KEYS = ["A", "B", "X", "Y"], ACTIVE = 23.4;
+
+const font = new FontFace("Silkscreen", "url(/node_modules/@fontsource/silkscreen/files/silkscreen-latin-400-normal.woff2)");
+document.fonts.add(await font.load());
+const [meta, bin] = await Promise.all([fetch("/wd/3d/wedgie.json").then(r => r.json()), fetch("/wd/3d/wedgie.bin").then(r => r.arrayBuffer())]);
+function geo(p) {
+  const qv = new Uint16Array(bin, p.pos, p.verts * 3), pos = new Float32Array(p.verts * 3);
+  for (let i = 0; i < pos.length; i++) { const a = i % 3; pos[i] = p.lo[a] + (qv[i] / 65535) * (p.hi[a] - p.lo[a]); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setIndex(new THREE.BufferAttribute(p.wide ? new Uint32Array(bin, p.idx, p.tris * 3) : new Uint16Array(bin, p.idx, p.tris * 3), 1));
+  return toCreasedNormals(g, (35 * Math.PI) / 180);
+}
+
+const renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.toneMapping = THREE.NoToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.45;
+const CAMZ = 230;
+const camera = new THREE.PerspectiveCamera(22, W / H, 5, 5000);
+
+// plain backdrop: dark, a soft pool of light behind the wedgie that swells when it's close
+const bg = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial({
+  depthWrite: false, uniforms: { near: { value: 0 } },
+  vertexShader: `varying vec2 v; void main(){ v=uv; gl_Position=vec4(position.xy*2.,0.9999,1.); }`,
+  fragmentShader: `varying vec2 v; uniform float near;
+    void main(){ vec2 p=(v-.5)*vec2(${(W / H).toFixed(4)},1.); float r=length(p);
+      vec3 c=mix(vec3(.035,.04,.05),vec3(.006,.006,.008),smoothstep(0.,.95,r));
+      c+=vec3(.06,.07,.08)*exp(-r*r*5.)*(1.+near*1.5);
+      gl_FragColor=vec4(c,1.); }`,
+}));
+bg.frustumCulled = false; bg.renderOrder = -1; scene.add(bg);
+
+const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(-35, 45, 160); scene.add(key);
+const rim = new THREE.DirectionalLight(0xb8d4ff, 2.4); rim.position.set(120, 80, -60); scene.add(rim);
+const rim2 = new THREE.DirectionalLight(0xffc9a8, 1.2); rim2.position.set(-140, -60, -20); scene.add(rim2);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x404050, 0.35));
+
+const fly = new THREE.Group(), tilt = new THREE.Group(), dev = new THREE.Group(), inner = new THREE.Group();
+dev.rotation.z = Math.PI / 2; inner.position.set(-13.22, -26, -8);   // centred on its own middle so flips spin in place
+fly.add(tilt); tilt.add(dev); dev.add(inner); scene.add(fly);
+const meshes = {};
+for (const p of meta.parts) {
+  if (p.name === "hat" || p.name === "pico") continue;
+  const k = KEYS.includes(p.name);
+  const m = new THREE.Mesh(geo(p), new THREE.MeshPhysicalMaterial({
+    color: COLORS[p.name] ?? 0xcccccc, roughness: p.name === "base" ? 0.5 : k ? 0.8 : 0.35, specularIntensity: k ? 0.3 : 1,
+    clearcoat: k ? 0 : 0.6, clearcoatRoughness: 0.15, envMapIntensity: k ? 0.5 : 1.0 }));
+  inner.add(m); meshes[p.name] = m;
+}
+const core = new THREE.Mesh(new THREE.BoxGeometry(28, 54, 14), new THREE.MeshStandardMaterial({ color: 0x0a0a0b, roughness: 1 }));
+core.position.set(13.2, 26, -9); inner.add(core);
+const G = meta.glass;
+const glass = new THREE.Mesh(new THREE.PlaneGeometry(G.w, G.h), new THREE.MeshPhysicalMaterial({ color: 0x08080a, roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.03 }));
+glass.position.set(G.cx, G.cy, G.z + 0.02); inner.add(glass);
+const screenMat = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false });
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(ACTIVE, ACTIVE), screenMat);
+screen.position.set(G.cx, G.cy, G.z + 0.05); screen.rotation.z = -Math.PI / 2; inner.add(screen);
+
+const loader = new THREE.TextureLoader();
+const tex = (t) => { t.colorSpace = THREE.SRGBColorSpace; t.magFilter = THREE.NearestFilter; t.anisotropy = 8; return t; };
+const undies = tex(await loader.loadAsync("/wd/screens/undies.png"));
+const sign = tex(await loader.loadAsync("/wd/screens/safe-sign.png"));
+// "signed": drawn in the wedgie's style (waistband stripes, Silkscreen), same tx as safe-sign.png
+const sc = document.createElement("canvas"); sc.width = sc.height = 240;
+{ const g = sc.getContext("2d");
+  g.fillStyle = "#ffffff"; g.fillRect(0, 0, 240, 240);
+  [["#27a844", 0], ["#9a9da1", 7], ["#d8352b", 14]].forEach(([c, y]) => { g.fillStyle = c; g.fillRect(0, y, 240, 5); });
+  g.fillStyle = "#27a844"; g.beginPath(); g.arc(120, 92, 46, 0, Math.PI * 2); g.fill();
+  g.strokeStyle = "#ffffff"; g.lineWidth = 13; g.lineCap = "square"; g.beginPath(); g.moveTo(96, 93); g.lineTo(113, 110); g.lineTo(145, 76); g.stroke();
+  g.fillStyle = "#111"; g.textAlign = "center"; g.font = "36px Silkscreen"; g.fillText("signed", 120, 178);
+  g.font = "18px Silkscreen"; g.fillStyle = "#555"; g.fillText("250 USDC", 120, 208); }
+const signed = tex(new THREE.CanvasTexture(sc));
+
+const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType, samples: 4 }));
+composer.renderToScreen = false;
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.3, 0.3, 2.4));
+const out = new THREE.WebGLRenderTarget(W, H, { type: THREE.FloatType });
+const hlg = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
+  uniforms: { src: { value: null }, flash: { value: 0 }, prev: { value: 0 } },
+  vertexShader: `varying vec2 v; void main(){ v=uv; gl_Position=vec4(position.xy,0.,1.); }`,
+  fragmentShader: `varying vec2 v; uniform sampler2D src; uniform float flash, prev;
+    const mat3 M = mat3(0.6274,0.0691,0.0164, 0.3293,0.9195,0.0880, 0.0433,0.0114,0.8956);
+    float oetf(float e){ e=max(e,0.); return e<=1./12. ? sqrt(3.*e) : 0.17883277*log(12.*e-0.28466892)+0.55991073; }
+    float knee(float e){ return e<0.8 ? e : 0.8+0.2*(1.-exp(-(e-0.8)/0.2)); }
+    void main(){ vec3 c=texture2D(src,v).rgb + vec3(flash);
+      if (prev > 0.5) { c*=0.8; gl_FragColor=vec4(pow(c/(1.+c),vec3(1./2.2))*1.25,1.); return; }
+      c = M*c*0.265;
+      gl_FragColor=vec4(oetf(knee(c.r)),oetf(knee(c.g)),oetf(knee(c.b)),1.); }`,
+}));
+const oscene = new THREE.Scene(); oscene.add(hlg); const ocam = new THREE.Camera();
+
+// ---- the move: two 3 s halves; each = whip in, hold in your face, rip back flipping, hang ----------
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const smooth = (x) => x * x * (3 - 2 * x);
+const BACK = -70, NEAR = 138;
+const IN = 0.30, HOLD = 1.55, OUT = 2.05;      // within each 3 s half
+function whipIn(u) {                            // fast start, overshoots past NEAR, springs back
+  const x = clamp(u / IN), e = 1 - Math.pow(1 - x, 4);
+  return BACK + (NEAR + 14 - BACK) * e;
+}
+function pose(t) {
+  t = ((t % LOOP) + LOOP) % LOOP;
+  const half = t < LOOP / 2 ? 0 : 1, u = t - half * LOOP / 2;
+  let z, rx = 0, ry = 0, rz = 0, x = 0, y = 0, scr = 1.4, flash = 0, press = 0, shake = 0, near = 0;
+  let pic = half === 0 ? undies : sign;
+  if (u < IN) {
+    z = whipIn(u);
+    const s = Math.sin(Math.PI * clamp(u / IN));   // swings out and back to face you as it comes (0 at both ends: no seam)
+    ry = 0.5 * s * (half ? -1 : 1); rz = 0.25 * s * (half ? 1 : -1);
+  } else if (u < HOLD) {
+    const w = u - IN;
+    z = NEAR + 14 * Math.exp(-9 * w) * Math.cos(16 * w);       // the stop: overshoot, spring
+    shake = 2.2 * Math.exp(-10 * w);
+    rx = 0.03 * Math.sin(w * 3.1); ry = 0.05 * Math.sin(w * 2.3 + half);
+    if (half === 1) {                              // press sign
+      const pt = 0.55;
+      press = w > pt && w < pt + 0.22 ? 1 : 0;
+      if (w > pt + 0.08) pic = signed;
+      flash = w > pt + 0.08 ? 0.9 * Math.exp(-(w - pt - 0.08) * 7) : 0;
+    }
+    scr = 2.2 + (half === 1 && w > 0.63 ? 1.4 * Math.exp(-(w - 0.63) * 2.5) : 0);
+  } else if (u < OUT) {
+    const r = clamp((u - HOLD) / (OUT - HOLD)), e = r < 0.5 ? 4 * r * r * r : 1 - Math.pow(-2 * r + 2, 3) / 2;
+    z = NEAR + (BACK - NEAR) * e;
+    rx = -e * Math.PI * 2;                         // full backflip on the way out
+    rz = Math.sin(e * Math.PI) * 0.3 * (half ? -1 : 1);
+    if (half === 1) pic = e < 0.5 ? signed : undies; else pic = e < 0.5 ? undies : sign;   // swap while the back faces you
+    scr = 2.2 - 0.8 * e;
+  } else {
+    const w = u - OUT, n = LOOP / 2 - OUT;
+    z = BACK + 6 * Math.sin((w / n) * Math.PI);    // hang, a small breath, then the next whip
+    rx = -0.06 * Math.sin((w / n) * Math.PI); ry = 0.12 * Math.sin((w / n) * Math.PI) * (half ? 1 : -1);
+    pic = half === 0 ? sign : undies;
+    scr = 1.4;
+  }
+  near = clamp((z - BACK) / (NEAR - BACK));
+  camera.position.set(shake * Math.sin(t * 71), shake * Math.cos(t * 59), CAMZ); camera.lookAt(0, 0, 0);
+  fly.position.set(x, y, z); tilt.rotation.set(rx, ry, rz);
+  meshes.A.position.z = press ? -1.8 : 0;
+  screenMat.map = pic; screenMat.color.setScalar(scr);
+  bg.material.uniforms.near.value = near;
+  return { flash };
+}
+function frame(i) {
+  const { flash } = pose(i / FPS);
+  composer.render();
+  hlg.material.uniforms.src.value = composer.readBuffer.texture;
+  hlg.material.uniforms.flash.value = flash;
+  renderer.setRenderTarget(out); renderer.render(oscene, ocam); renderer.setRenderTarget(null);
+  if (ONLY !== null) { hlg.material.uniforms.prev.value = 1; renderer.render(oscene, ocam); hlg.material.uniforms.prev.value = 0; }
+}
+const buf = new Float32Array(W * H * 4), px = new Uint16Array(W * H * 3);
+function grab() {
+  renderer.readRenderTargetPixels(out, 0, 0, W, H, buf);
+  for (let yy = 0; yy < H; yy++) { const src = (H - 1 - yy) * W * 4, dst = yy * W * 3;
+    for (let xx = 0; xx < W; xx++) { const s = src + xx * 4, d = dst + xx * 3;
+      px[d] = buf[s] * 65535; px[d + 1] = buf[s + 1] * 65535; px[d + 2] = buf[s + 2] * 65535; } }
+  return px;
+}
+window.renderAll = async () => {
+  const N = FPS * LOOP;
+  for (let i = 0; i < N; i++) { frame(i); await fetch("/frame", { method: "POST", body: grab() }); if (i % 60 === 0) console.log("frame", i, "/", N); }
+  await fetch("/done", { method: "POST" });
+  return N;
+};
+window.ready = true;
+if (ONLY !== null) frame(+ONLY);
+</script></body></html>
