@@ -5,7 +5,7 @@ The viral posts are plain 8-bit H.264 tagged HLG + BT.2020; X keeps the tags,
 so anything above SDR white (HLG signal 0.75) shows brighter than the rest of the
 timeline on HDR phones.
 
-`wedgie/canyon.html` (v3, current): v2 down a neon canyon, fireworks, sparks. `PAGE=canyon.html`. Screen always near HDR peak; copy `wedgie/undies-dark.png` to `<wedgie-dev>/public/screens/undies.png` first.
+`wedgie/canyon.html` (v3, current): v2 down a neon canyon, fireworks, sparks. `PAGE=canyon.html`. Screen always near HDR peak; copy `wedgie/undies-screen.png` to `<wedgie-dev>/public/screens/undies.png` first.
 `wedgie/loop.html` (v2): 6 s seamless loop, undies → whip at your face → flip back → Safe tx, sign → flip back. Run drive.mjs with `PAGE=loop.html`.
 `wedgie/index.html` (v1) renders the real wedgie case (geometry from wedgie-dev `public/3d/`)
 flying at the camera in three.js, float HDR, encoded to HLG in a shader.
