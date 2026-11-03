@@ -4,7 +4,7 @@ import { execSync } from "node:child_process";
 const [mode = "all", arg = ""] = process.argv.slice(2);
 const exe = execSync("ls -d ~/Library/Caches/ms-playwright/chromium-*/chrome-mac*/*.app/Contents/MacOS/* | tail -1", { shell: "/bin/zsh" }).toString().trim();
 const b = await chromium.launch({ executablePath: exe, headless: true, args: ["--use-angle=metal", "--enable-gpu", "--ignore-gpu-blocklist", "--enable-unsafe-swiftshader"] });
-const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
+const p = await b.newPage({ viewport: { width: +(process.env.VW || 1920), height: +(process.env.VH || 1080) } });
 p.on("console", (m) => console.log("page:", m.text()));
 p.on("pageerror", (e) => console.log("ERR:", e.message));
 if (mode === "preview") {
