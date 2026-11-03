@@ -20,3 +20,8 @@ node wedgie/drive.mjs all                                 # 420 frames -> OUT/ma
 ```
 
 Scene linear 1.0 = SDR white = HLG 0.75; soft knee to peak at ~3.8x.
+
+**X gotcha:** the MP4 needs a `colr` (nclx) box, not just tags in the H.264 stream.
+Without it X re-encodes the video as plain SDR and it looks dull (Macs still play it as HDR from the
+stream tags, which hides the bug). `encode.sh` writes it with `-movflags +write_colr`.
+Check: `python3 -c "d=open('f.mp4','rb').read();print(d[d.find(b'colr'):][:15])"` → `colrnclx\0\t\0\x12\0\t`.
