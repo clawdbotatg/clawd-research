@@ -15,7 +15,7 @@ if (mode === "preview") {
     console.log("preview", f, await p.title());
   }
 } else {
-  await p.goto(`http://127.0.0.1:8931/${process.env.PAGE || ""}`); await p.waitForFunction("window.ready", null, { timeout: 60000 });
+  await p.goto(`http://127.0.0.1:8931/${process.env.PAGE || ""}${process.env.QS || ""}`); await p.waitForFunction("window.ready", null, { timeout: 60000 });
   console.log(await p.title());
   const t0 = Date.now(); const n = await p.evaluate(() => window.renderAll());
   console.log("rendered", n, "frames in", (Date.now() - t0) / 1000, "s");

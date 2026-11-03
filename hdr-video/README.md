@@ -25,3 +25,9 @@ Scene linear 1.0 = SDR white = HLG 0.75; soft knee to peak at ~3.8x.
 Without it X re-encodes the video as plain SDR and it looks dull (Macs still play it as HDR from the
 stream tags, which hides the bug). `encode.sh` writes it with `-movflags +write_colr`.
 Check: `python3 -c "d=open('f.mp4','rb').read();print(d[d.find(b'colr'):][:15])"` → `colrnclx\0\t\0\x12\0\t`.
+
+**Matching the viral file exactly** (1920x1080, 60 fps, silent AAC track, colr box): render `PAGE=best.html QS="?w=1920&h=1080"`
+(serve.py `1920 1080 60`), then add audio without losing the tags:
+`ffmpeg -i hdr_h264.mp4 -f lavfi -i anullsrc=r=48000:cl=stereo -map 0:v -map 1:a -c:v copy -bsf:v h264_metadata=colour_primaries=9:transfer_characteristics=18:matrix_coefficients=9 -color_primaries bt2020 -color_trc arib-std-b67 -colorspace bt2020nc -color_range tv -c:a aac -shortest -movflags +write_colr+faststart out.mp4`
+(a plain `-c:v copy` remux writes colr as 2/2/9 = unspecified). As of 2026-11-03 X still stripped HDR on
+our posts; it looks gated per account.
