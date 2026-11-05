@@ -31,3 +31,9 @@ Check: `python3 -c "d=open('f.mp4','rb').read();print(d[d.find(b'colr'):][:15])"
 `ffmpeg -i hdr_h264.mp4 -f lavfi -i anullsrc=r=48000:cl=stereo -map 0:v -map 1:a -c:v copy -bsf:v h264_metadata=colour_primaries=9:transfer_characteristics=18:matrix_coefficients=9 -color_primaries bt2020 -color_trc arib-std-b67 -colorspace bt2020nc -color_range tv -c:a aac -shortest -movflags +write_colr+faststart out.mp4`
 (a plain `-c:v copy` remux writes colr as 2/2/9 = unspecified). As of 2026-11-03 X still stripped HDR on
 our posts; it looks gated per account.
+
+**2026-11-04 scan of X:** searched recent native videos, pulled X's copies. HDR kept on small accounts
+(13, 101, 946 followers), so it is not account-gated. Every kept one is 1920x1080 or 1080x1920; all our
+failed posts were 1080x1080. Recipe from github.com/ericqian77/x-hdr-video-lab (same as ours: H.264
+High 8-bit HLG BT.2020, tags in stream + container, upload from desktop browser; iPhone album upload
+drops HDR). Brightness is not the gate (a kept post had median luma 0.24). Next test: 16:9 file.
