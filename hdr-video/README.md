@@ -32,8 +32,10 @@ Check: `python3 -c "d=open('f.mp4','rb').read();print(d[d.find(b'colr'):][:15])"
 (a plain `-c:v copy` remux writes colr as 2/2/9 = unspecified). As of 2026-11-03 X still stripped HDR on
 our posts; it looks gated per account.
 
-**2026-11-04 scan of X:** searched recent native videos, pulled X's copies. HDR kept on small accounts
-(13, 101, 946 followers), so it is not account-gated. Every kept one is 1920x1080 or 1080x1920; all our
-failed posts were 1080x1080. Recipe from github.com/ericqian77/x-hdr-video-lab (same as ours: H.264
-High 8-bit HLG BT.2020, tags in stream + container, upload from desktop browser; iPhone album upload
-drops HDR). Brightness is not the gate (a kept post had median luma 0.24). Next test: 16:9 file.
+**ROOT CAUSE (2026-11-04):** X runs two video pipelines, and every MP4 it serves names the one that made it.
+`X-Qaptuur` (new) keeps H.264 8-bit HLG as HDR. `Twitter-vork` (old) drops every color tag, whatever you
+upload. X moves accounts over one by one; follower count, Premium, verification and region don't predict it.
+All our posts (@austingriffith, @wedgiedev) came back `Twitter-vork`; @clawdbotatg is on it too.
+Check any account without posting: `zsh tools/check_account.sh <user>` from
+github.com/YIAN6557/x-hdr-video (130+ files from 17 accounts analyzed there). Our file format was already
+right (verified VUI + colr). The 16:9 guess was wrong.
