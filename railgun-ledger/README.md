@@ -59,3 +59,5 @@ Yes. Signing is easy; key storage is the weak point.
 5. Clear signing: rebuild commitments, decode `0zk…` addresses, encrypt notes on the wedgie.
 
 Rough effort: blind signer a few days, clear signing another week or two.
+
+See WEDGIE.md for the deep dive on how a wedgie would do it.
