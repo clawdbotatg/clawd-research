@@ -1,0 +1,8 @@
+{
+  "name": "light-clients-spike",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@corpus-core/colibri-stateless": "3.0.3"
+  }
+}
