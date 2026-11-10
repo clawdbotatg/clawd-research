@@ -1,0 +1,192 @@
+<title>Pico Hat Catalog</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one sticky filter bar, then a dense card grid that fills the width. */
+:root {
+  --bg: #f3f6f4;
+  --surface: #ffffff;
+  --fg: #14201a;
+  --muted: #5b6b62;
+  --line: #d5ddd8;
+  --accent: #0f7a4d;      /* Pico solder-mask green */
+  --accent-fg: #ffffff;
+  --pad: #c9992e;         /* gold castellated pad */
+  --warn: #a4521b;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1613; --surface: #18221d; --fg: #e6eee9; --muted: #94a69b;
+    --line: #2b3a32; --accent: #3fbf85; --accent-fg: #06150d; --pad: #dcae45; --warn: #e39a63;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1613; --surface: #18221d; --fg: #e6eee9; --muted: #94a69b;
+  --line: #2b3a32; --accent: #3fbf85; --accent-fg: #06150d; --pad: #dcae45; --warn: #e39a63;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.45; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 1400px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header .wrap { padding-block: 28px 14px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 5vw, 44px); line-height: 1.05; margin: 0 0 8px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 65ch; margin: 0; }
+/* a row of 20 gold pads, like one edge of a Pico */
+.pins { display: flex; gap: 5px; margin: 0 0 16px; }
+.pins i { width: 9px; height: 9px; border-radius: 50%; background: var(--pad); flex: none; }
+.pins i:first-child { border-radius: 2px; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.bar .wrap { padding-block: 10px; display: flex; flex-direction: column; gap: 10px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.controls input[type=search], .controls select {
+  font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 6px; padding: 8px 10px; min-width: 0;
+}
+.controls input[type=search] { flex: 1 1 220px; }
+.controls select { flex: 0 1 200px; }
+.controls label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 14px; }
+.count { font-family: var(--font-data); font-size: 13px; color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; }
+.chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: thin; }
+.chip {
+  font: inherit; font-size: 13px; white-space: nowrap; cursor: pointer; flex: none;
+  color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px;
+}
+.chip span { font-family: var(--font-data); font-size: 11px; color: var(--muted); margin-left: 5px; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.chip[aria-pressed="true"] span { color: var(--accent-fg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main .wrap { padding-block: 18px 48px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.card .meta { display: flex; justify-content: space-between; gap: 8px; font-family: var(--font-data); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.card h2 { font-family: var(--font-display); font-weight: 500; font-size: 17px; line-height: 1.2; margin: 0; overflow-wrap: anywhere; }
+.card h2 a { color: var(--fg); text-decoration: none; }
+.card h2 a:hover { color: var(--accent); text-decoration: underline; }
+.card p { margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+.card .foot { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: auto; padding-top: 4px; font-size: 13px; }
+.price { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.gone { color: var(--warn); font-family: var(--font-data); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+.buy { color: var(--accent); font-weight: 600; text-decoration: none; white-space: nowrap; }
+.buy:hover { text-decoration: underline; }
+.empty { color: var(--muted); padding: 40px 0; text-align: center; }
+footer .wrap { padding-block: 0 40px; color: var(--muted); font-size: 13px; }
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="pins" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <h1>Pico Hat Catalog</h1>
+    <p class="lede"><span id="total"></span> boards a Raspberry Pi Pico plugs straight into, from <span id="makers"></span> makers. Each one says what it does and links to where to get it.</p>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="controls">
+      <input type="search" id="q" placeholder="Search name, maker, or what it does" aria-label="Search">
+      <select id="maker" aria-label="Maker"></select>
+      <label><input type="checkbox" id="gone"> Show discontinued</label>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Category"></div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>Nothing matches. Clear the search or pick another category.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">Compiled __DATE__ from vendor sites. Prices are as listed that day and will drift. Boards with their own RP2040 chip are left out.</div>
+</footer>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+(function () {
+  var all = JSON.parse(document.getElementById('data').textContent);
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { q: '', cat: '', maker: '', gone: false };
+  try {
+    var saved = JSON.parse(localStorage.getItem('picohats') || '{}');
+    if (saved && typeof saved === 'object') { state.cat = saved.cat || ''; state.gone = !!saved.gone; }
+  } catch (e) {}
+
+  var makers = {}, cats = {};
+  all.forEach(function (h) { makers[h.maker] = (makers[h.maker] || 0) + 1; cats[h.category] = (cats[h.category] || 0) + 1; });
+  if (!cats[state.cat]) state.cat = '';
+  $('total').textContent = all.length;
+  $('makers').textContent = Object.keys(makers).length;
+
+  var sel = $('maker');
+  var opt = document.createElement('option'); opt.value = ''; opt.textContent = 'All makers'; sel.appendChild(opt);
+  Object.keys(makers).sort(function (a, b) { return makers[b] - makers[a] || a.localeCompare(b); }).forEach(function (m) {
+    var o = document.createElement('option'); o.value = m; o.textContent = m + ' (' + makers[m] + ')'; sel.appendChild(o);
+  });
+
+  var chips = $('chips');
+  function chip(label, value, n) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.dataset.cat = value;
+    b.textContent = label; var s = document.createElement('span'); s.textContent = n; b.appendChild(s);
+    b.addEventListener('click', function () { state.cat = value; draw(); });
+    chips.appendChild(b);
+  }
+  chip('All', '', all.length);
+  Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; }).forEach(function (c) { chip(c, c, cats[c]); });
+
+  function card(h) {
+    var el = document.createElement('article'); el.className = 'card';
+    var meta = document.createElement('div'); meta.className = 'meta';
+    var m = document.createElement('span'); m.textContent = h.maker;
+    var c = document.createElement('span'); c.textContent = h.category;
+    meta.appendChild(m); meta.appendChild(c);
+    var h2 = document.createElement('h2');
+    var ok = /^https?:\/\//.test(h.url || '');
+    if (ok) { var a = document.createElement('a'); a.href = h.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = h.name; h2.appendChild(a); }
+    else h2.textContent = h.name;
+    var p = document.createElement('p'); p.textContent = h.what;
+    var foot = document.createElement('div'); foot.className = 'foot';
+    var left = document.createElement('span');
+    if (h.status === 'discontinued') { left.className = 'gone'; left.textContent = 'Discontinued'; }
+    else { left.className = 'price'; left.textContent = h.price || ''; }
+    foot.appendChild(left);
+    if (ok) { var b = document.createElement('a'); b.className = 'buy'; b.href = h.url; b.target = '_blank'; b.rel = 'noopener'; b.textContent = h.price === 'open source' ? 'Project page' : 'Get it'; foot.appendChild(b); }
+    el.appendChild(meta); el.appendChild(h2); el.appendChild(p); el.appendChild(foot);
+    return el;
+  }
+
+  function draw() {
+    var q = state.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    var rows = all.filter(function (h) {
+      if (state.cat && h.category !== state.cat) return false;
+      if (state.maker && h.maker !== state.maker) return false;
+      if (!state.gone && h.status === 'discontinued') return false;
+      if (!q.length) return true;
+      var text = (h.name + ' ' + h.maker + ' ' + h.what + ' ' + h.category).toLowerCase();
+      return q.every(function (w) { return text.indexOf(w) >= 0; });
+    });
+    var grid = $('grid'); var frag = document.createDocumentFragment();
+    rows.forEach(function (h) { frag.appendChild(card(h)); });
+    grid.replaceChildren(frag);
+    $('empty').hidden = rows.length > 0;
+    $('count').textContent = rows.length + ' shown';
+    Array.prototype.forEach.call(chips.children, function (b) { b.setAttribute('aria-pressed', b.dataset.cat === state.cat ? 'true' : 'false'); });
+    $('gone').checked = state.gone;
+    try { localStorage.setItem('picohats', JSON.stringify({ cat: state.cat, gone: state.gone })); } catch (e) {}
+  }
+
+  $('q').addEventListener('input', function (e) { state.q = e.target.value; draw(); });
+  sel.addEventListener('change', function (e) { state.maker = e.target.value; draw(); });
+  $('gone').addEventListener('change', function (e) { state.gone = e.target.checked; draw(); });
+  draw();
+})();
+</script>
