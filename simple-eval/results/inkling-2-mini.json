@@ -1,0 +1,1010 @@
+{
+ "name": "inkling-2-mini",
+ "target": "openai:http://localhost:11500/v1/chat/completions:inkling-2-mini",
+ "timestamp": "2026-11-20 20:44:20",
+ "overall": 98.3,
+ "ci95": [
+  95.0,
+  100.0
+ ],
+ "categories": {
+  "code": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "context": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "extract": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "instructions": {
+   "passed": 9,
+   "total": 10,
+   "pct": 90.0
+  },
+  "precision": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  },
+  "reasoning": {
+   "passed": 10,
+   "total": 10,
+   "pct": 100.0
+  }
+ },
+ "elapsed_s": 987.2,
+ "tokens": {
+  "in": 13391,
+  "out": 33387
+ },
+ "runs": 1,
+ "tasks": [
+  {
+   "id": "code-01",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef compress(s):\n    parts = []\n    i = 0\n    n = len(s)\n    while i < n:\n        j = i + 1\n        while j < n and s[j] == s[i]:\n            j += 1\n        parts.append(s[i] + str(j - i))\n        i = j\n    return ''.join(parts)\n```",
+   "latency_s": 11.0,
+   "usage": {
+    "prompt_tokens": 84,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 297,
+    "total_tokens": 381
+   }
+  },
+  {
+   "id": "code-02",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef second_largest(nums):\n    distinct = set(nums)\n    if len(distinct) < 2:\n        return None\n    return sorted(distinct, reverse=True)[1]\n```",
+   "latency_s": 13.0,
+   "usage": {
+    "prompt_tokens": 72,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 296,
+    "total_tokens": 368
+   }
+  },
+  {
+   "id": "code-03",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals = sorted(intervals, key=lambda x: (x[0], x[1]))\n    merged = []\n    for start, end in intervals:\n        if merged and start <= merged[-1][1]:\n            if end > merged[-1][1]:\n                merged[-1][1] = end\n        else:\n            merged.append([start, end])\n    return merged\n```",
+   "latency_s": 23.2,
+   "usage": {
+    "prompt_tokens": 100,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 587,
+    "total_tokens": 687
+   }
+  },
+  {
+   "id": "code-04",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef roman(n):\n    if not isinstance(n, int) or isinstance(n, bool) or not 1 <= n <= 3999:\n        raise ValueError(\"n must be an integer from 1 to 3999\")\n\n    table = [\n        (1000, \"M\"), (900, \"CM\"), (500, \"D\"), (400, \"CD\"),\n        (100, \"C\"), (90, \"XC\"), (50, \"L\"), (40, \"XL\"),\n        (10, \"X\"), (9, \"IX\"), (5, \"V\"), (4, \"IV\"), (1, \"I\")\n    ]\n\n    result = []\n    for value, symbol in table:\n        while n >= value:\n            result.append(symbol)\n            n -= value\n    return \"\".join(result)\n```",
+   "latency_s": 23.6,
+   "usage": {
+    "prompt_tokens": 63,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 650,
+    "total_tokens": 713
+   }
+  },
+  {
+   "id": "code-05",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef balanced(s):\n    stack = []\n    pairs = {')': '(', ']': '[', '}': '{'}\n    for ch in s:\n        if ch in '([{':\n            stack.append(ch)\n        elif ch in ')]}':\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\n```",
+   "latency_s": 16.0,
+   "usage": {
+    "prompt_tokens": 71,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 384,
+    "total_tokens": 455
+   }
+  },
+  {
+   "id": "code-06",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef moving_avg(nums, k):\n    if k <= 0 or k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum / k)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum / k)\n    return result\n```",
+   "latency_s": 20.7,
+   "usage": {
+    "prompt_tokens": 79,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 524,
+    "total_tokens": 603
+   }
+  },
+  {
+   "id": "code-07",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\nimport re\nfrom collections import Counter\n\ndef top_word(text):\n    counts = Counter(w.lower() for w in re.findall(r\"[^\\W\\d_]+\", text))\n    if not counts:\n        return \"\"\n    max_count = max(counts.values())\n    return min(w for w, c in counts.items() if c == max_count)\n```",
+   "latency_s": 61.4,
+   "usage": {
+    "prompt_tokens": 86,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 1223,
+    "total_tokens": 1309
+   }
+  },
+  {
+   "id": "code-08",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef flatten(nested):\n    result = []\n\n    def _flatten(items):\n        for item in items:\n            if isinstance(item, list):\n                _flatten(item)\n            else:\n                result.append(item)\n\n    _flatten(nested)\n    return result\n```",
+   "latency_s": 16.5,
+   "usage": {
+    "prompt_tokens": 66,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 396,
+    "total_tokens": 462
+   }
+  },
+  {
+   "id": "code-09",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef caesar(s, k):\n    k %= 26\n    out = []\n    for ch in s:\n        if 'a' <= ch <= 'z':\n            out.append(chr((ord(ch) - ord('a') + k) % 26 + ord('a')))\n        elif 'A' <= ch <= 'Z':\n            out.append(chr((ord(ch) - ord('A') + k) % 26 + ord('A')))\n        else:\n            out.append(ch)\n    return ''.join(out)\n```",
+   "latency_s": 35.3,
+   "usage": {
+    "prompt_tokens": 81,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 751,
+    "total_tokens": 832
+   }
+  },
+  {
+   "id": "code-10",
+   "category": "code",
+   "pass": true,
+   "detail": "",
+   "response": "```python\ndef digit_root(n):\n    while n >= 10:\n        n = sum(int(d) for d in str(n))\n    return n\n```",
+   "latency_s": 18.5,
+   "usage": {
+    "prompt_tokens": 69,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 252,
+    "total_tokens": 321
+   }
+  },
+  {
+   "id": "context-01",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Priya Natarajan'",
+   "response": "The memo header lists \"From: Priya Natarajan, VP of Operations\".\n\nAnswer: Priya Natarajan",
+   "latency_s": 5.5,
+   "usage": {
+    "prompt_tokens": 946,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 87,
+    "total_tokens": 1033
+   }
+  },
+  {
+   "id": "context-02",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Fresno'",
+   "response": "Answer: Fresno",
+   "latency_s": 6.2,
+   "usage": {
+    "prompt_tokens": 953,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 102,
+    "total_tokens": 1055
+   }
+  },
+  {
+   "id": "context-03",
+   "category": "context",
+   "pass": true,
+   "detail": "got 92850.0",
+   "response": "Fresno: 41,200; Tulsa: 38,900; Elkhart: 12,750. Combined: 41,200 + 38,900 + 12,750 = 92,850.\n\nAnswer: 92,850 orders",
+   "latency_s": 11.9,
+   "usage": {
+    "prompt_tokens": 956,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 210,
+    "total_tokens": 1166
+   }
+  },
+  {
+   "id": "context-04",
+   "category": "context",
+   "pass": true,
+   "detail": "got 6.0",
+   "response": "Answer: 6 hours",
+   "latency_s": 9.7,
+   "usage": {
+    "prompt_tokens": 955,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 127,
+    "total_tokens": 1082
+   }
+  },
+  {
+   "id": "context-05",
+   "category": "context",
+   "pass": true,
+   "detail": "",
+   "response": "Answer: Fresno, March",
+   "latency_s": 15.0,
+   "usage": {
+    "prompt_tokens": 956,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 189,
+    "total_tokens": 1145
+   }
+  },
+  {
+   "id": "context-06",
+   "category": "context",
+   "pass": true,
+   "detail": "got 90000.0",
+   "response": "Answer: $90,000",
+   "latency_s": 9.1,
+   "usage": {
+    "prompt_tokens": 958,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 182,
+    "total_tokens": 1140
+   }
+  },
+  {
+   "id": "context-07",
+   "category": "context",
+   "pass": true,
+   "detail": "got 5.0",
+   "response": "Answer: 5",
+   "latency_s": 7.2,
+   "usage": {
+    "prompt_tokens": 955,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 80,
+    "total_tokens": 1035
+   }
+  },
+  {
+   "id": "context-08",
+   "category": "context",
+   "pass": true,
+   "detail": "answer 'Ashgrid'",
+   "response": "The memo's supply chain section states that the battery-pack supplier switch was completed from Voltcore to Ashgrid in February.\n\nAnswer: Ashgrid",
+   "latency_s": 10.5,
+   "usage": {
+    "prompt_tokens": 954,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 135,
+    "total_tokens": 1089
+   }
+  },
+  {
+   "id": "context-09",
+   "category": "context",
+   "pass": true,
+   "detail": "got 'unknown'",
+   "response": "The memo gives Elkhart's opening date (January 2026), its Q1 order volume (12,750), and its ramp status, but it never states the warehouse's square footage.\n\nAnswer: unknown",
+   "latency_s": 15.5,
+   "usage": {
+    "prompt_tokens": 954,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 243,
+    "total_tokens": 1197
+   }
+  },
+  {
+   "id": "context-10",
+   "category": "context",
+   "pass": true,
+   "detail": "got 26150.0",
+   "response": "Tulsa processed 38,900 orders and Elkhart processed 12,750 orders.\n\n38,900 \u2212 12,750 = 26,150\n\nAnswer: 26,150 orders",
+   "latency_s": 11.7,
+   "usage": {
+    "prompt_tokens": 956,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 242,
+    "total_tokens": 1198
+   }
+  },
+  {
+   "id": "extract-01",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"name\":\"Marisol Vega\",\"date\":\"2026-03-07\",\"amount_usd\":2340.5}",
+   "latency_s": 13.2,
+   "usage": {
+    "prompt_tokens": 112,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 295,
+    "total_tokens": 407
+   }
+  },
+  {
+   "id": "extract-02",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"flight_number\":\"UA1187\",\"depart\":\"DEN\",\"arrive\":\"AUS\",\"delayed\":true}",
+   "latency_s": 7.9,
+   "usage": {
+    "prompt_tokens": 103,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 226,
+    "total_tokens": 329
+   }
+  },
+  {
+   "id": "extract-03",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "[\"accounts@pay.example.com\", \"jo.roth@example.org\", \"old-press@example.org\", \"press-team@example.org\"]",
+   "latency_s": 13.8,
+   "usage": {
+    "prompt_tokens": 96,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 399,
+    "total_tokens": 495
+   }
+  },
+  {
+   "id": "extract-04",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"date\":\"2026-06-04\",\"time_24h\":\"09:15\",\"timezone\":\"Central\",\"room\":\"Room 12B\"}",
+   "latency_s": 49.2,
+   "usage": {
+    "prompt_tokens": 114,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 1186,
+    "total_tokens": 1300
+   }
+  },
+  {
+   "id": "extract-05",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "[{\"item\":\"paper\",\"qty\":3,\"unit_price\":4.25},{\"item\":\"stapler\",\"qty\":1,\"unit_price\":12.0},{\"item\":\"pen\",\"qty\":12,\"unit_price\":0.85}]",
+   "latency_s": 159.4,
+   "usage": {
+    "prompt_tokens": 115,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 3672,
+    "total_tokens": 3787
+   }
+  },
+  {
+   "id": "extract-06",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"errors\":2,\"warnings\":2,\"first_error_time\":\"08:02:17\"}",
+   "latency_s": 9.3,
+   "usage": {
+    "prompt_tokens": 137,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 229,
+    "total_tokens": 366
+   }
+  },
+  {
+   "id": "extract-07",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"last_name\":\"Okafor\",\"specialty\":\"ophthalmologist\",\"city\":\"Toledo\",\"state\":\"Ohio\",\"phone\":\"(419) 555-0142\"}",
+   "latency_s": 9.5,
+   "usage": {
+    "prompt_tokens": 116,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 257,
+    "total_tokens": 373
+   }
+  },
+  {
+   "id": "extract-08",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"winner\":\"Wrens\",\"loser\":\"Herons\",\"winner_goals\":4,\"loser_goals\":2,\"overtime\":true,\"top_scorer\":\"Ito\"}",
+   "latency_s": 10.4,
+   "usage": {
+    "prompt_tokens": 128,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 263,
+    "total_tokens": 391
+   }
+  },
+  {
+   "id": "extract-09",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"flour\":{\"qty\":2,\"unit\":\"cups\"},\"salt\":{\"qty\":1,\"unit\":\"tsp\"},\"eggs\":{\"qty\":3,\"unit\":\"count\"},\"milk\":{\"qty\":250,\"unit\":\"ml\"}}",
+   "latency_s": 19.0,
+   "usage": {
+    "prompt_tokens": 96,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 468,
+    "total_tokens": 564
+   }
+  },
+  {
+   "id": "extract-10",
+   "category": "extract",
+   "pass": true,
+   "detail": "",
+   "response": "{\"latest\":\"2.3.1\",\"broken\":\"2.3.0\",\"minimum_upgrade\":\"2.0.4\"}",
+   "latency_s": 12.4,
+   "usage": {
+    "prompt_tokens": 100,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 316,
+    "total_tokens": 416
+   }
+  },
+  {
+   "id": "instructions-01",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "The lighthouse swept its beam across the dark harbor, guiding ships safely through the fog. At night, the rotating beam cut through the waves and revealed the rocky coastline. Sailors watched the steady beam until the light reached them and the path ahead became clear.",
+   "latency_s": 11.6,
+   "usage": {
+    "prompt_tokens": 43,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 232,
+    "total_tokens": 275
+   }
+  },
+  {
+   "id": "instructions-02",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "antelope\nbear\ncat\ndog\nelephant",
+   "latency_s": 7.5,
+   "usage": {
+    "prompt_tokens": 51,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 157,
+    "total_tokens": 208
+   }
+  },
+  {
+   "id": "instructions-03",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Soft rain falls quietly across dark city streets and wets the pavement.",
+   "latency_s": 12.2,
+   "usage": {
+    "prompt_tokens": 33,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 263,
+    "total_tokens": 296
+   }
+  },
+  {
+   "id": "instructions-04",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "{\"city\":\"Denver\",\"population\":715522,\"landlocked\":true}",
+   "latency_s": 11.7,
+   "usage": {
+    "prompt_tokens": 57,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 211,
+    "total_tokens": 268
+   }
+  },
+  {
+   "id": "instructions-05",
+   "category": "instructions",
+   "pass": false,
+   "detail": "failed: ''",
+   "response": "",
+   "latency_s": 652.0,
+   "usage": {
+    "prompt_tokens": 53,
+    "prompt_tokens_details": {
+     "cached_tokens": 49
+    },
+    "completion_tokens": 8000,
+    "total_tokens": 8053
+   }
+  },
+  {
+   "id": "instructions-06",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "NECTAR AND POLLEN",
+   "latency_s": 9.0,
+   "usage": {
+    "prompt_tokens": 53,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 195,
+    "total_tokens": 248
+   }
+  },
+  {
+   "id": "instructions-07",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Historically, coffee spread from Ethiopia and the Arabian Peninsula into the wider world through trade routes and monasteries. It became a symbol of social life in coffeehouses, where merchants, writers, and thinkers gathered to exchange ideas.\n\nToday, coffee is a global commodity and daily ritual, brewed in countless styles from espresso to pour-over. Consumers value its flavor, aroma, and cultural meaning, while roasters and farmers work to balance quality, sustainability, and fair prices.",
+   "latency_s": 21.3,
+   "usage": {
+    "prompt_tokens": 71,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 401,
+    "total_tokens": 472
+   }
+  },
+  {
+   "id": "instructions-08",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "the quick brown fox jumps high\nhigh jumps fox brown quick the",
+   "latency_s": 8.1,
+   "usage": {
+    "prompt_tokens": 55,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 154,
+    "total_tokens": 209
+   }
+  },
+  {
+   "id": "instructions-09",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche",
+   "latency_s": 5.0,
+   "usage": {
+    "prompt_tokens": 45,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 101,
+    "total_tokens": 146
+   }
+  },
+  {
+   "id": "instructions-10",
+   "category": "instructions",
+   "pass": true,
+   "detail": "",
+   "response": "Soft light spills over silent shores\nTides carry distant amber tones\nA quiet rhythm wakes the meadow\nRise, radiant, beyond the ordinary",
+   "latency_s": 17.6,
+   "usage": {
+    "prompt_tokens": 57,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 295,
+    "total_tokens": 352
+   }
+  },
+  {
+   "id": "precision-01",
+   "category": "precision",
+   "pass": true,
+   "detail": "",
+   "response": "apple, banana, mango, quartz, Zebra",
+   "latency_s": 7.3,
+   "usage": {
+    "prompt_tokens": 65,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 162,
+    "total_tokens": 227
+   }
+  },
+  {
+   "id": "precision-02",
+   "category": "precision",
+   "pass": true,
+   "detail": "",
+   "response": "4, 9, 1, 7, 3",
+   "latency_s": 11.4,
+   "usage": {
+    "prompt_tokens": 75,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 258,
+    "total_tokens": 333
+   }
+  },
+  {
+   "id": "precision-03",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 'stressed'",
+   "response": "stressed",
+   "latency_s": 12.7,
+   "usage": {
+    "prompt_tokens": 28,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 261,
+    "total_tokens": 289
+   }
+  },
+  {
+   "id": "precision-04",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 12.0",
+   "response": "Counting each word: Susan 2, asked 1, seven 1, sisters 3, six 1, systematic 2, questions 2.\nAnswer: 12",
+   "latency_s": 53.0,
+   "usage": {
+    "prompt_tokens": 63,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 939,
+    "total_tokens": 1002
+   }
+  },
+  {
+   "id": "precision-05",
+   "category": "precision",
+   "pass": true,
+   "detail": "got '18:15'",
+   "response": "18:15",
+   "latency_s": 8.3,
+   "usage": {
+    "prompt_tokens": 48,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 173,
+    "total_tokens": 221
+   }
+  },
+  {
+   "id": "precision-06",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 'owls fly warm nights'",
+   "response": "owls fly warm nights",
+   "latency_s": 6.3,
+   "usage": {
+    "prompt_tokens": 67,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 141,
+    "total_tokens": 208
+   }
+  },
+  {
+   "id": "precision-07",
+   "category": "precision",
+   "pass": true,
+   "detail": "",
+   "response": "blankBIRRD",
+   "latency_s": 63.1,
+   "usage": {
+    "prompt_tokens": 64,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 1256,
+    "total_tokens": 1320
+   }
+  },
+  {
+   "id": "precision-08",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 40.0",
+   "response": "7 + 8 + 4 + 9 + 3 + 2 + 1 + 6 = 40\n\nAnswer: 40",
+   "latency_s": 3.5,
+   "usage": {
+    "prompt_tokens": 45,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 156,
+    "total_tokens": 201
+   }
+  },
+  {
+   "id": "precision-09",
+   "category": "precision",
+   "pass": true,
+   "detail": "got '2027-01-04'",
+   "response": "2027-01-04",
+   "latency_s": 19.5,
+   "usage": {
+    "prompt_tokens": 46,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 431,
+    "total_tokens": 477
+   }
+  },
+  {
+   "id": "precision-10",
+   "category": "precision",
+   "pass": true,
+   "detail": "got 36.0",
+   "response": "Digits: 7 + 9 + 2 = 18. Uppercase letters: A, Q = 2. 18 \u00d7 2 = 36.\nAnswer: 36",
+   "latency_s": 8.6,
+   "usage": {
+    "prompt_tokens": 66,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 173,
+    "total_tokens": 239
+   }
+  },
+  {
+   "id": "reasoning-01",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 9.0",
+   "response": "Dana can buy 7 snacks for 7 \u00d7 65 = 455 cents. Her change is 500 \u2212 455 = 45 cents, which is 45 \u00f7 5 = 9 nickels.\n\nAnswer: 9",
+   "latency_s": 9.1,
+   "usage": {
+    "prompt_tokens": 79,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 204,
+    "total_tokens": 283
+   }
+  },
+  {
+   "id": "reasoning-02",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 23.0",
+   "response": "From 6:00 AM to 9:00 PM is 15 hours = 900 minutes.  \n900 \u00f7 40 = 22 remainder 20, so there are 22 intervals after the first departure, meaning 23 crossings.\n\nAnswer: 23",
+   "latency_s": 21.5,
+   "usage": {
+    "prompt_tokens": 84,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 482,
+    "total_tokens": 566
+   }
+  },
+  {
+   "id": "reasoning-03",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 5.0",
+   "response": "Existing stacks have 2 + 5 + 0 = 7 crates of remaining capacity. After filling them, 18 \u2212 7 = 11 crates remain, requiring 2 more stacks. Total stacks: 3 + 2 = 5.\n\nAnswer: 5",
+   "latency_s": 25.3,
+   "usage": {
+    "prompt_tokens": 103,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 502,
+    "total_tokens": 605
+   }
+  },
+  {
+   "id": "reasoning-04",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 1125.0",
+   "response": "42/12 = 3.5, so 320 g \u00d7 3.5 = 1120 g. Rounding up to the next 25 g increment gives 1125 g.\nAnswer: 1125",
+   "latency_s": 16.5,
+   "usage": {
+    "prompt_tokens": 93,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 320,
+    "total_tokens": 413
+   }
+  },
+  {
+   "id": "reasoning-05",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 105.0",
+   "response": "66 games means \\(\\binom{n}{2}=66\\), so \\(n=12\\). After 3 new members join, there are \\(15\\) members.\n\n\\[\n\\binom{15}{2}=\\frac{15\\cdot14}{2}=105\n\\]\n\nAnswer: 105",
+   "latency_s": 19.0,
+   "usage": {
+    "prompt_tokens": 89,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 398,
+    "total_tokens": 487
+   }
+  },
+  {
+   "id": "reasoning-06",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 100.0",
+   "response": "While both run, net fill rate is \\(4 - 1.5 = 2.5\\) L/min. After 60 minutes: \\(2.5 \\times 60 = 150\\) L.  \nWith only the drain running, time to empty is \\(150 / 1.5 = 100\\) minutes.\n\nAnswer: 100",
+   "latency_s": 16.7,
+   "usage": {
+    "prompt_tokens": 107,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 360,
+    "total_tokens": 467
+   }
+  },
+  {
+   "id": "reasoning-07",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 12.0",
+   "response": "The daily page counts are 15, 20, 25, ... . After 11 days she has read 440 pages, so she finishes on day 12.\n\nAnswer: 12",
+   "latency_s": 36.7,
+   "usage": {
+    "prompt_tokens": 75,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 760,
+    "total_tokens": 835
+   }
+  },
+  {
+   "id": "reasoning-08",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 15.0",
+   "response": "From 8:45 AM to 5:10 PM is 8 hours 25 minutes. That would cost $3 + 8\u00d7$2 = $19, but the daily cap is $15.\n\nAnswer: 15",
+   "latency_s": 32.4,
+   "usage": {
+    "prompt_tokens": 88,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 568,
+    "total_tokens": 656
+   }
+  },
+  {
+   "id": "reasoning-09",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 48.0",
+   "response": "Jae pays 40% of $130 = $52.  \nRemaining: $130 - $52 = $78.  \nLet Lee pay $x; Kim pays $x + 18.  \n$x + (x + 18) = 78 \u2192 2x = 60 \u2192 x = 30.  \nKim pays $30 + $18 = $48.\n\nAnswer: 48",
+   "latency_s": 16.3,
+   "usage": {
+    "prompt_tokens": 69,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 272,
+    "total_tokens": 341
+   }
+  },
+  {
+   "id": "reasoning-10",
+   "category": "reasoning",
+   "pass": true,
+   "detail": "got 16.0",
+   "response": "A palindrome display has the form \\(abba\\), so if the hour is \\(ab\\), the minutes must be \\(ba\\).\n\n- Hours 00\u201309: minutes \\(00,10,20,30,40,50\\) \u2192 6\n- Hours 10\u201319: minutes \\(01,11,21,31,41,51\\) \u2192 6\n- Hours 20\u201323: minutes \\(02,12,22,32\\) \u2192 4\n\nTotal: \\(6+6+4=16\\).\n\nAnswer: 16",
+   "latency_s": 60.0,
+   "usage": {
+    "prompt_tokens": 88,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens": 1294,
+    "total_tokens": 1382
+   }
+  }
+ ]
+}
